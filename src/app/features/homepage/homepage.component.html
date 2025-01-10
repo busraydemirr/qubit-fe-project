@@ -1,0 +1,11 @@
+<app-header
+  (openMenu)="openMenu()"
+  [title]="selectedMenuItem.label"
+></app-header>
+<app-sidenav-menu
+  [opened]="opened"
+  [menuItems]="menuItems"
+  (menuItemChanged)="changeItem($event)"
+>
+  <router-outlet></router-outlet>
+</app-sidenav-menu>
