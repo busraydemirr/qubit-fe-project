@@ -1,0 +1,22 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    <mat-nav-list>
+      @for (item of menuItems; track item) {
+      <mat-action-list>
+        <mat-list-item
+          [routerLink]="[item.url]"
+          [activated]="item.isActive"
+          (click)="changeMenuItem(item)"
+          >{{ item.label }}</mat-list-item
+        >
+      </mat-action-list>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="container">
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
