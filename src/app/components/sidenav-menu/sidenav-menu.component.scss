@@ -1,3 +1,28 @@
 .container {
-    @apply w-full bg-white h-screen p-5;
+    @apply bg-white p-5;
+    height: calc(100vh - 100px);
+    width: calc(100% - 50px);
+}
+
+
+.active {
+    .has-child {
+        height: unset;
+
+        .child {
+            opacity: 1;
+            transform: translateY(0 + 10px);
+        }
+    }
+}
+
+.has-child {
+    display: block;
+    height: 48px;
+    transition: height ease-in-out .5s;
+
+    .child {
+        opacity: 0;
+        transition: transform ease .5s;
+    }
 }

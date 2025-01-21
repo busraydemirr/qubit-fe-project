@@ -2,13 +2,13 @@
   <mat-sidenav #sidenav mode="side" [(opened)]="opened">
     <mat-nav-list>
       @for (item of menuItems; track item) {
-      <mat-action-list>
-        <mat-list-item
-          [routerLink]="[item.url]"
-          [activated]="item.isActive"
-          (click)="changeMenuItem(item)"
-          >{{ item.label }}</mat-list-item
-        >
+      <mat-action-list [ngClass]="{ active: item.isActive }" class="menu-item">
+        <app-sidenav-menu-item
+          [ngClass]="{ 'has-child': item.children }"
+          [menuItems]="menuItems"
+          [item]="item"
+          (menuItemChanged)="changeMenuItem($event)"
+        ></app-sidenav-menu-item>
       </mat-action-list>
       }
     </mat-nav-list>

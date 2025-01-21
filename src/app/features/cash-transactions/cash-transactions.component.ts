@@ -7,6 +7,7 @@ import {
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { NgClass } from '@angular/common';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cash-transactions',
@@ -25,6 +26,7 @@ export class CashTransactionsComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   public elements: CashElement[] = [
     {
+      id: 1,
       select: false,
       code: 'SSDDK',
       name: 'Product 1',
@@ -33,6 +35,7 @@ export class CashTransactionsComponent implements AfterViewInit {
       idRemainder: 1090,
     },
     {
+      id: 2,
       select: false,
       code: 'SSDDK',
       name: 'Product 2',
@@ -41,6 +44,7 @@ export class CashTransactionsComponent implements AfterViewInit {
       idRemainder: 1090,
     },
     {
+      id: 3,
       select: false,
       code: 'SSDDK',
       name: 'Product 3',
@@ -49,6 +53,7 @@ export class CashTransactionsComponent implements AfterViewInit {
       idRemainder: 1090,
     },
     {
+      id: 4,
       select: false,
       code: 'SSDDK',
       name: 'Product 4',
@@ -57,6 +62,7 @@ export class CashTransactionsComponent implements AfterViewInit {
       idRemainder: 1090,
     },
     {
+      id: 5,
       select: false,
       code: 'SSDDK',
       name: 'Product 5',
@@ -65,6 +71,7 @@ export class CashTransactionsComponent implements AfterViewInit {
       idRemainder: 1090,
     },
     {
+      id: 6,
       select: false,
       code: 'SSDDK',
       name: 'Product 6',
@@ -73,6 +80,7 @@ export class CashTransactionsComponent implements AfterViewInit {
       idRemainder: 1090,
     },
     {
+      id: 7,
       select: false,
       code: 'SSDDK',
       name: 'Product 7',
@@ -81,6 +89,7 @@ export class CashTransactionsComponent implements AfterViewInit {
       idRemainder: 1090,
     },
     {
+      id: 8,
       select: false,
       code: 'SSDDK',
       name: 'Product 8',
@@ -99,6 +108,8 @@ export class CashTransactionsComponent implements AfterViewInit {
     'idRemainder',
   ];
 
+  constructor(private _router: Router) {}
+
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -107,9 +118,17 @@ export class CashTransactionsComponent implements AfterViewInit {
   public checkedChanged(event: MatCheckboxChange, element: CashElement): void {
     element.select = event.checked;
   }
+
+  public rowClicked(element: CashElement): void {
+    console.log(element);
+
+    this._router.navigate(['/detail', element.id]);
+    // console.log(window.location.href);
+  }
 }
 
 export interface CashElement {
+  id: number;
   select: boolean;
   code: string;
   name: string;

@@ -12,8 +12,90 @@ import { RouterOutlet } from '@angular/router';
 })
 export class HomepageComponent {
   public menuItems: MenuItem[] = [
-    { label: 'Kasa İşlemleri', url: 'cash-transactions', isActive: true },
+    { label: 'Anasayfa', url: '/home', isActive: true },
+    { label: 'Kasa İşlemleri', url: 'cash-transactions', isActive: false },
     { label: 'Cari İşlemler', url: 'current-accounts', isActive: false },
+    {
+      label: 'Çek/Senet İşlemleri',
+      url: 'current-accounts',
+      isActive: false,
+      children: [
+        {
+          label: 'Müşteri Çekleri',
+          url: 'current-accounts',
+          isActive: false,
+          depth: 1,
+        },
+        {
+          label: 'Pimak Çekleri',
+          url: 'current-accounts',
+          isActive: false,
+          depth: 1,
+        },
+      ],
+    },
+    {
+      label: 'Banka/Kredi İşlemleri',
+      url: 'current-accounts',
+      isActive: false,
+      children: [
+        {
+          label: 'Banka',
+          url: 'current-accounts',
+          isActive: false,
+          depth: 1,
+          children: [
+            {
+              label: 'Şube ve Para Cinsi',
+              url: 'current-accounts',
+              isActive: false,
+              depth: 2,
+            },
+          ],
+        },
+        {
+          label: 'Kredi',
+          url: 'current-accounts',
+          isActive: false,
+          depth: 1,
+          children: [
+            {
+              label: 'Ödenen Taksitler',
+              url: 'current-accounts',
+              isActive: false,
+              depth: 2,
+            },
+            {
+              label: 'Ödenecek Taksitler',
+              url: 'current-accounts',
+              isActive: false,
+              depth: 2,
+            },
+          ],
+        },
+      ],
+    },
+    { label: 'Satış', url: 'current-accounts', isActive: false },
+    { label: 'Alım Faturaları', url: 'current-accounts', isActive: false },
+    {
+      label: 'Siparişler',
+      url: 'current-accounts',
+      isActive: false,
+      children: [
+        {
+          label: 'Ödenen Taksitler',
+          url: 'current-accounts',
+          isActive: false,
+          depth: 1,
+        },
+        {
+          label: 'Ödenecek Taksitler',
+          url: 'current-accounts',
+          isActive: false,
+          depth: 1,
+        },
+      ],
+    },
   ];
   public opened: boolean = false;
   public selectedMenuItem: MenuItem = this.menuItems[0];

@@ -1,3 +1,7 @@
 .selected-row {
     @apply text-qub-tertiary bg-qub-secondary;
 }
+
+.clickable-cell {
+    @apply cursor-pointer underline text-qub-tertiary;
+}

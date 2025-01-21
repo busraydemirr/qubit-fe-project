@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MenuItem } from '../../models/menu-item.model';
-import { RouterLink } from '@angular/router';
+import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.component';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-sidenav-menu',
@@ -13,7 +14,8 @@ import { RouterLink } from '@angular/router';
     FormsModule,
     MatListModule,
     MatIconModule,
-    RouterLink,
+    SidenavMenuItemComponent,
+    NgClass,
   ],
   templateUrl: './sidenav-menu.component.html',
   styleUrl: './sidenav-menu.component.scss',
@@ -26,9 +28,5 @@ export class SidenavMenuComponent {
 
   public changeMenuItem(item: MenuItem): void {
     this.menuItemChanged.emit(item);
-    this.menuItems.forEach((menuItem) => {
-      menuItem.isActive = false;
-    });
-    item.isActive = true;
   }
 }

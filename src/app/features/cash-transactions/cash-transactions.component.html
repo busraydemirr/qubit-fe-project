@@ -29,8 +29,11 @@
     <mat-cell
       *matCellDef="let element"
       [ngClass]="{ 'selected-row': element.select }"
+      (click)="rowClicked(element)"
     >
-      {{ element.name }}
+      <div class="clickable-cell">
+        {{ element.name }}
+      </div>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="description">

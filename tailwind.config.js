@@ -14,6 +14,7 @@ module.exports = {
         secondary: "#c3d5f7",
         tertiary: "#015cbb",
         light: "#faf9fd",
+        orange: "#ff904d",
       },
     },
   },
