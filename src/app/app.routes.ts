@@ -4,22 +4,27 @@ import { HomepageComponent } from './features/homepage/homepage.component';
 import { CashTransactionsComponent } from './features/cash-transactions/cash-transactions.component';
 import { CurrentAccountsComponent } from './features/current-accounts/current-accounts.component';
 import { HomeComponent } from './features/home/home.component';
+import { CashTransactionDetailComponent } from './features/cash-transactions/cash-transaction-detail/cash-transaction-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   { path: 'auth/login', component: LoginComponent },
   {
-    path: 'home',
+    path: '',
     component: HomepageComponent,
     children: [
-      { path: '', component: HomeComponent },
+      { path: 'home', component: HomeComponent },
       {
         path: 'cash-transactions',
         component: CashTransactionsComponent,
       },
-      // { path: 'cash-transactions/detail/:id', component: HomeComponent },
+
       { path: 'current-accounts', component: CurrentAccountsComponent },
     ],
   },
-  { path: '**', redirectTo: 'auth/login' },
+  {
+    path: 'cash-transactions/detail/:id',
+    component: CashTransactionDetailComponent,
+  },
+  { path: '**', component: LoginComponent },
 ];

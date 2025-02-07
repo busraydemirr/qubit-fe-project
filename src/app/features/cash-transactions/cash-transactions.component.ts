@@ -120,10 +120,7 @@ export class CashTransactionsComponent implements AfterViewInit {
   }
 
   public rowClicked(element: CashElement): void {
-    console.log(element);
-
-    this._router.navigate(['/detail', element.id]);
-    // console.log(window.location.href);
+    this._router.navigate(['cash-transactions/detail', element.id]);
   }
 }
 
