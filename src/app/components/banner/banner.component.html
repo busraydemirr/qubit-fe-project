@@ -1,0 +1,37 @@
+<div
+  class="flex w-screen items-end justify-between h-48  px-8 pb-3 bg-gradient-to-r from-qub-tertiary to-qub-secondary {{
+    customClass
+  }}"
+>
+  <div class="flex flex-row w-full gap-4 items-center">
+    <ng-template [ngIf]="showBackButton">
+      <button
+        class="!bg-qub-primary rounded-full h-8 w-8 items-center justify-center flex pt-[3px]"
+        mat-mini-fab
+        matTooltip="Geri Dön"
+        (click)="backNavigate()"
+      >
+        <mat-icon
+          class="!text-sm !font-bold text-qub-tertiary"
+          aria-hidden="false"
+          aria-label="Geri Dön"
+          >arrow_back</mat-icon
+        >
+      </button>
+    </ng-template>
+
+    <div>
+      <h1 class="text-white text-[28px]">
+        {{ label }}
+      </h1>
+      <ng-template [ngIf]="subLabel">
+        <h2 class="text-[#ddd9ee] text-[16px]">{{ subLabel }}</h2>
+      </ng-template>
+    </div>
+  </div>
+  <div class="flex flex-row">
+    <div class="w-full header-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
