@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MenuItem } from '../../../models/menu-item.model';
+import { MenuItem } from '../../../models/shared/menu-item.model';
 import { MatActionList, MatListItem } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 import { NgClass, NgStyle } from '@angular/common';

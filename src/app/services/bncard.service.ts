@@ -14,6 +14,6 @@ export class BnCardService {
     constructor(private _http: HttpClient) { }
 
     listBnCards(size: number, page: number, body: FilterRequestModel): Observable<ResponseModel<BaseResponseData<BnCardItemModel>>> {
-        return this._http.post<ResponseModel<BaseResponseData<BnCardItemModel>>>(this.url + 'api/BnCard' + '?Size=' + size + '&From=' + page, body);
+        return this._http.post<ResponseModel<BaseResponseData<BnCardItemModel>>>(this.url + 'api/BnCard' + '?size=' + size + '&from=' + page, body);
     }
 }

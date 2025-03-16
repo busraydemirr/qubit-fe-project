@@ -3,7 +3,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { MenuItem } from '../../models/menu-item.model';
+import { MenuItem } from '../../models/shared/menu-item.model';
 import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.component';
 import { NgClass } from '@angular/common';
 

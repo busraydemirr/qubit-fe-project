@@ -14,7 +14,7 @@ export class ClCardService {
     constructor(private _http: HttpClient) { }
 
     public listClCards(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<ClCardItemModel>>> {
-        return this._http.post<ResponseModel<BaseResponseData<ClCardItemModel>>>(this.url + 'api/ClCard' + '?Size=' + size + '&From=' + page, filter);
+        return this._http.post<ResponseModel<BaseResponseData<ClCardItemModel>>>(this.url + 'api/ClCard' + '?size=' + size + '&from=' + page, filter);
     }
 
     public getClCard() { }

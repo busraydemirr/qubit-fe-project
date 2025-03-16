@@ -9,6 +9,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { CurrentAccountsDetailListComponent } from '../current-accounts-detail-list/current-accounts-detail-list.component';
 import { SubSink } from 'subsink';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { ClCardItemModel } from '../../../models/clcard/clcard.model';
+import { ClCardState } from '../../../state/clcard/clcard.state';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { ClCardActions } from '../../../state/clcard/clcard.action';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-current-accounts-detail',
@@ -21,23 +28,34 @@ import { ActivatedRoute, Params } from '@angular/router';
     MatButtonModule,
     MatIconModule,
     CurrentAccountsDetailListComponent,
+    AsyncPipe,
+    NgIf,
+    MatProgressSpinnerModule
   ],
   templateUrl: './current-accounts-detail.component.html',
   styleUrl: './current-accounts-detail.component.scss',
 })
 export class CurrentAccountsDetailComponent implements OnInit, OnDestroy {
-  public accountName: string = '';
+  public accountId!: number;
+  public clCard$!: Observable<ClCardItemModel | null>;
+  public loading$!: Observable<boolean>;
   private _subSink: SubSink = new SubSink();
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private _store: Store) { }
 
   ngOnInit(): void {
     this._subSink.sink = this.route.params.subscribe((params: Params) => {
-      const accountId = params['id'];
-
-      // TODO: istek atılıp name setlenmeli
-      this.accountName = `Idsi ${accountId} olan cari ismi`;
+      this.accountId = params['id'];
     });
+
+    this.clCard$ = this._store.select(ClCardState.getClCardDetail);
+    this.loading$ = this._store.select(ClCardState.getDetailLoading);
+
+    const card: ClCardItemModel | null = this._store.selectSnapshot(ClCardState.getClCardDetail);
+
+    if (!card) {
+      this._store.dispatch(new ClCardActions.GetClCard(this.accountId!));
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SidenavMenuComponent } from '../../components/sidenav-menu/sidenav-menu.component';
-import { MenuItem } from '../../models/menu-item.model';
+import { MenuItem } from '../../models/shared/menu-item.model';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

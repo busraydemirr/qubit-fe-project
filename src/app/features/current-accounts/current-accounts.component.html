@@ -10,26 +10,58 @@
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
-      {{ element.id }}
+      <ng-container *ngIf="(loading$ | async); else content">
+        <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+            height: '20px',
+            width: '100%',
+            'background-color': '#e0e0e0',
+            border: '1px solid white'
+          }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-template #content>
+        {{ element.id }}
+      </ng-template>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="code">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Kodu </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Cari Hesap Kodu </mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
-      {{ element.code }}
+      <ng-container *ngIf="(loading$ | async); else content">
+        <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+            height: '20px',
+            width: '100%',
+            'background-color': '#e0e0e0',
+            border: '1px solid white'
+          }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-template #content>
+        {{ element.code }}
+      </ng-template>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Adı </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Cari Hesap Ünvanı </mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
-      <div class="clickable-cell">
-        {{ element.definition }}
-      </div>
+      <ng-container *ngIf="(loading$ | async); else content">
+        <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+            height: '20px',
+            width: '100%',
+            'background-color': '#e0e0e0',
+            border: '1px solid white'
+          }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-template #content>
+        <div class="clickable-cell">
+          {{ element.definition }}
+        </div>
+      </ng-template>
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
 
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+
+<mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"
+  [length]="queryParams.totalElements" (page)="changePaginationEvents($event)" showFirstLastButtons>
 </mat-paginator>

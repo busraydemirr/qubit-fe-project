@@ -11,7 +11,7 @@ interface FilterSortModel {
 interface FilterFilterModel {
     field: string;
     value: string;
-    operator: string;
-    logic: string;
-    filters: FilterFilterModel[];
+    operator?: string;
+    logic?: string;
+    filters?: FilterFilterModel[];
 }
