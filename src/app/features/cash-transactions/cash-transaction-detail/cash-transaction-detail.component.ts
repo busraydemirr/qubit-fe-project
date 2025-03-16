@@ -13,6 +13,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CashTransactionDetailListComponent } from '../cash-transaction-detail-list/cash-transaction-detail-list.component';
 @Component({
   selector: 'app-cash-transaction-detail',
   imports: [
@@ -23,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    CashTransactionDetailListComponent,
   ],
   templateUrl: './cash-transaction-detail.component.html',
   styleUrl: './cash-transaction-detail.component.scss',

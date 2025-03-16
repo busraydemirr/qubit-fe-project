@@ -8,6 +8,7 @@ import { CashTransactionDetailComponent } from './features/cash-transactions/cas
 import { provideStates } from '@ngxs/store';
 import { ClCardState } from './state/clcard/clcard.state';
 import { BnCardState } from './state/bncard/bncard.state';
+import { CurrentAccountsDetailComponent } from './features/current-accounts/current-accounts-detail/current-accounts-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -28,6 +29,10 @@ export const routes: Routes = [
   {
     path: 'cash-transactions/detail/:id',
     component: CashTransactionDetailComponent,
+  },
+  {
+    path: 'current-accounts/detail/:id',
+    component: CurrentAccountsDetailComponent,
   },
   { path: '**', component: LoginComponent },
 ];

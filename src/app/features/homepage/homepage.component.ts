@@ -40,38 +40,16 @@ export class HomepageComponent {
       isActive: false,
       children: [
         {
-          label: 'Banka',
+          label: 'Banka İşlemleri',
           url: 'current-accounts',
           isActive: false,
           depth: 1,
-          children: [
-            {
-              label: 'Şube ve Para Cinsi',
-              url: 'current-accounts',
-              isActive: false,
-              depth: 2,
-            },
-          ],
         },
         {
-          label: 'Kredi',
+          label: 'Kredi İşlemleri',
           url: 'current-accounts',
           isActive: false,
           depth: 1,
-          children: [
-            {
-              label: 'Ödenen Taksitler',
-              url: 'current-accounts',
-              isActive: false,
-              depth: 2,
-            },
-            {
-              label: 'Ödenecek Taksitler',
-              url: 'current-accounts',
-              isActive: false,
-              depth: 2,
-            },
-          ],
         },
       ],
     },
@@ -81,20 +59,6 @@ export class HomepageComponent {
       label: 'Siparişler',
       url: 'current-accounts',
       isActive: false,
-      children: [
-        {
-          label: 'Ödenen Taksitler',
-          url: 'current-accounts',
-          isActive: false,
-          depth: 1,
-        },
-        {
-          label: 'Ödenecek Taksitler',
-          url: 'current-accounts',
-          isActive: false,
-          depth: 1,
-        },
-      ],
     },
   ];
   public opened: boolean = false;
