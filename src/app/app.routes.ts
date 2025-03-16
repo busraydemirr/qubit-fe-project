@@ -5,6 +5,9 @@ import { CashTransactionsComponent } from './features/cash-transactions/cash-tra
 import { CurrentAccountsComponent } from './features/current-accounts/current-accounts.component';
 import { HomeComponent } from './features/home/home.component';
 import { CashTransactionDetailComponent } from './features/cash-transactions/cash-transaction-detail/cash-transaction-detail.component';
+import { provideStates } from '@ngxs/store';
+import { ClCardState } from './state/clcard/clcard.state';
+import { BnCardState } from './state/bncard/bncard.state';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -19,7 +22,7 @@ export const routes: Routes = [
         component: CashTransactionsComponent,
       },
 
-      { path: 'current-accounts', component: CurrentAccountsComponent },
+      { path: 'current-accounts', component: CurrentAccountsComponent, providers: [provideStates([ClCardState, BnCardState])] },
     ],
   },
   {
