@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { BaseResponseData, ResponseModel } from '../models/shared/response.model';
+import { ClCardItemModel } from '../models/clcard/clcard.model';
+import { FilterRequestModel } from '../models/shared/filter-request.model';
 
 @Injectable({
     providedIn: 'root',
@@ -10,9 +13,9 @@ export class ClCardService {
 
     constructor(private _http: HttpClient) { }
 
-    listClCards(size: number, page: number, filter: any): Observable<any> {
-        return this._http.post(this.url + 'api/ClCard' + '?Size=' + size + '&From=' + page, filter);
+    public listClCards(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<ClCardItemModel>>> {
+        return this._http.post<ResponseModel<BaseResponseData<ClCardItemModel>>>(this.url + 'api/ClCard' + '?Size=' + size + '&From=' + page, filter);
     }
 
-    getClCard() { }
+    public getClCard() { }
 }
