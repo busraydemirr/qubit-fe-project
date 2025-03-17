@@ -6,6 +6,7 @@ import { ClCardService } from "../../services/clcard.service";
 import { tap } from "rxjs";
 import { ClCardItemModel } from "../../models/clcard/clcard.model";
 import { QueryParams } from "../../models/shared/query-params.model";
+import { ClCardLineModel } from "../../models/clcard/clcard-line.model";
 
 @State<ClCardStateModel>({
     name: 'clcard',
@@ -18,6 +19,12 @@ import { QueryParams } from "../../models/shared/query-params.model";
         loading: false,
         clCardDetail: null,
         detailLoading: false,
+        linesListLoading: false,
+        cardLines: [],
+        linePage: 0,
+        lineSize: 10,
+        lineTotalElements: 0,
+        linePages: 0,
     }
 })
 @Injectable()
@@ -49,6 +56,21 @@ export class ClCardState {
         return detailLoading;
     }
 
+    @Selector()
+    static getClCardLines({ cardLines }: ClCardStateModel): ClCardLineModel[] {
+        return cardLines;
+    }
+
+    @Selector()
+    static getLinesListLoading({ linesListLoading }: ClCardStateModel): boolean {
+        return linesListLoading;
+    }
+
+    @Selector()
+    static getClCardLineQueryParams({ linePage, lineSize, lineTotalElements, linePages }: ClCardStateModel): QueryParams {
+        return { page: linePage, size: lineSize, totalElements: lineTotalElements, pages: linePages };
+    }
+
     @Action(ClCardActions.List)
     listClCards({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.List) {
         patchState({ loading: true });
@@ -63,7 +85,7 @@ export class ClCardState {
                     loading: false
                 });
             })
-        )
+        );
     }
 
     @Action(ClCardActions.SetClCard)
@@ -84,6 +106,23 @@ export class ClCardState {
                 patchState({ detailLoading: false });
                 dispatch(new ClCardActions.SetClCard(data.data.items[0]));
             })
-        )
+        );
+    }
+
+    @Action(ClCardActions.GetClCardLines)
+    getClCardLines({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardLines) {
+        patchState({ linesListLoading: true });
+        return this._clCardService.getClCardLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
+            tap(data => {
+                patchState({
+                    cardLines: data.data.items,
+                    linePage: data.data.index,
+                    lineSize: data.data.size,
+                    lineTotalElements: data.data.count,
+                    linePages: data.data.pages,
+                    linesListLoading: false
+                });
+            })
+        );
     }
 }

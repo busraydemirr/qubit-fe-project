@@ -1,3 +1,4 @@
+import { ClCardLineModel } from "./clcard/clcard-line.model";
 import { ClCardItemModel } from "./clcard/clcard.model";
 
 export interface ClCardStateModel {
@@ -9,4 +10,10 @@ export interface ClCardStateModel {
     loading: boolean;
     clCardDetail: ClCardItemModel | null;
     detailLoading: boolean;
+    linesListLoading: boolean;
+    cardLines: ClCardLineModel[];
+    linePage: number;
+    lineSize: number;
+    lineTotalElements: number;
+    linePages: number;
 }

@@ -91,6 +91,5 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit {
     this._store.dispatch(
       new ClCardActions.List({ size: event.pageSize, page: event.pageIndex, filter: {} })
     );
-    console.log(event);
   }
 }
