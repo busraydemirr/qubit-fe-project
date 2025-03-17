@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { BnCardItemModel } from '../models/bncard/bncard.model';
 import { BaseResponseData, ResponseModel } from '../models/shared/response.model';
 import { FilterRequestModel } from '../models/shared/filter-request.model';
+import { BnCardAccountModel } from '../models/bncard/bncard-account.model';
 
 @Injectable({
     providedIn: 'root',
@@ -13,7 +14,11 @@ export class BnCardService {
 
     constructor(private _http: HttpClient) { }
 
-    listBnCards(size: number, page: number, body: FilterRequestModel): Observable<ResponseModel<BaseResponseData<BnCardItemModel>>> {
-        return this._http.post<ResponseModel<BaseResponseData<BnCardItemModel>>>(this.url + 'api/BnCard' + '?size=' + size + '&from=' + page, body);
+    public listBnCards(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<BnCardItemModel>>> {
+        return this._http.post<ResponseModel<BaseResponseData<BnCardItemModel>>>(this.url + 'api/BnCard' + '?size=' + size + '&from=' + page, filter);
+    }
+
+    public getBnCardAccounts(id: number, size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<BnCardAccountModel>>> {
+        return this._http.post<ResponseModel<BaseResponseData<BnCardAccountModel>>>(this.url + 'api/BnCard/getBankAccounts/' + id + '?size=' + size + '&from=' + page, filter)
     }
 }

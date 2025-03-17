@@ -1,0 +1,80 @@
+<ng-container *ngIf="bnCard$ | async as card">
+    <app-banner [label]="card.definition"></app-banner>
+</ng-container>
+
+<div class="w-auto">
+    <mat-tab-group>
+        <mat-tab label="Genel Bilgiler" labelClass="bg-qub-primary">
+            <ng-container *ngIf="(loading$ | async); else content">
+                <div class="flex w-full items-center justify-center p-8">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-container>
+            <ng-template #content>
+                <ng-container *ngIf="bnCard$ | async as card">
+                    <div class="p-8">
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Id </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.id}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Kullanım durumu </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.active}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Banka Kodu </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.code}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Banka Adı </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.definition}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Banka Şubesi </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.branch}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Şube Numarası </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.branchNo}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Telefon Numarası 1 </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.telnrs1}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Telefon Numarası 2 </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.telnrs2}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Faks Numarası </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.faxnr}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> İlgili </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.incharge}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> E-Posta Adresi </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.emailaddr}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> İlçe </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.town}} </span>
+                        </div>
+                        <div class="flex w-full content-between flex-wrap flex-row">
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> Semt </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.district}} </span>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+        </mat-tab>
+        <mat-tab label="Banka Hesapları" labelClass="bg-qub-primary">
+            <app-bank-accounts [bankId]="bankId"></app-bank-accounts>
+        </mat-tab>
+        <mat-tab label="Krediler" labelClass="bg-qub-primary">
+            test
+        </mat-tab>
+    </mat-tab-group>
+</div>

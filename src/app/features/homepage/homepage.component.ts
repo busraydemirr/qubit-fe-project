@@ -41,7 +41,7 @@ export class HomepageComponent {
       children: [
         {
           label: 'Banka İşlemleri',
-          url: 'current-accounts',
+          url: 'banks',
           isActive: false,
           depth: 1,
         },

@@ -1,4 +1,5 @@
 export interface BnCardItemModel {
+    select: boolean;
     id: number;
     active: number;
     code: string;

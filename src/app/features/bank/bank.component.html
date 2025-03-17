@@ -1,0 +1,68 @@
+<mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="select" sticky>
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell [ngClass]="{ 'selected-row': element.select }" *matCellDef="let element">
+            <mat-checkbox [checked]="element.selected" [disableRipple]="true" (change)="checkedChanged($event, element)"
+                color="primary" class="column-checkbox">
+            </mat-checkbox>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+            <ng-container *ngIf="(loading$ | async); else content">
+                <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+              height: '20px',
+              width: '100%',
+              'background-color': '#e0e0e0',
+              border: '1px solid white'
+            }"></ngx-skeleton-loader>
+            </ng-container>
+            <ng-template #content>
+                {{ element.id }}
+            </ng-template>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="code">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Kodu </mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+            <ng-container *ngIf="(loading$ | async); else content">
+                <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+              height: '20px',
+              width: '100%',
+              'background-color': '#e0e0e0',
+              border: '1px solid white'
+            }"></ngx-skeleton-loader>
+            </ng-container>
+            <ng-template #content>
+                {{ element.code }}
+            </ng-template>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Adı </mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }"
+            (click)="rowClicked(element)">
+            <ng-container *ngIf="(loading$ | async); else content">
+                <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+              height: '20px',
+              width: '100%',
+              'background-color': '#e0e0e0',
+              border: '1px solid white'
+            }"></ngx-skeleton-loader>
+            </ng-container>
+            <ng-template #content>
+                <div class="clickable-cell">
+                    {{ element.definition }}
+                </div>
+            </ng-template>
+        </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
+
+
+<mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"
+    [length]="queryParams.totalElements" (page)="changePaginationEvents($event)" showFirstLastButtons>
+</mat-paginator>

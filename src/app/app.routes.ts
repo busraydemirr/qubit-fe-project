@@ -9,6 +9,8 @@ import { provideStates } from '@ngxs/store';
 import { ClCardState } from './state/clcard/clcard.state';
 import { BnCardState } from './state/bncard/bncard.state';
 import { CurrentAccountsDetailComponent } from './features/current-accounts/current-accounts-detail/current-accounts-detail.component';
+import { BankComponent } from './features/bank/bank.component';
+import { BankDetailComponent } from './features/bank/bank-detail/bank-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -22,8 +24,16 @@ export const routes: Routes = [
         path: 'cash-transactions',
         component: CashTransactionsComponent,
       },
-
-      { path: 'current-accounts', component: CurrentAccountsComponent, providers: [provideStates([ClCardState, BnCardState])] },
+      {
+        path: 'current-accounts',
+        component: CurrentAccountsComponent,
+        providers: [provideStates([ClCardState])]
+      },
+      {
+        path: 'banks',
+        component: BankComponent,
+        providers: [provideStates([BnCardState])]
+      }
     ],
   },
   {
@@ -33,6 +43,10 @@ export const routes: Routes = [
   {
     path: 'current-accounts/detail/:id',
     component: CurrentAccountsDetailComponent,
+  },
+  {
+    path: 'banks/detail/:id',
+    component: BankDetailComponent,
   },
   { path: '**', component: LoginComponent },
 ];
