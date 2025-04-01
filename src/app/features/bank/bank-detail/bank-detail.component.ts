@@ -16,6 +16,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { BnCardState } from '../../../state/bncard/bncard.state';
 import { BnCardActions } from '../../../state/bncard/bncard.action';
+import { Status } from '../../../models/shared/status.enum';
 
 @Component({
   selector: 'app-bank-detail',
@@ -60,5 +61,13 @@ export class BankDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._subSink.unsubscribe();
+  }
+
+  public renderCardStatus(status: number): Status | '' {
+    switch (status) {
+      case 0: return Status.PASSIVE;
+      case 1: return Status.ACTIVE;
+      default: return '';
+    }
   }
 }

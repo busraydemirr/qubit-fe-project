@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
@@ -19,6 +19,7 @@ import { NgClass } from '@angular/common';
   ],
   templateUrl: './sidenav-menu.component.html',
   styleUrl: './sidenav-menu.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class SidenavMenuComponent {
   @Input() public opened: boolean = false;

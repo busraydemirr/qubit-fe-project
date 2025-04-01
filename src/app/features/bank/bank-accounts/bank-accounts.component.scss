@@ -1,0 +1,16 @@
+.mat-column-code {
+    flex: 0 0 15%;
+}
+
+.mat-column-cardtype {
+    flex: 0 0 15%;
+}
+
+.mat-column-currency {
+    flex: 0 0 15%;
+}
+
+
+.clickable-cell {
+    @apply cursor-pointer underline text-qub-tertiary;
+}

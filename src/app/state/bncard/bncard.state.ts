@@ -7,11 +7,12 @@ import { BnCardService } from "../../services/bncard.service";
 import { BnCardItemModel } from "../../models/bncard/bncard.model";
 import { QueryParams } from "../../models/shared/query-params.model";
 import { BnCardAccountModel } from "../../models/bncard/bncard-account.model";
+import { BnCardAccountLineModel } from "../../models/bncard/bncard-account-line.model";
 
 @State<BnCardStateModel>({
     name: 'bncard',
     defaults: {
-        items: [],
+        items: [{ select: false, id: 1, code: 'test', definition: '' }, { select: false, id: 1, code: 'test', definition: '' }, { select: false, id: 1, code: 'test', definition: '' }],
         page: 0,
         size: 10,
         totalElements: 0,
@@ -25,6 +26,9 @@ import { BnCardAccountModel } from "../../models/bncard/bncard-account.model";
         accountSize: 10,
         accountTotalElements: 0,
         accountPages: 0,
+        lineLoading: false,
+        accountLines: [],
+        linePage: 0, lineSize: 10, lineTotalElements: 0, linePages: 0
     }
 })
 @Injectable()
@@ -69,6 +73,21 @@ export class BnCardState {
     @Selector()
     static getBnCardAccountsQueryParams({ accountPage, accountSize, accountTotalElements, accountPages }: BnCardStateModel): QueryParams {
         return { page: accountPage, size: accountSize, totalElements: accountTotalElements, pages: accountPages };
+    }
+
+    @Selector()
+    static getLineLoading({ lineLoading }: BnCardStateModel): boolean {
+        return lineLoading;
+    }
+
+    @Selector()
+    static getAccountLines({ accountLines }: BnCardStateModel): BnCardAccountLineModel[] {
+        return accountLines;
+    }
+
+    @Selector()
+    static getAccountLinesQueryParams({ linePage, lineSize, lineTotalElements, linePages }: BnCardStateModel): QueryParams {
+        return { page: linePage, size: lineSize, totalElements: lineTotalElements, pages: linePages };
     }
 
     @Action(BnCardActions.List)

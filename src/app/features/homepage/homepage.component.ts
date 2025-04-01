@@ -53,12 +53,43 @@ export class HomepageComponent {
         },
       ],
     },
-    { label: 'Satış', url: 'current-accounts', isActive: false },
-    { label: 'Alım Faturaları', url: 'current-accounts', isActive: false },
+    {
+      label: 'Faturalar',
+      url: 'current-accounts',
+      isActive: false,
+      children: [
+        {
+          label: 'Satış Faturaları',
+          url: 'banks',
+          isActive: false,
+          depth: 1,
+        },
+        {
+          label: 'Alım Faturaları',
+          url: 'current-accounts',
+          isActive: false,
+          depth: 1,
+        },
+      ],
+    },
     {
       label: 'Siparişler',
       url: 'current-accounts',
       isActive: false,
+      children: [
+        {
+          label: 'Alınan Siparişler',
+          url: 'banks',
+          isActive: false,
+          depth: 1,
+        },
+        {
+          label: 'Verilen Siparişler',
+          url: 'current-accounts',
+          isActive: false,
+          depth: 1,
+        },
+      ],
     },
   ];
   public opened: boolean = false;

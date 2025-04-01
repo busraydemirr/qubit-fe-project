@@ -5,7 +5,7 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     fontFamily: {
-      inter: ["Inter", "sans-serif"],
+      inter: ["Lato", "sans-serif"],
     },
     colors: {
       ...colors,

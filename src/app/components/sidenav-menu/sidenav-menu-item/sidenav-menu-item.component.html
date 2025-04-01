@@ -1,22 +1,13 @@
-<mat-list-item
-  [ngStyle]="{ 'padding-left': item.depth ? item.depth * 30 + 'px' : '15px' }"
-  [ngClass]="{ child: isChild }"
-  [routerLink]="[item.url]"
-  [activated]="item.isActive && !item.children"
-  (click)="changeMenuItem(item, isChild)"
->
+<mat-list-item class="!text-white" [ngStyle]="{ 'padding-left': item.depth ? item.depth * 30 + 'px' : '15px' }"
+  [ngClass]="{ child: isChild }" [routerLink]="[item.url]" [activated]="item.isActive && !item.children"
+  (click)="changeMenuItem(item, isChild)">
   {{ item.label }}
 </mat-list-item>
 
 @if (item.children){ @for(child of item.children; track child) {
-<app-sidenav-menu-item
-  [ngClass]="{
+<app-sidenav-menu-item [ngClass]="{
     'has-child': child.children,
     hidden: !item.isActive,
     visible: item.isActive
-  }"
-  [menuItems]="menuItems"
-  [item]="child"
-  [isChild]="true"
-></app-sidenav-menu-item>
+  }" [menuItems]="menuItems" [item]="child" [isChild]="true"></app-sidenav-menu-item>
 } }

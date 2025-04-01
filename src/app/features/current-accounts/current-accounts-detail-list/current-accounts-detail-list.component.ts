@@ -8,7 +8,7 @@ import { ClCardLineModel } from '../../../models/clcard/clcard-line.model';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QueryParams } from '../../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
@@ -20,6 +20,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NgIf,
     AsyncPipe,
     NgxSkeletonLoaderModule,
+    DatePipe
   ],
   templateUrl: './current-accounts-detail-list.component.html',
   styleUrl: './current-accounts-detail-list.component.scss'

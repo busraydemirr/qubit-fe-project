@@ -1,0 +1,12 @@
+//    { "eq", "=" },
+//    { "neq", "!=" },
+//    { "lt", "<" },
+//    { "lte", "<=" },
+//    { "gt", ">" },
+//    { "gte", ">=" },
+//    { "isnull", "== null" },
+//    { "isnotnull", "!= null" },
+//    { "startswith", "StartsWith" },
+//    { "endswith", "EndsWith" },
+//    { "contains", "Contains" },
+//    { "doesnotcontain", "Contains" }

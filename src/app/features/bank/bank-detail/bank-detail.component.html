@@ -1,5 +1,5 @@
 <ng-container *ngIf="bnCard$ | async as card">
-    <app-banner [label]="card.definition"></app-banner>
+    <app-banner [label]="card.definition!"></app-banner>
 </ng-container>
 
 <div class="w-auto">
@@ -14,20 +14,17 @@
                 <ng-container *ngIf="bnCard$ | async as card">
                     <div class="p-8">
                         <div class="flex w-full content-between flex-wrap flex-row">
-                            <span class="flex w-1/2 py-1 px-2 border border-1"> Id </span>
-                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.id}} </span>
-                        </div>
-                        <div class="flex w-full content-between flex-wrap flex-row">
                             <span class="flex w-1/2 py-1 px-2 border border-1"> Kullanım durumu </span>
-                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.active}} </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{renderCardStatus(card.active!)}}
+                            </span>
                         </div>
                         <div class="flex w-full content-between flex-wrap flex-row">
                             <span class="flex w-1/2 py-1 px-2 border border-1"> Banka Kodu </span>
-                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.code}} </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.code!}} </span>
                         </div>
                         <div class="flex w-full content-between flex-wrap flex-row">
                             <span class="flex w-1/2 py-1 px-2 border border-1"> Banka Adı </span>
-                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.definition}} </span>
+                            <span class="flex w-1/2 py-1 px-2 border border-1"> {{card.definition!}} </span>
                         </div>
                         <div class="flex w-full content-between flex-wrap flex-row">
                             <span class="flex w-1/2 py-1 px-2 border border-1"> Banka Şubesi </span>

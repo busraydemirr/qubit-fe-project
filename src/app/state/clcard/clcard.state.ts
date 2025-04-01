@@ -11,16 +11,34 @@ import { ClCardLineModel } from "../../models/clcard/clcard-line.model";
 @State<ClCardStateModel>({
     name: 'clcard',
     defaults: {
-        items: [],
+        items: [{ select: false, id: 1, code: 'test', definition: '' }, { select: false, id: 1, code: 'test', definition: '' }, { select: false, id: 1, code: 'test', definition: '' }],
         page: 0,
         size: 10,
         totalElements: 0,
         pages: 0,
         loading: false,
-        clCardDetail: null,
+        clCardDetail: {},
         detailLoading: false,
         linesListLoading: false,
-        cardLines: [],
+        cardLines: [{
+            id: 1,
+            date: new Date,
+            lineexp: '',
+            sign: 1,
+            amount: 100
+        }, {
+            id: 1,
+            date: new Date,
+            lineexp: '',
+            sign: 1,
+            amount: 100
+        }, {
+            id: 1,
+            date: new Date,
+            lineexp: '',
+            sign: 1,
+            amount: 100
+        }],
         linePage: 0,
         lineSize: 10,
         lineTotalElements: 0,
@@ -47,7 +65,7 @@ export class ClCardState {
     }
 
     @Selector()
-    static getClCardDetail({ clCardDetail }: ClCardStateModel): ClCardItemModel | null {
+    static getClCardDetail({ clCardDetail }: ClCardStateModel): ClCardItemModel | undefined {
         return clCardDetail;
     }
 

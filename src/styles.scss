@@ -4,5 +4,31 @@
 
 
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', Times, "monospace";
+}
+
+mat-table {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)) !important;
+    @apply shadow-lg;
+}
+
+mat-paginator {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)) !important;
+    @apply shadow-lg;
+}
+
+.detail-background {
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url(./assets/images/Pimak_FE_2.webp);
+
+    .table-background {
+        background: linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)) !important;
+        @apply shadow-lg;
+    }
+}

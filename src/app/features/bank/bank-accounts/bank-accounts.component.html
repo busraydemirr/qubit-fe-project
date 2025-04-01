@@ -1,1 +1,93 @@
-<p>bank-accounts works!</p>
+<div class="p-8">
+    <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="code">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Hesabı Kodu </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.code }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="cardtype">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Kart Türü </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ renderCardType(element.cardtype) }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="definition">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Hesabı Adı </mat-header-cell>
+            <mat-cell *matCellDef="let element" (click)="openBankAccountLines(element)">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    <div class="clickable-cell">
+                        {{ element.definition }}
+                    </div>
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="currency">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Hesap Para Birimi </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ renderCurrency(element.currency) }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="iban">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> IBAN </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.iban }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"
+        [length]="queryParams.totalElements" (page)="changePaginationEvents($event)" showFirstLastButtons>
+    </mat-paginator>
+</div>

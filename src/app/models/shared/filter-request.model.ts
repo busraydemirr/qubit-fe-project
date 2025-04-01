@@ -13,5 +13,5 @@ interface FilterFilterModel {
     value: string;
     operator?: string;
     logic?: string;
-    filters?: FilterFilterModel[];
+    filters?: FilterFilterModel;
 }

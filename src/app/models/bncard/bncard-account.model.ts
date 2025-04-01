@@ -1,1 +1,4 @@
-export interface BnCardAccountModel{}
+export interface BnCardAccountModel{
+    id: number;
+    definition: string;
+}

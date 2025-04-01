@@ -27,4 +27,10 @@ export namespace BnCardActions {
 
         constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel }) { }
     }
+
+    export class AccountLineList {
+        static readonly type = `${ACTION_SCOPE} Account Line List`;
+
+        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel }) { }
+    }
 }

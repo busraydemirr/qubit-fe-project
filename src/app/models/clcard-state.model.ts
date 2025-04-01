@@ -8,7 +8,7 @@ export interface ClCardStateModel {
     totalElements: number;
     pages: number;
     loading: boolean;
-    clCardDetail: ClCardItemModel | null;
+    clCardDetail: ClCardItemModel;
     detailLoading: boolean;
     linesListLoading: boolean;
     cardLines: ClCardLineModel[];

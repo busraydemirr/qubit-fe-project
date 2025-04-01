@@ -1,5 +1,5 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened" class="bg-[#3c4c5b] rounded-none h-[100vh]">
     <mat-nav-list>
       @for (item of menuItems; track item) {
       <mat-action-list [ngClass]="{ active: item.isActive }" class="menu-item">
@@ -14,7 +14,7 @@
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content class="bg-white">
+  <mat-sidenav-content class="sidenav-content h-[100vh]">
     <div class="container ml-auto mr-auto">
       <ng-content></ng-content>
     </div>
