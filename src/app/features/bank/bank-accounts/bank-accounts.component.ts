@@ -8,7 +8,7 @@ import { BnCardAccountModel } from '../../../models/bncard/bncard-account.model'
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CardType } from '../../../models/bncard/card-type.enum';
 import { Currency } from '../../../models/bncard/currency.enum';
@@ -26,7 +26,7 @@ import { BankAccountTransactionsDialogComponent } from '../bank-account-transact
     NgxSkeletonLoaderModule,
   ],
   providers: [
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
   ],
   templateUrl: './bank-accounts.component.html',
   styleUrl: './bank-accounts.component.scss'
@@ -90,14 +90,8 @@ export class BankAccountsComponent implements OnInit {
   public openBankAccountLines(element: BnCardAccountModel): void {
     const dialogRef = this._dialog.open(BankAccountTransactionsDialogComponent, {
       data: { element },
-      
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // if (result !== undefined) {
-      //  this.animal.set(result);
-      // }
+      height: '400px',
+      width: '800px',
     });
   }
 

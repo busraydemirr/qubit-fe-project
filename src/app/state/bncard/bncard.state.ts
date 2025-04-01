@@ -144,4 +144,21 @@ export class BnCardState {
             })
         );
     }
+
+    @Action(BnCardActions.AccountLineList)
+    getAccountLines({ patchState }: StateContext<BnCardAccountLineModel>, action: BnCardActions.AccountLineList) {
+        patchState({ lineLoading: true });
+        return this._bnCardService.getAccountLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
+            tap(data => {
+                patchState({
+                    accountLines: data.data.items,
+                    linePage: data.data.index,
+                    lineSize: data.data.size,
+                    lineTotalElements: data.data.count,
+                    linePages: data.data.pages,
+                    lineLoading: false
+                });
+            })
+        );
+    }
 }
