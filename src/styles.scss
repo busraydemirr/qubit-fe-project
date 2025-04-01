@@ -1,8 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 html,
 body {

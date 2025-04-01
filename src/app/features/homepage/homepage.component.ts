@@ -13,6 +13,7 @@ import { RouterOutlet } from '@angular/router';
 export class HomepageComponent {
   public menuItems: MenuItem[] = [
     { label: 'Anasayfa', url: '/home', isActive: true },
+    { label: 'Takvim', url: '/calendar', isActive: false },
     { label: 'Kasa İşlemleri', url: 'cash-transactions', isActive: false },
     { label: 'Cari İşlemler', url: 'current-accounts', isActive: false },
     {

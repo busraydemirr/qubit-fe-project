@@ -4,6 +4,7 @@ import { HomepageComponent } from './features/homepage/homepage.component';
 import { CashTransactionsComponent } from './features/cash-transactions/cash-transactions.component';
 import { CurrentAccountsComponent } from './features/current-accounts/current-accounts.component';
 import { HomeComponent } from './features/home/home.component';
+import { CalendarComponent } from './features/calendar/calendar.component';
 import { CashTransactionDetailComponent } from './features/cash-transactions/cash-transaction-detail/cash-transaction-detail.component';
 import { provideStates } from '@ngxs/store';
 import { ClCardState } from './state/clcard/clcard.state';
@@ -20,6 +21,7 @@ export const routes: Routes = [
     component: HomepageComponent,
     children: [
       { path: 'home', component: HomeComponent },
+      {path: 'calendar', component: CalendarComponent},
       {
         path: 'cash-transactions',
         component: CashTransactionsComponent,

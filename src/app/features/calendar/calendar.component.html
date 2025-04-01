@@ -1,0 +1,41 @@
+<div class="flex !flex-row ">
+    <div class="basis-1/3"></div>
+    <div class="basis-1/3 flex justify-center items-center">
+
+        <button class="inline" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+            (viewDateChange)="closeOpenMonthViewDay()" mat-flat-button>
+            Previous
+        </button>
+        <button class="inline" mwlCalendarToday [(viewDate)]="viewDate" mat-flat-button>
+            Today
+        </button>
+        <button class="inline" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+            (viewDateChange)="closeOpenMonthViewDay()" mat-flat-button>
+            Next
+        </button>
+
+    </div>
+    <div class="basis-1/3"></div>
+</div>
+
+<div class="flex flex-row mt-3">
+    <div class="basis-1/3"></div>
+    <div class="basis-1/3 flex justify-center items-center">
+        <div class="text-xl text-gray-700 font-bold shadow-lg">
+            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+        </div>
+       
+    </div>
+    <div class="basis-1/3"></div>
+</div>
+
+<br />
+
+<mwl-calendar-month-view style="width: 700px; height: 500px" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+    [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+    (eventClicked)="handleEvent('Clicked', $event.event)">
+</mwl-calendar-month-view>
+
+<ng-template #myAllDayEventsLabelTemplate>
+    <div class="cal-time-label-column">All day</div>
+</ng-template>
