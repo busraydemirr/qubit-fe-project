@@ -1,13 +1,20 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
   MatCheckboxChange,
   MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { NgClass } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Router } from '@angular/router';
+import { QueryParams } from '../../models/shared/query-params.model';
+import { Observable } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { KsCardState } from '../../state/kscard/kscard.state';
+import { KsCardActions } from '../../state/kscard/kscard.action';
+import { KsCardModel } from '../../models/kscard/kscard.model';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-cash-transactions',
@@ -17,119 +24,59 @@ import { Router } from '@angular/router';
     NgClass,
     MatPaginatorModule,
     MatSortModule,
+    NgxSkeletonLoaderModule,
+    NgIf,
+    AsyncPipe
   ],
   templateUrl: './cash-transactions.component.html',
   styleUrl: './cash-transactions.component.scss',
 })
-export class CashTransactionsComponent implements AfterViewInit {
+export class CashTransactionsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  public elements: CashElement[] = [
-    {
-      id: 1,
-      select: false,
-      code: 'SSDDK',
-      name: ' Kasa 1',
-      description: 'TL',
-      remainder: 82719,
-      idRemainder: 1090,
-    },
-    {
-      id: 2,
-      select: false,
-      code: 'SSDDK',
-      name: ' Kasa 2',
-      description: 'USD',
-      remainder: 82719,
-      idRemainder: 1090,
-    },
-    {
-      id: 3,
-      select: false,
-      code: 'SSDDK',
-      name: ' Kasa 3',
-      description: 'TL',
-      remainder: 82719,
-      idRemainder: 1090,
-    },
-    {
-      id: 4,
-      select: false,
-      code: 'SSDDK',
-      name: ' Kasa 4',
-      description: 'USD',
-      remainder: 82719,
-      idRemainder: 1090,
-    },
-    {
-      id: 5,
-      select: false,
-      code: 'SSDDK',
-      name: ' Kasa 5',
-      description: 'TL',
-      remainder: 82719,
-      idRemainder: 1090,
-    },
-    {
-      id: 6,
-      select: false,
-      code: 'SSDDK',
-      name: ' Kasa 6',
-      description: 'USD',
-      remainder: 82719,
-      idRemainder: 1090,
-    },
-    {
-      id: 7,
-      select: false,
-      code: 'SSDDK',
-      name: ' Kasa 7',
-      description: 'TL',
-      remainder: 82719,
-      idRemainder: 1090,
-    },
-    {
-      id: 8,
-      select: false,
-      code: 'SSDDK',
-      name: ' Kasa 8',
-      description: 'USD',
-      remainder: 82719,
-      idRemainder: 1090,
-    },
-  ];
-  public dataSource = new MatTableDataSource<CashElement>(this.elements);
+
+  public elements: KsCardModel[] = [];
+  public dataSource!: MatTableDataSource<KsCardModel>;
   public displayedColumns = [
     'select',
     'code',
     'name',
-    'description',
-    'remainder',
-    'idRemainder',
   ];
+  public queryParams: QueryParams = {
+    size: 10,
+    page: 0,
+    totalElements: 0,
+    pages: 0
+  };
+  public loading$: Observable<boolean>;
 
-  constructor(private _router: Router) {}
+  constructor(private _router: Router, private _store: Store) {
+    this.loading$ = this._store.select(KsCardState.getLoading);
+  }
+
+  public ngOnInit(): void {
+    this._store.dispatch(
+      new KsCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
+    );
+
+    this._store.select(KsCardState.getKsCards).subscribe((cards: KsCardModel[]) => {
+      this.elements = cards;
+      this.dataSource = new MatTableDataSource<KsCardModel>(this.elements);
+      this.queryParams = this._store.selectSnapshot(KsCardState.getKsCardQueryParams);
+    });
+  }
 
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  public checkedChanged(event: MatCheckboxChange, element: CashElement): void {
+  public checkedChanged(event: MatCheckboxChange, element: KsCardModel): void {
     element.select = event.checked;
   }
 
-  public rowClicked(element: CashElement): void {
+  public rowClicked(element: KsCardModel): void {
+    this._store.dispatch(new KsCardActions.SetKsCard(element));
     this._router.navigate(['cash-transactions/detail', element.id]);
   }
-}
-
-export interface CashElement {
-  id: number;
-  select: boolean;
-  code: string;
-  name: string;
-  description: string;
-  remainder: number;
-  idRemainder: number;
 }

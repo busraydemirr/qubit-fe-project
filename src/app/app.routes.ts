@@ -12,6 +12,7 @@ import { BnCardState } from './state/bncard/bncard.state';
 import { CurrentAccountsDetailComponent } from './features/current-accounts/current-accounts-detail/current-accounts-detail.component';
 import { BankComponent } from './features/bank/bank.component';
 import { BankDetailComponent } from './features/bank/bank-detail/bank-detail.component';
+import { KsCardState } from './state/kscard/kscard.state';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -25,6 +26,7 @@ export const routes: Routes = [
       {
         path: 'cash-transactions',
         component: CashTransactionsComponent,
+        providers: [provideStates([KsCardState])]
       },
       {
         path: 'current-accounts',

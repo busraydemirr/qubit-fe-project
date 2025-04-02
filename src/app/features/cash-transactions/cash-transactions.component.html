@@ -36,72 +36,44 @@
 <mat-table [dataSource]="dataSource" matSort>
   <ng-container matColumnDef="select" sticky>
     <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-    <mat-cell
-      [ngClass]="{ 'selected-row': element.select }"
-      *matCellDef="let element"
-    >
-      <mat-checkbox
-        [checked]="element.selected"
-        [disableRipple]="true"
-        (change)="checkedChanged($event, element)"
-        color="primary"
-        class="column-checkbox"
-      >
+    <mat-cell [ngClass]="{ 'selected-row': element.select }" *matCellDef="let element">
+      <mat-checkbox [checked]="element.selected" [disableRipple]="true" (change)="checkedChanged($event, element)"
+        color="primary" class="column-checkbox">
       </mat-checkbox>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="code">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Kodu </mat-header-cell>
-    <mat-cell
-      *matCellDef="let element"
-      [ngClass]="{ 'selected-row': element.select }"
-    >
-      {{ element.code }}
+    <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+      <ng-container *ngIf="(loading$ | async); else content">
+        <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-template #content>
+        {{ element.code }}
+      </ng-template>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Adı </mat-header-cell>
-    <mat-cell
-      *matCellDef="let element"
-      [ngClass]="{ 'selected-row': element.select }"
-      (click)="rowClicked(element)"
-    >
-      <div class="clickable-cell">
-        {{ element.name }}
-      </div>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="description">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
-      Açıklama
-    </mat-header-cell>
-    <mat-cell
-      *matCellDef="let element"
-      [ngClass]="{ 'selected-row': element.select }"
-    >
-      {{ element.description }}
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="remainder">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
-      Bakiye
-    </mat-header-cell>
-    <mat-cell
-      *matCellDef="let element"
-      [ngClass]="{ 'selected-row': element.select }"
-    >
-      {{ element.remainder }}
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="idRemainder">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
-      İ.D. Bakiye
-    </mat-header-cell>
-    <mat-cell
-      *matCellDef="let element"
-      [ngClass]="{ 'selected-row': element.select }"
-    >
-      {{ element.idRemainder }}
+    <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
+      <ng-container *ngIf="(loading$ | async); else content">
+        <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-template #content>
+        <div class="clickable-cell">
+          {{ element.name }}
+        </div>
+      </ng-template>
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
