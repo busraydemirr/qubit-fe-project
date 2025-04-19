@@ -1,0 +1,18 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BaseResponseData, ResponseModel } from '../models/shared/response.model';
+import { TimePeriodEnum } from '../models/shared/time-period.enum';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class OrficheService {
+    public url: string = "http://localhost:5063/";
+
+    constructor(private _http: HttpClient) { }
+
+    public getTotalOrfiche(timePeriod: TimePeriodEnum): Observable<ResponseModel<{ totalAmountReceivedOrder: number, totalAmountPlacedOrder: number }>> {
+        return this._http.post<ResponseModel<{ totalAmountReceivedOrder: number; totalAmountPlacedOrder: number }>>(this.url + 'api/Orfiche/getTotalOrfiche?size=100&from=0' + '&timePeriod=' + timePeriod, {});
+    }
+}

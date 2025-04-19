@@ -1,35 +1,87 @@
-<div class="shadow-lg w-full p-2">
-    <h1 class="text-2xl text-gray-600 font-bold">Hoşgeldiniz, {{ user }}</h1>
-</div>
+<div class="homepage-background h-[100vh]">
+    <div class="container ml-auto mr-auto">
+        <div class="shadow-lg w-full p-2">
+            <h1 class="text-2xl text-gray-600 font-bold">Hoşgeldiniz, {{ user }}</h1>
+        </div>
 
-<div class="w-full mt-5">
-    <div class="h-[230px] w-full bg-gray-300 rounded p-4 grid grid-cols-7 gap-4" *ngIf="weatherData?.daily">
-        <div *ngFor="let data of weatherData.daily.time; let i = index;">
-            <div class="w-full py-2 px-5">
-                <div class="w-full text-center"><b> {{weatherData.daily.time[i] | date: 'dd/MM/yyyy'}} </b> </div>
-                <img [src]="weatherStatus[weatherData.daily.weatherCode[i]].day.image"
-                    class="text-center !ml-auto !mr-auto !shadow-lg" />
-                <div class="w-full flex flex-row text-center justify-center font-bold">
-                    <div class="mr-5"> {{weatherData.daily.temperature2mMin[i].toString() | slice: 0 : 2}} C°</div>
-                    <div> {{weatherData.daily.temperature2mMax[i].toString() | slice: 0 : 2}} C°</div>
-                </div>
-                <div class="w-full text-center">{{weatherStatus[weatherData.daily.weatherCode[i]].day.description}}
+        <div class="w-full mt-5">
+            <div class="h-[230px] w-full bg-gray-300 rounded p-4 grid grid-cols-7 gap-4" *ngIf="weatherData?.daily">
+                <div *ngFor="let data of weatherData.daily.time; let i = index;">
+                    <div class="w-full py-2 px-5">
+                        <div class="w-full text-center"><b> {{weatherData.daily.time[i] | date: 'dd/MM/yyyy'}} </b>
+                        </div>
+                        <img [src]="weatherStatus[weatherData.daily.weatherCode[i]]?.day?.image"
+                            class="text-center !ml-auto !mr-auto !shadow-lg" />
+                        <div class="w-full flex flex-row text-center justify-center font-bold">
+                            <div class="mr-5"> {{weatherData.daily.temperature2mMin[i]?.toString() | slice: 0 : 2}} C°
+                            </div>
+                            <div> {{weatherData.daily.temperature2mMax[i]?.toString() | slice: 0 : 2}} C°</div>
+                        </div>
+                        <div class="w-full text-center">
+                            {{weatherStatus[weatherData.daily.weatherCode[i]]?.day?.description}}
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="grid grid-cols-2 gap-4 h-[400px] mt-3">
+                <div class="bg-gray-300 h-full w-full rounded">
+                    <div class="h-18 w-full flex justify-between items-center bg-gray-400 py-2 px-4">
+                        <div class="flex justify-start justify-center text-xl font-bold text-gray-700"> Faturalar</div>
+                        <div class="flex justify-end items-center">
+                            <mat-form-field appearance="fill" class="w-2/3 mb-[-16px]">
+                                <mat-label>Periyot</mat-label>
+                                <mat-select [(ngModel)]="timePeriodInvoince" (ngModelChange)="viewInvoinceData($event)">
+                                    <mat-option [value]="timePeriodEnum.TODAY">Dün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.WEEK">Son 7 gün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.MONTH">Son 30 gün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.THREE_MONTHS">Son 90 gün</mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="h-full w-full flex justify-center">
+                        <canvas id="canvas" [class]="{'hidden': invoinceLoading}">
+                            <div *ngIf="!invoinceLoading"> {{chart}}</div>
+                        </canvas>
+                        <div *ngIf="invoinceLoading">
+                            <div class="flex w-full items-center justify-center p-8">
+                                <mat-spinner></mat-spinner>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-300 h-full w-full rounded">
+                    <div class="h-18 w-full flex justify-between items-center bg-gray-400 py-2 px-4">
+                        <div class="flex justify-start justify-center text-xl font-bold text-gray-700"> Siparişler
+                        </div>
+                        <div class="flex justify-end items-center">
+                            <mat-form-field appearance="fill" class="w-2/3 mb-[-16px]">
+                                <mat-label>Periyot</mat-label>
+                                <mat-select [(ngModel)]="timePeriodOrfiche" (ngModelChange)="viewOrficheData($event)">
+                                    <mat-option [value]="timePeriodEnum.TODAY">Dün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.WEEK">Son 7 gün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.MONTH">Son 30 gün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.THREE_MONTHS">Son 90 gün</mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="h-full w-full flex justify-center">
+                        <canvas id="canvas2" [class]="{'hidden': orficheLoading}">
+                            <div *ngIf="!orficheLoading"> {{chart2}}</div>
+                        </canvas>
+                        <div *ngIf="orficheLoading">
+                            <div class="flex w-full items-center justify-center p-8">
+                                <mat-spinner></mat-spinner>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <div class="grid grid-cols-2 gap-4 h-[400px] mt-3">
-        <div class="bg-gray-300 h-full w-full rounded p-4">
-            <div class="h-full w-full flex justify-center">
-                <canvas id="canvas">{{chart}}</canvas>
-            </div>
-        </div>
-        <div class="bg-gray-300 h-full w-full rounded p-4">
-            <div class="h-full w-full flex justify-center">
-                <canvas id="canvas2">{{chart2}}</canvas>
-            </div>
-        </div>
-    </div>
-
 </div>

@@ -1,17 +1,32 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { fetchWeatherApi } from 'openmeteo';
 import { WEATHER_STATUS } from '../../models/home/weather-status';
 import { DatePipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import Chart from 'chart.js/auto';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { TimePeriodEnum } from '../../models/shared/time-period.enum';
+import { OrficheService } from '../../services/orfiche.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { InvoiceService } from '../../services/invoice.service';
 
 @Component({
   selector: 'app-home',
-  imports: [NgFor, NgIf, DatePipe, SlicePipe],
+  imports: [
+    NgFor,
+    NgIf,
+    DatePipe,
+    SlicePipe,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, AfterViewInit {
   @Input() user: any = 'Büşra Nur Aydemir'; // TODO: User model
   public weatherData =
     {
@@ -30,60 +45,57 @@ export class HomeComponent {
   };
   public url = "https://api.open-meteo.com/v1/forecast";
   public weatherStatus = WEATHER_STATUS;
-
-  public data = {
+  public timePeriodOrfiche = TimePeriodEnum.TODAY;
+  public timePeriodInvoince = TimePeriodEnum.TODAY;
+  public timePeriodEnum = TimePeriodEnum;
+  public orficheLoading = false;
+  public invoinceLoading = false;
+  public orficheData = {
     labels: [
-      'A',
-      'B',
-      'C'
+      'Alınan Siparişler',
+      'Verilen Siparişler',
     ],
     datasets: [{
-      label: 'Dataset Example',
-      data: [300, 50, 100],
+      label: 'Siparişler',
+      data: [],
       backgroundColor: [
         '#2e4f6e',
-        '#6b7d91',
         'rgb(54, 162, 235)'
       ],
       hoverOffset: 20
     }]
   };
 
-  public chart: any = [];
-  public chart2: any = [];
+  public invoinceData = {
+    labels: [
+      'Alış Faturaları',
+      'Satış Faturaları',
+    ],
+    datasets: [{
+      label: 'Faturalar',
+      data: [],
+      backgroundColor: [
+        '#2e4f6e',
+        'rgb(54, 162, 235)'
+      ],
+      hoverOffset: 20
+    }]
+  };
 
-  constructor(private _http: HttpClient) {
-    // this._http.get('https://newsapi.org/v2/top-headlines?country=tr&apiKey=7274bde8d1db42729872205c0aa58332').subscribe(a => console.log(a));
+  public chart: any = null;
+  public chart2: any = null;
 
-    //this._http.get('https://api.openweathermap.org/data/3.0/onecall?lat=41.01384&lon=28.94966&exclude=current,minutely,hourly,alerts&appid=154f10b56cd02395f04e691bd8b03a79').subscribe(a => console.log(a));
-
-    //this._http.get('https://api.openweathermap.org/data/2.5/weather?lat=41.01384&lon=28.94966&appid=154f10b56cd02395f04e691bd8b03a79').subscribe(a => console.log(a));
-
-    //this._http.get('https://api.weatherstack.com/current?access_key=12a870ec575be9e015fc90d973022f61&query=41.01384,28.94966').subscribe(a => console.log(a));
-
+  constructor(private _orficheService: OrficheService, private _invoiceService: InvoiceService) {
     this.test();
   }
 
   public ngOnInit(): void {
-    this.chart = new Chart('canvas', {
-      type: 'doughnut',
-      data: this.data,
-      options: {
-        maintainAspectRatio: false,
-        responsive: true,
-        aspectRatio: 2
-      }
-    });
 
-    this.chart2 = new Chart('canvas2', {
-      type: 'pie',
-      data: this.data,
-      options: {
-        maintainAspectRatio: false,
-        responsive: true,
-        aspectRatio: 2
-      }
-    });
+  }
+
+  ngAfterViewInit(): void {
+    this.viewOrficheData(this.timePeriodOrfiche);
+    this.viewInvoinceData(this.timePeriodInvoince);
   }
 
   async test() {
@@ -98,10 +110,6 @@ export class HomeComponent {
 
     // Attributes for timezone and location
     const utcOffsetSeconds = response.utcOffsetSeconds();
-    const timezone = response.timezone();
-    const timezoneAbbreviation = response.timezoneAbbreviation();
-    const latitude = response.latitude();
-    const longitude = response.longitude();
 
     const daily = response.daily()!;
 
@@ -116,8 +124,68 @@ export class HomeComponent {
         weatherCode: daily.variables(2)!.valuesArray()!,
       },
     };
+  }
 
-    // `weatherData` now contains a simple structure with arrays for datetime and weather data
+  public viewOrficheData(data: TimePeriodEnum): void {
+    this.timePeriodOrfiche = data;
+    this.orficheLoading = true;
+    this._orficheService.getTotalOrfiche(this.timePeriodOrfiche).subscribe((res) => {
+      this.orficheLoading = false;
+      if (res.data) {
+        this.orficheData = {
+          ...this.orficheData,
+          datasets: [{
+            ...this.orficheData.datasets[0],
+            data: [res.data.totalAmountReceivedOrder as never, res.data.totalAmountPlacedOrder as never]
+          }]
+        };
+      }
+      if (!this.chart2) {
+        this.chart2 = new Chart('canvas2', {
+          type: 'pie',
+          data: this.orficheData,
+          options: {
+            maintainAspectRatio: false,
+            responsive: false,
+            aspectRatio: 1,
+          }
+        });
+      } else {
+        this.chart2.data = this.orficheData;
+        this.chart2.update();
+      }
+    });
+  }
 
+  public viewInvoinceData(data: TimePeriodEnum): void {
+    this.timePeriodInvoince = data;
+    this.invoinceLoading = true;
+
+    this._invoiceService.getTotalInvoice(this.timePeriodInvoince).subscribe((res) => {
+      this.invoinceLoading = false;
+      if (res.data) {
+        this.invoinceData = {
+          ...this.invoinceData,
+          datasets: [{
+            ...this.invoinceData.datasets[0],
+            data: [res.data.totalAmountPurchaseInvoice as never, res.data.totalAmountSalesInvoice as never]
+          }]
+        };
+      }
+      if (!this.chart) {
+        this.chart = new Chart('canvas', {
+          type: 'doughnut',
+          data: this.invoinceData,
+          options: {
+            maintainAspectRatio: false,
+            responsive: false,
+            aspectRatio: 1,
+          }
+        });
+      } else {
+        this.chart.data = this.invoinceData;
+        this.chart.update();
+      }
+    });
   }
 }
