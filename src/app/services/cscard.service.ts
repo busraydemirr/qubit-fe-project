@@ -13,6 +13,6 @@ export class CsCardService {
     constructor(private _http: HttpClient) { }
 
     public getPromissoryNote(timePeriod: TimePeriodEnum): Observable<ResponseModel<BaseResponseData<any>>> {
-        return this._http.post<ResponseModel<BaseResponseData<any>>>(this.url + 'api/CsCard/getPromissoryNote' + '?timePeriod=' + timePeriod, {});
+        return this._http.post<ResponseModel<BaseResponseData<any>>>(this.url + 'api/CsCard/getPromissoryNote?size=100&from=0' + '&timePeriod=' + timePeriod, {});
     }
 }
