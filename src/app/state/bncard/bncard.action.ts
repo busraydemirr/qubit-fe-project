@@ -31,6 +31,6 @@ export namespace BnCardActions {
     export class AccountLineList {
         static readonly type = `${ACTION_SCOPE} Account Line List`;
 
-        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel }) { }
+        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel, term?: string; }) { }
     }
 }

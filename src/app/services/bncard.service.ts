@@ -23,7 +23,7 @@ export class BnCardService {
         return this._http.post<ResponseModel<BaseResponseData<BnCardAccountModel>>>(this.url + 'api/BnCard/getBankAccounts/' + id + '?size=' + size + '&from=' + page, filter)
     }
 
-    public getAccountLines(id: number, size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<BnCardAccountLineModel>>> {
-        return this._http.post<ResponseModel<BaseResponseData<BnCardAccountLineModel>>>(this.url + 'api/BnCard/getBankAccountLines/' + id + '?size=' + size + '&from=' + page, filter)
+    public getAccountLines(id: number, size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<BnCardAccountLineModel>>> {
+        return this._http.post<ResponseModel<BaseResponseData<BnCardAccountLineModel>>>(this.url + 'api/BnCard/getBankAccountLines/' + id + '?size=' + size + '&from=' + page + '&term=' + term, filter)
     }
 }

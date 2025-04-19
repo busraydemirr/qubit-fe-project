@@ -8,6 +8,7 @@ import { BnCardItemModel } from "../../models/bncard/bncard.model";
 import { QueryParams } from "../../models/shared/query-params.model";
 import { BnCardAccountModel } from "../../models/bncard/bncard-account.model";
 import { BnCardAccountLineModel } from "../../models/bncard/bncard-account-line.model";
+import { FilterRequestModel } from "../../models/shared/filter-request.model";
 
 @State<BnCardStateModel>({
     name: 'bncard',
@@ -28,7 +29,10 @@ import { BnCardAccountLineModel } from "../../models/bncard/bncard-account-line.
         accountPages: 0,
         lineLoading: false,
         accountLines: [],
-        linePage: 0, lineSize: 10, lineTotalElements: 0, linePages: 0
+        linePage: 0, lineSize: 10, lineTotalElements: 0, linePages: 0,
+        lineFilter: null,
+        accountFilter: null,
+        filter: null
     }
 })
 @Injectable()
@@ -90,6 +94,11 @@ export class BnCardState {
         return { page: linePage, size: lineSize, totalElements: lineTotalElements, pages: linePages };
     }
 
+    @Selector()
+    static getAccountLinesFilters({ lineFilter }: BnCardStateModel): FilterRequestModel | null {
+        return lineFilter;
+    }
+
     @Action(BnCardActions.List)
     listBnCards({ patchState }: StateContext<BnCardStateModel>, action: BnCardActions.List) {
         patchState({ loading: true });
@@ -146,9 +155,9 @@ export class BnCardState {
     }
 
     @Action(BnCardActions.AccountLineList)
-    getAccountLines({ patchState }: StateContext<BnCardAccountLineModel>, action: BnCardActions.AccountLineList) {
+    getAccountLines({ patchState }: StateContext<BnCardStateModel>, action: BnCardActions.AccountLineList) {
         patchState({ lineLoading: true });
-        return this._bnCardService.getAccountLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
+        return this._bnCardService.getAccountLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
             tap(data => {
                 patchState({
                     accountLines: data.data.items,

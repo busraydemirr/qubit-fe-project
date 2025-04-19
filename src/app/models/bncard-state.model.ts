@@ -1,6 +1,7 @@
 import { BnCardAccountLineModel } from "./bncard/bncard-account-line.model";
 import { BnCardAccountModel } from "./bncard/bncard-account.model";
 import { BnCardItemModel } from "./bncard/bncard.model";
+import { FilterRequestModel } from "./shared/filter-request.model";
 
 export interface BnCardStateModel {
     items: BnCardItemModel[];
@@ -23,4 +24,7 @@ export interface BnCardStateModel {
     lineSize: number;
     lineTotalElements: number;
     linePages: number;
+    lineFilter: FilterRequestModel | null;
+    accountFilter: FilterRequestModel | null;
+    filter: FilterRequestModel | null;
 }

@@ -1,1 +1,32 @@
-export interface BnCardAccountLineModel {}
+export interface BnCardAccountLineModel {
+    accficheref?: number;
+    accounted?: number;
+    accountref?: number;
+    amount?: number;
+    bankproctype?: number;
+    bankref?: number;
+    bnaccountref?: number;
+    bnaccref?: number;
+    capiblockCreadeddate?: string;
+    capiblockNameCreatedby?: string;
+    capiblockModifieddate?: string;
+    clCardDefinition?: string;
+    clientRef?: number;
+    date?: string;
+    ksLineexp?: string;
+    lineexp?: string;
+    linenr?: number;
+    modulenr?: number;
+    reportnet?: number;
+    reportrate?: number;
+    sign?: number;
+    sourcefref?: number;
+    tranno?: string;
+    transduedate?: string;
+    transtype?: number;
+    trcode?: number;
+    trnet?: number;
+    trnstate?: number;
+    trrate?: number;
+    vatraccref?: number;
+}
