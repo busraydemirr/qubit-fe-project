@@ -44,7 +44,6 @@ import { renderRectStatus, renderStatus } from '../../../utils/enum.utils';
 export class CashTransactionDetailComponent implements OnInit, OnDestroy {
   public cashId!: number;
   public ksCard$!: Observable<KsCardModel>;
-  public cashFilterForm!: FormGroup;
   public loading$!: Observable<boolean>;
   public renderRectStatus = renderRectStatus;
   public renderStatus = renderStatus;
@@ -65,8 +64,6 @@ export class CashTransactionDetailComponent implements OnInit, OnDestroy {
     if (!card || !card.id) {
       this._store.dispatch(new KsCardActions.GetKsCard(this.cashId!));
     }
-
-    this._buildForm();
   }
 
   ngOnDestroy(): void {
@@ -74,12 +71,4 @@ export class CashTransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   public filter(): void { }
-  
-  private _buildForm(): void {
-    this.cashFilterForm = new FormGroup({
-      name: new FormControl(''),
-      phoneNumber: new FormControl(''),
-      email: new FormControl('', [Validators.email]),
-    });
-  }
 }
