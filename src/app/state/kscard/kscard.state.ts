@@ -6,6 +6,8 @@ import { KsCardModel } from "../../models/kscard/kscard.model";
 import { QueryParams } from "../../models/shared/query-params.model";
 import { KsCardActions } from "./kscard.action";
 import { tap } from "rxjs";
+import { KsCardLineModel } from "../../models/kscard/kscard-line.model";
+import { FilterRequestModel } from "../../models/shared/filter-request.model";
 
 @State<KsCardStateModel>({
     name: 'kscard',
@@ -18,6 +20,29 @@ import { tap } from "rxjs";
         loading: false,
         ksCardDetail: {},
         detailLoading: false,
+        linesListLoading: false,
+        cardLines: [{
+            custtitle: '',
+            branch: 11,
+            ficheno: '',
+            amount: 11,
+        }, {
+            custtitle: '',
+            branch: 11,
+            ficheno: '',
+            amount: 11,
+        }, {
+            custtitle: '',
+            branch: 11,
+            ficheno: '',
+            amount: 11,
+        }],
+        linePage: 0,
+        lineSize: 10,
+        lineTotalElements: 0,
+        linePages: 0,
+        cardLineFilter: {},
+        filter: {},
     }
 })
 @Injectable()
@@ -49,10 +74,30 @@ export class KsCardState {
         return detailLoading;
     }
 
+    @Selector()
+    static getKsCardLines({ cardLines }: KsCardStateModel): KsCardLineModel[] {
+        return cardLines;
+    }
+
+    @Selector()
+    static getLinesListLoading({ linesListLoading }: KsCardStateModel): boolean {
+        return linesListLoading;
+    }
+
+    @Selector()
+    static getKsCardLineQueryParams({ linePage, lineSize, lineTotalElements, linePages }: KsCardStateModel): QueryParams {
+        return { page: linePage, size: lineSize, totalElements: lineTotalElements, pages: linePages };
+    }
+
+    @Selector()
+    static getKsCardLineFilter({ cardLineFilter }: KsCardStateModel): FilterRequestModel {
+        return cardLineFilter;
+    }
+
 
     @Action(KsCardActions.List)
     listKsCards({ patchState }: StateContext<KsCardStateModel>, action: KsCardActions.List) {
-        patchState({ loading: true });
+        patchState({ loading: true, filter: action.payload.filter ?? {} });
         return this._ksCardService.listKsCards(action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
             tap(data => {
                 console.log(data);
@@ -73,20 +118,37 @@ export class KsCardState {
         patchState({ ksCardDetail: action.payload });
     }
 
-     @Action(KsCardActions.GetKsCard)
-        getClCard({ dispatch, patchState }: StateContext<KsCardStateModel>, action: KsCardActions.GetKsCard) {
-            const filter = {
-                field: 'id',
-                value: action.payload.toString(),
-                operator: 'eq',
-            };
-            patchState({ detailLoading: true });
-            return this._ksCardService.listKsCards(1, 0, { filter }).pipe(
-                tap(data => {
-                    patchState({ detailLoading: false });
-                    dispatch(new KsCardActions.SetKsCard(data.data.items[0]));
-                })
-            );
-        }
-    
+    @Action(KsCardActions.GetKsCard)
+    getKsCard({ dispatch, patchState }: StateContext<KsCardStateModel>, action: KsCardActions.GetKsCard) {
+        const filter = {
+            field: 'id',
+            value: action.payload.toString(),
+            operator: 'eq',
+        };
+        patchState({ detailLoading: true });
+        return this._ksCardService.listKsCards(1, 0, { filter }).pipe(
+            tap(data => {
+                patchState({ detailLoading: false });
+                dispatch(new KsCardActions.SetKsCard(data.data.items[0]));
+            })
+        );
+    }
+
+    @Action(KsCardActions.GetKsCardLines)
+    getKsCardLines({ patchState }: StateContext<KsCardStateModel>, action: KsCardActions.GetKsCardLines) {
+        patchState({ linesListLoading: true, cardLineFilter: action.payload.filter ?? {} });
+        return this._ksCardService.getKsCardLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
+            tap(data => {
+                patchState({
+                    cardLines: data.data.items,
+                    linePage: data.data.index,
+                    lineSize: data.data.size,
+                    lineTotalElements: data.data.count,
+                    linePages: data.data.pages,
+                    linesListLoading: false
+                });
+            })
+        );
+    }
+
 }

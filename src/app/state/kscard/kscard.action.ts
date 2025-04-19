@@ -21,4 +21,10 @@ export namespace KsCardActions {
 
         constructor(public payload: number) { }
     }
+
+    export class GetKsCardLines {
+        static readonly type = `${ACTION_SCOPE} Get KsCard Lines`;
+
+        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel, term?: string }) { }
+    }
 }
