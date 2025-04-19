@@ -1,18 +1,21 @@
-import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { CalendarA11y, CalendarDateFormatter, CalendarEvent, CalendarEventTitleFormatter, CalendarModule, CalendarUtils, CalendarView, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import {
-  startOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
   isSameDay,
   isSameMonth,
-  addHours,
 } from 'date-fns';
 import { MatButtonModule } from '@angular/material/button';
+import { BnCreditCardService } from '../../services/bn-credit-card.service';
+import { TimePeriodEnum } from '../../models/shared/time-period.enum';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { NgIf } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CsCardService } from '../../services/cscard.service';
 
 const colors: any = {
   red: {
@@ -34,6 +37,11 @@ const colors: any = {
   imports: [
     MatButtonModule,
     CalendarModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NgIf,
+    MatProgressSpinner,
   ],
   providers: [
     {
@@ -49,7 +57,7 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent {
+export class CalendarComponent implements AfterViewInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | any;
 
   view: CalendarView = CalendarView.Month;
@@ -58,6 +66,8 @@ export class CalendarComponent {
 
   viewDate: Date = new Date();
 
+  public timePeriod: TimePeriodEnum = TimePeriodEnum.TODAY;
+
   public modalData: {
     action: string;
     event: CalendarEvent;
@@ -65,26 +75,18 @@ export class CalendarComponent {
 
   refresh: Subject<any> = new Subject();
 
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'Kredi 1',
-      color: colors.red,
-      allDay: true,
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'Kredi 2',
-      color: colors.blue,
-      allDay: true,
-    },
-  ];
+  events: CalendarEvent[] = [];
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
 
-  constructor(private modal: NgbModal) { }
+  public timePeriodEnum = TimePeriodEnum;
+  public calendarLoading: boolean = false;
+
+  constructor(private modal: NgbModal, private _creditService: BnCreditCardService, private _csCardService: CsCardService, private cdr: ChangeDetectorRef) { }
+
+  ngAfterViewInit(): void {
+    this.viewData(this.timePeriod);
+  }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -102,7 +104,7 @@ export class CalendarComponent {
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    this.modal.open(this.modalContent, { size: 'sm' });
   }
 
   setView(view: CalendarView) {
@@ -111,5 +113,44 @@ export class CalendarComponent {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  public viewData(data: TimePeriodEnum): void {
+    this.activeDayIsOpen = false;
+    this.timePeriod = data;
+    this.calendarLoading = true;
+
+    forkJoin([this._creditService.getDueCredits(this.timePeriod), this._csCardService.getPromissoryNote(this.timePeriod),])
+      .subscribe(([res1, res2]) => {
+        console.log(res1, res2);
+        if (res1.data && res1.data.items?.length > 0) {
+          this.events = res1.data.items.map((item) => {
+            return {
+              start: new Date(item.duedate),
+              end: new Date(item.duedate),
+              title: `${item.creditName} - ${item.inttotal} (${item.pernr}. taksit)`,
+              color: colors.red,
+              allDay: true,
+            };
+
+          });
+        }
+
+        if (res2.data && res2.data.items?.length > 0) {
+          this.events = this.events.concat(res2.data.items.map((item2) => {
+            return {
+              start: new Date(item2.duedate),
+              end: new Date(item2.duedate),
+              title: `${item2.owing} - ${item2.amount}`,
+              color: colors.blue,
+              allDay: true,
+            };
+          }
+          ));
+        }
+        console.log(this.events);
+        this.calendarLoading = false;
+        this.cdr.detectChanges();
+      });
   }
 }

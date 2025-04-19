@@ -1,41 +1,62 @@
-<div class="flex !flex-row ">
-    <div class="basis-1/3"></div>
-    <div class="basis-1/3 flex justify-center items-center">
+<div class="container ml-auto mr-auto">
+    <div class="flex !flex-row ">
+        <div class="basis-1/3"></div>
+        <div class="basis-1/3 flex justify-center items-center">
 
-        <button class="inline" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-            (viewDateChange)="closeOpenMonthViewDay()" mat-flat-button>
-            Previous
-        </button>
-        <button class="inline" mwlCalendarToday [(viewDate)]="viewDate" mat-flat-button>
-            Today
-        </button>
-        <button class="inline" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-            (viewDateChange)="closeOpenMonthViewDay()" mat-flat-button>
-            Next
-        </button>
+            <button class="inline" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()" mat-flat-button>
+                Geri
+            </button>
+            <button class="inline" mwlCalendarToday [(viewDate)]="viewDate" mat-flat-button>
+                Bugün
+            </button>
+            <button class="inline" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()" mat-flat-button>
+                İleri
+            </button>
 
-    </div>
-    <div class="basis-1/3"></div>
-</div>
-
-<div class="flex flex-row mt-3">
-    <div class="basis-1/3"></div>
-    <div class="basis-1/3 flex justify-center items-center">
-        <div class="text-xl text-gray-700 font-bold shadow-lg">
-            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
         </div>
-       
+        <div class="basis-1/3">
+            <div class="flex justify-center items-center">
+                <mat-form-field appearance="fill" class="w-1/2">
+                    <mat-label>Periyot</mat-label>
+                    <mat-select [(ngModel)]="timePeriod" (ngModelChange)="viewData($event)">
+                        <mat-option [value]="timePeriodEnum.TODAY">Yarın</mat-option>
+                        <mat-option [value]="timePeriodEnum.WEEK">7 gün</mat-option>
+                        <mat-option [value]="timePeriodEnum.MONTH">30 gün</mat-option>
+                        <mat-option [value]="timePeriodEnum.THREE_MONTHS">90 gün</mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
     </div>
-    <div class="basis-1/3"></div>
+
+    <div class="flex flex-row mt-3">
+        <div class="basis-1/3"></div>
+        <div class="basis-1/3 flex justify-center items-center">
+            <div class="text-xl text-gray-700 font-bold shadow-lg">
+                <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+
+        </div>
+        <div class="basis-1/3"></div>
+    </div>
+
+    <br />
+
+    <mwl-calendar-month-view *ngIf="!calendarLoading" style="width: 700px; height: 500px" [viewDate]="viewDate"
+        [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+        (eventClicked)="handleEvent('Clicked', $event.event)">
+    </mwl-calendar-month-view>
+
+    <div *ngIf="calendarLoading">
+        <div class="flex w-full items-center justify-center p-8">
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+
+    <ng-template #myAllDayEventsLabelTemplate>
+        <div class="cal-time-label-column">All day</div>
+    </ng-template>
 </div>
-
-<br />
-
-<mwl-calendar-month-view style="width: 700px; height: 500px" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-    [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
-    (eventClicked)="handleEvent('Clicked', $event.event)">
-</mwl-calendar-month-view>
-
-<ng-template #myAllDayEventsLabelTemplate>
-    <div class="cal-time-label-column">All day</div>
-</ng-template>
