@@ -6,15 +6,17 @@
     @apply cursor-pointer underline text-qub-tertiary;
 }
 
-
-.mat-column-select {
-    flex: 0 0 10%;
-}
-
-.mat-column-id {
-    flex: 0 0 10%;
-}
-
 .mat-column-code {
     flex: 0 0 15%;
+}
+
+.mat-column-name {
+    flex: 0 0 40%;
+}
+
+.mat-column-telnrs1 {
+    flex: 0 0 25%;
+}
+.mat-column-city {
+    flex: 0 0 20%;
 }

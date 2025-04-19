@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BnCardActions } from '../../state/bncard/bncard.action';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { BnCardState } from '../../state/bncard/bncard.state';
@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-bank',
@@ -38,7 +39,7 @@ import { FilterRequestModel } from '../../models/shared/filter-request.model';
   templateUrl: './bank.component.html',
   styleUrl: './bank.component.scss'
 })
-export class BankComponent {
+export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -62,6 +63,7 @@ export class BankComponent {
     phoneNumber: new FormControl(null),
     branch: new FormControl(null),
   });
+  public subsink = new SubSink();
 
   constructor(private _store: Store, private _router: Router) {
     this.loading$ = this._store.select(BnCardState.getLoading);
@@ -72,7 +74,7 @@ export class BankComponent {
       new BnCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
     );
 
-    this._store.select(BnCardState.getBnCards).subscribe((cards: BnCardItemModel[]) => {
+    this.subsink.sink = this._store.select(BnCardState.getBnCards).subscribe((cards: BnCardItemModel[]) => {
       this.elements = cards;
       this.dataSource = new MatTableDataSource<BnCardItemModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(BnCardState.getBnCardQueryParams);
@@ -84,6 +86,10 @@ export class BankComponent {
     this.dataSource.sort = this.sort;
   }
 
+  public ngOnDestroy(): void {
+    this.subsink.unsubscribe();
+  }
+  
   public checkedChanged(
     event: MatCheckboxChange,
     element: BnCardItemModel
@@ -103,14 +109,14 @@ export class BankComponent {
   }
 
   public clearFilters(): void {
-    if (!this.bankFilterForm?.value?.definition && !this.bankFilterForm?.value?.phoneNumber && !this.bankFilterForm?.value?.branch ) {
+    if (!this.bankFilterForm?.value?.definition && !this.bankFilterForm?.value?.phoneNumber && !this.bankFilterForm?.value?.branch) {
       return;
     }
 
     this.bankFilterForm.reset();
     const queryParams = this._store.selectSnapshot(BnCardState.getBnCardQueryParams);
     this._store.dispatch(
-      new BnCardActions.List({ size: queryParams.size, page: queryParams.page, filter: {} })
+      new BnCardActions.List({ size: queryParams.size, page: 0, filter: {} })
     );
   }
 
@@ -227,7 +233,7 @@ export class BankComponent {
 
     const queryParams = this._store.selectSnapshot(BnCardState.getBnCardQueryParams);
     this._store.dispatch(
-      new BnCardActions.List({ size: queryParams.size, page: queryParams.page, filter })
+      new BnCardActions.List({ size: queryParams.size, page: 0, filter })
     );
   }
 }

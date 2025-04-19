@@ -17,6 +17,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { ClCardActions } from '../../../state/clcard/clcard.action';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Status } from '../../../models/shared/status.enum';
+import { renderClCardType, renderRectStatus, renderStatus } from '../../../utils/enum.utils';
 
 @Component({
   selector: 'app-current-accounts-detail',
@@ -40,6 +41,9 @@ export class CurrentAccountsDetailComponent implements OnInit, OnDestroy {
   public accountId!: number;
   public clCard$!: Observable<ClCardItemModel | undefined>;
   public loading$!: Observable<boolean>;
+  public renderRecStatus = renderRectStatus;
+  public renderStatus = renderStatus;
+  public renderClCardType = renderClCardType;
   private _subSink: SubSink = new SubSink();
 
   constructor(private route: ActivatedRoute, private _store: Store) { }
@@ -54,20 +58,12 @@ export class CurrentAccountsDetailComponent implements OnInit, OnDestroy {
 
     const card: ClCardItemModel | undefined = this._store.selectSnapshot(ClCardState.getClCardDetail);
 
-    if (!card) {
+    if (!card || !card.id) {
       this._store.dispatch(new ClCardActions.GetClCard(this.accountId!));
     }
   }
 
   ngOnDestroy(): void {
     this._subSink.unsubscribe();
-  }
-
-  public renderCardStatus(status: number): Status | '' {
-    switch (status) {
-      case 0: return Status.PASSIVE;
-      case 1: return Status.ACTIVE;
-      default: return '';
-    }
   }
 }

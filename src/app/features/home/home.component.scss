@@ -1,3 +1,9 @@
-.bg-gray-300{
+.bg-gray-300 {
     background-color: rgb(209 213 219 / 0.8) !important;
+}
+
+:host {
+    .homepage-background {
+        background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.6)), url(../../../assets/images/Pimak_FE_3.webp);
+    }
 }

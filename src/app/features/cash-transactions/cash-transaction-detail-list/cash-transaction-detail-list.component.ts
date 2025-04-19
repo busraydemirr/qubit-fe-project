@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -13,7 +13,7 @@ import { KsCardActions } from '../../../state/kscard/kscard.action';
 import { renderSign } from '../../../utils/enum.utils';
 import { DatePipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { SubSink } from 'subsink';
 
@@ -32,7 +32,7 @@ import { SubSink } from 'subsink';
   templateUrl: './cash-transaction-detail-list.component.html',
   styleUrl: './cash-transaction-detail-list.component.scss',
 })
-export class CashTransactionDetailListComponent {
+export class CashTransactionDetailListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -93,7 +93,7 @@ export class CashTransactionDetailListComponent {
       const payload = {
         id: this.cashId,
         size: queryParams.size,
-        page: queryParams.page,
+        page: 0,
         filter,
         term,
       };
@@ -105,6 +105,10 @@ export class CashTransactionDetailListComponent {
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  public ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   public changePaginationEvents(event: PageEvent): void {

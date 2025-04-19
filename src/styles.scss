@@ -22,7 +22,7 @@ body {
 }
 
 mat-table {
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)) !important;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.3)) !important;
     @apply shadow-lg;
     display: block;
     width: 100%;
@@ -42,12 +42,12 @@ mat-table {
 
 
 mat-paginator {
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)) !important;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.7)) !important;
     @apply shadow-lg;
 }
 
 .detail-background {
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url(./assets/images/backgroud.webp);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.6)), url(./assets/images/backgroud.webp);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right bottom;

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ClCardActions } from '../../state/clcard/clcard.action';
 import {
@@ -6,7 +6,7 @@ import {
   MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
-import { AsyncPipe, NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -15,6 +15,13 @@ import { ClCardState } from '../../state/clcard/clcard.state';
 import { QueryParams } from '../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { FilterRequestModel } from '../../models/shared/filter-request.model';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-current-accounts',
@@ -27,21 +34,26 @@ import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
     NgIf,
     AsyncPipe,
     NgxSkeletonLoaderModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInput,
+    ReactiveFormsModule
   ],
   templateUrl: './current-accounts.component.html',
   styleUrl: './current-accounts.component.scss',
 })
-export class CurrentAccountsComponent implements OnInit, AfterViewInit {
+export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   public elements: ClCardItemModel[] = [];
   public dataSource!: MatTableDataSource<ClCardItemModel>;
   public displayedColumns = [
-    'select',
-    'id',
     'code',
     'name',
+    'telnrs1',
+    'city',
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -50,6 +62,12 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit {
     pages: 0
   };
   public loading$: Observable<boolean>;
+  public accountFilterForm: FormGroup = new FormGroup({
+    definition: new FormControl(null),
+    phoneNumber: new FormControl(null),
+    emailaddr: new FormControl(null),
+  });
+  public subsink = new SubSink();
 
   constructor(private _store: Store, private _router: Router) {
     this.loading$ = this._store.select(ClCardState.getLoading);
@@ -59,11 +77,8 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit {
     this._store.dispatch(
       new ClCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
     );
-    // this._store.dispatch(
-    //   new BnCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
-    // );
 
-    this._store.select(ClCardState.getClCards).subscribe((cards: ClCardItemModel[]) => {
+    this.subsink.sink = this._store.select(ClCardState.getClCards).subscribe((cards: ClCardItemModel[]) => {
       this.elements = cards;
       this.dataSource = new MatTableDataSource<ClCardItemModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(ClCardState.getClCardQueryParams);
@@ -73,6 +88,10 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  public ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   public checkedChanged(
@@ -90,6 +109,133 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit {
   public changePaginationEvents(event: PageEvent): void {
     this._store.dispatch(
       new ClCardActions.List({ size: event.pageSize, page: event.pageIndex, filter: {} })
+    );
+  }
+
+  public clearFilters(): void {
+    if (!this.accountFilterForm?.value?.definition && !this.accountFilterForm?.value?.phoneNumber && !this.accountFilterForm?.value?.branch) {
+      return;
+    }
+
+    this.accountFilterForm.reset();
+    const queryParams = this._store.selectSnapshot(ClCardState.getClCardQueryParams);
+    this._store.dispatch(
+      new ClCardActions.List({ size: queryParams.size, page: 0, filter: {} })
+    );
+  }
+
+  public filter(): void {
+    if (!this.accountFilterForm?.value || this.accountFilterForm.invalid) {
+      return;
+    }
+
+    let filter: FilterRequestModel | null = null;
+    if (this.accountFilterForm.value.definition) {
+      filter = {
+        filter: {
+          field: 'definition',
+          value: this.accountFilterForm.value.definition,
+          operator: 'contains',
+        }
+      };
+
+      if (this.accountFilterForm.value.phoneNumber) {
+        filter = {
+          filter: {
+            field: 'definition',
+            value: this.accountFilterForm.value.definition,
+            operator: 'contains',
+            logic: "and",
+            filters: [{
+              field: 'telnrs1',
+              value: this.accountFilterForm.value.phoneNumber.toString(),
+              operator: 'eq',
+            }]
+          }
+        };
+
+        if (this.accountFilterForm.value.emailaddr) {
+          filter = {
+            filter: {
+              field: 'definition',
+              value: this.accountFilterForm.value.definition,
+              operator: 'contains',
+              logic: "and",
+              filters: [{
+                field: 'telnrs1',
+                value: this.accountFilterForm.value.phoneNumber.toString(),
+                operator: 'eq',
+              },
+              {
+                field: "emailaddr",
+                value: this.accountFilterForm.value.emailaddr,
+                operator: 'contains'
+              }]
+            }
+          };
+        }
+      } else {
+        if (this.accountFilterForm.value.emailaddr) {
+          filter = {
+            filter: {
+              field: 'definition',
+              value: this.accountFilterForm.value.definition,
+              operator: 'contains',
+              logic: "and",
+              filters: [{
+                field: 'emailaddr',
+                value: this.accountFilterForm.value.emailaddr,
+                operator: 'contains',
+              }]
+            }
+          };
+        }
+      }
+    } else {
+      if (this.accountFilterForm.value.emailaddr) {
+        filter = {
+          filter: {
+            field: 'emailaddr',
+            value: this.accountFilterForm.value.emailaddr,
+            operator: 'contains',
+          }
+        };
+
+        if (this.accountFilterForm.value.phoneNumber) {
+          filter = {
+            filter: {
+              field: 'emailaddr',
+              value: this.accountFilterForm.value.emailaddr,
+              operator: 'contains',
+              logic: "and",
+              filters: [{
+                field: 'telnrs1',
+                value: this.accountFilterForm.value.phoneNumber.toString(),
+                operator: 'eq',
+              }]
+            }
+          };
+        }
+      } else {
+        if (this.accountFilterForm.value.phoneNumber) {
+          filter = {
+            filter: {
+              field: 'telnrs1',
+              value: this.accountFilterForm.value.phoneNumber.toString(),
+              operator: 'eq',
+            }
+          };
+        }
+      }
+    }
+
+    if (!filter) {
+      return;
+    }
+
+    const queryparams = this._store.selectSnapshot(ClCardState.getClCardQueryParams);
+    this._store.dispatch(
+      new ClCardActions.List({ size: queryparams.size, page: 0, filter })
     );
   }
 }
