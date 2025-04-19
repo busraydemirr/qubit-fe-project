@@ -1,0 +1,62 @@
+<div class="p-8 h-screen">
+    <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="code">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Kredi Kodu </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.code }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="cardtype">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Kredi Türü </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ renderCardType(element.credittype) }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="definition">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Kredi Adı </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    <div class="clickable-cell">
+                        {{ element.name }}
+                    </div>
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"
+        [length]="queryParams.totalElements" (page)="changePaginationEvents($event)" showFirstLastButtons>
+    </mat-paginator>
+</div>

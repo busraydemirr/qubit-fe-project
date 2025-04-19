@@ -1,0 +1,104 @@
+<ng-container *ngIf="bnCreditCard$ | async as card">
+    <app-banner [label]="card?.name!" [subLabel]="card?.code!"></app-banner>
+</ng-container>
+
+<div class="w-auto detail-background">
+    <mat-tab-group>
+        <mat-tab label="Genel Bilgiler" labelClass="bg-qub-primary">
+            <ng-container *ngIf="(loading$ | async); else content">
+                <div class="flex w-full items-center justify-center p-8">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-container>
+            <ng-template #content>
+                <ng-container *ngIf="bnCreditCard$ | async as card">
+                    <div class="p-8 h-screen">
+                        <div class="w-full table-background">
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Banka Adı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.bankAccDefinition}}
+                                </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Başlangıç Tarihi </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.begdate}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Referansı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.bncrref}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kodu </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.code}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Masraf ve Komisyon Tutarı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.commtotal}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Kart Türü </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.crcardtype}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Türü </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.credittype}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Yetki Kodu </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.cyphcode}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Bitiş Tarihi </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.enddate}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Genel Sözleşme Numarası </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.gksno}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Faiz Oranı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.intrate}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Faiz Tutarı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.inttotal}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Adı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.name}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Raporlama Para Birimi </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.reportrate}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Özel Kodu </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.specode}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Hareket Para Birimi </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.trcurr}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Hareket Hesap Oranı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.trrateacc}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Hareket Para Birimi Oranı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.trratecr}} </span>
+                            </div>
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Tutarı </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.trtotal!}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+        </mat-tab>
+        <mat-tab label="Kredi Hareketleri" labelClass="bg-qub-primary">
+            <app-credit-lines [creditId]="creditId"></app-credit-lines>
+        </mat-tab>
+    </mat-tab-group>
+</div>

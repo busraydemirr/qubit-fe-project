@@ -1,5 +1,6 @@
 import { CardType } from "../models/bncard/card-type.enum";
 import { Currency } from "../models/bncard/currency.enum";
+import { ClCardType } from "../models/clcard/clcard-type.enum";
 import { AccountedInfo, RectStatus, Sign, Status } from "../models/shared/status.enum";
 
 export function renderRectStatus(value: number): RectStatus | '' {
@@ -50,9 +51,20 @@ export function renderCurrency(currency: number): Currency | '' {
 
 export function renderCardType(cardType: number): CardType | '' {
     switch (cardType) {
-      case 1: return CardType.BankaHesabı;
-      case 2: return CardType.KrediKartı;
-      case 3: return CardType.SanalPos;
-      default: return '';
+        case 1: return CardType.BankaHesabı;
+        case 2: return CardType.KrediKartı;
+        case 3: return CardType.SanalPos;
+        default: return '';
     }
-  }
+}
+
+export function renderClCardType(cardType: number): ClCardType | '' {
+    switch (cardType) {
+        case 1: return ClCardType.Musteri;
+        case 2: return ClCardType.Satıcı;
+        case 3: return ClCardType.Calisan;
+        case 4: return ClCardType.Diğer;
+        case 5: return ClCardType.Banka;
+        default: return '';
+    }
+}
