@@ -1,26 +1,25 @@
 export interface ClCardLineModel {
-    select?: boolean;
-    accficheref?: number;
-    accounted?: number;
-    affectrisk?: number;
-    amount?: number;
-    capiblockCreadeddate?: Date;
-    capiblockCreatedby?: number;
-    capiblockModifiedby?: number;
-    capiblockModifieddate?: Date;
-    capiblockNameCreatedby?: string;
-    clientref?: number;
-    cyphcode?: string;
-    date?: Date;
     id?: number;
-    lineexp?: string;
+    clientref?: number;
+    date?: string;
     modulenr?: number;
-    month?: number;
-    reportnet?: number;
-    reportrate?: number;
-    tranno?: string;
     trcode?: number;
+    cyphcode?: string;
+    tranno?: string;
+    lineexp?: string;
+    accounted?: number;
+    amount?: number;
     trnet?: number;
+    reportrate?: number;
+    reportnet?: number;
+    accficheref?: number;
+    capiblockNameCreatedby?: string;
+    capiblockCreatedby?: number;
+    capiblockCreadeddate?: string;
+    capiblockModifiedby?: number;
+    capiblockModifieddate?: string | null;
+    month?: number;
     year?: number;
+    affectrisk?: number;
     sign?: number;
-}
+  }

@@ -22,19 +22,19 @@ import { ClCardLineModel } from "../../models/clcard/clcard-line.model";
         linesListLoading: false,
         cardLines: [{
             id: 1,
-            date: new Date,
+            date: new Date().toISOString(),
             lineexp: '',
             sign: 1,
             amount: 100
         }, {
             id: 1,
-            date: new Date,
+            date: new Date().toISOString(),
             lineexp: '',
             sign: 1,
             amount: 100
         }, {
             id: 1,
-            date: new Date,
+            date: new Date().toISOString(),
             lineexp: '',
             sign: 1,
             amount: 100
@@ -130,7 +130,7 @@ export class ClCardState {
     @Action(ClCardActions.GetClCardLines)
     getClCardLines({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardLines) {
         patchState({ linesListLoading: true });
-        return this._clCardService.getClCardLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
+        return this._clCardService.getClCardLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
             tap(data => {
                 patchState({
                     cardLines: data.data.items,

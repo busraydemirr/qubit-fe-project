@@ -25,6 +25,6 @@ export namespace ClCardActions {
     export class GetClCardLines {
         static readonly type = `${ACTION_SCOPE} Get ClCard Lines`;
 
-        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel }) { }
+        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel, term?: string }) { }
     }
 }

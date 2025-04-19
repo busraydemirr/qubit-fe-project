@@ -18,7 +18,7 @@ export class ClCardService {
         return this._http.post<ResponseModel<BaseResponseData<ClCardItemModel>>>(this.url + 'api/ClCard' + '?size=' + size + '&from=' + page, filter);
     }
 
-    public getClCardLines(id: number, size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<ClCardLineModel>>> {
-        return this._http.post<ResponseModel<BaseResponseData<ClCardLineModel>>>(this.url + 'api/ClCard/getClCardLines/' + id + '?size=' + size + '&from=' + page, filter);
+    public getClCardLines(id: number, size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<ClCardLineModel>>> {
+        return this._http.post<ResponseModel<BaseResponseData<ClCardLineModel>>>(this.url + 'api/ClCard/getClCardLines/' + id + '?size=' + size + '&from=' + page + '&term=' + term, filter);
     }
 }
