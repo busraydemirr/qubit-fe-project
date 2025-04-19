@@ -1,7 +1,7 @@
-export interface BnCreditCardItemModel {
+export interface BnCreditCardLineModel {
     id?: number;
-    code?:string;
-    name?:string;
+    code?: string;
+    name?: string;
     bankAccDefinition?: string;
     bncrref?: number;
     specode?: string;
