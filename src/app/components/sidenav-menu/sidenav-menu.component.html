@@ -3,20 +3,14 @@
     <mat-nav-list>
       @for (item of menuItems; track item) {
       <mat-action-list [ngClass]="{ active: item.isActive }" class="menu-item">
-        <app-sidenav-menu-item
-          [ngClass]="{ 'has-child': item.children }"
-          [menuItems]="menuItems"
-          [item]="item"
-          (menuItemChanged)="changeMenuItem($event)"
-        ></app-sidenav-menu-item>
+        <app-sidenav-menu-item [ngClass]="{ 'has-child': item.children }" [menuItems]="menuItems" [item]="item"
+          (menuItemChanged)="changeMenuItem($event)"></app-sidenav-menu-item>
       </mat-action-list>
       }
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="sidenav-content h-[100vh]">
-    <div class="container ml-auto mr-auto">
-      <ng-content></ng-content>
-    </div>
+    <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>

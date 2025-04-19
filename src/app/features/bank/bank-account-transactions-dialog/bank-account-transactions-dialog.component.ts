@@ -13,6 +13,11 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { BnCardState } from '../../../state/bncard/bncard.state';
 import { BnCardActions } from '../../../state/bncard/bncard.action';
+import { renderAccountedInfo, renderSign } from '../../../utils/enum.utils';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-bank-account-transactions-dialog',
@@ -28,7 +33,10 @@ import { BnCardActions } from '../../../state/bncard/bncard.action';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    DatePipe
+    DatePipe,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './bank-account-transactions-dialog.component.html',
   styleUrl: './bank-account-transactions-dialog.component.scss'
@@ -40,10 +48,21 @@ export class BankAccountTransactionsDialogComponent implements OnInit, AfterView
   public elements: BnCardAccountLineModel[] = [];
   public dataSource!: MatTableDataSource<BnCardAccountLineModel>;
   public displayedColumns = [
-    'id',
-    'createdBy',
-    'date',
-    'desc'
+    'clCardDefinition',
+    'bankproctype',
+    'accounted',
+    'amount',
+    'lineexp',
+    'ksLineexp',
+    'reportnet',
+    'reportrate',
+    'sign',
+    'tranno',
+    'transduedate',
+    'capiblockNameCreatedby',
+    'capiblockCreadeddate',
+    'capiblockModifieddate',
+
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -52,9 +71,13 @@ export class BankAccountTransactionsDialogComponent implements OnInit, AfterView
     pages: 0
   };
   public loading$: Observable<boolean>;
+  public termControl = new FormControl('03');
+  public renderAccountedInfo = renderAccountedInfo;
+  public renderSign = renderSign;
 
+  private _subsink = new SubSink();
   readonly dialogRef = inject(MatDialogRef<BankAccountTransactionsDialogComponent>);
-  readonly data = inject<{element: BnCardAccountModel}>(MAT_DIALOG_DATA);
+  readonly data = inject<{ element: BnCardAccountModel }>(MAT_DIALOG_DATA);
   readonly bankAccount = model(this.data);
 
   constructor(private _store: Store) {
@@ -69,10 +92,23 @@ export class BankAccountTransactionsDialogComponent implements OnInit, AfterView
       })
     );
 
-    this._store.select(BnCardState.getAccountLines).subscribe((cards: BnCardAccountLineModel[]) => {
+    this._subsink.sink = this._store.select(BnCardState.getAccountLines).subscribe((cards: BnCardAccountLineModel[]) => {
       this.elements = cards;
       this.dataSource = new MatTableDataSource<BnCardAccountLineModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(BnCardState.getAccountLinesQueryParams);
+    });
+
+    this._subsink.sink = this.termControl.valueChanges.subscribe((value) => {
+      const queryParams = this._store.selectSnapshot(BnCardState.getAccountLinesQueryParams);
+      const filter = this._store.selectSnapshot(BnCardState.getAccountLinesFilters);
+      const payload = {
+        id: this.data.element.id,
+        size: queryParams.size,
+        page: queryParams.page,
+        term: value!,
+        filter: filter ?? {},
+      };
+      this._store.dispatch(new BnCardActions.AccountLineList(payload));
     });
   }
 
@@ -83,6 +119,7 @@ export class BankAccountTransactionsDialogComponent implements OnInit, AfterView
 
   public ngOnDestroy(): void {
     this.close();
+    this._subsink.unsubscribe();
   }
 
   public close(): void {

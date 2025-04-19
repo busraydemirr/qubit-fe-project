@@ -1,8 +1,8 @@
-<div class="p-8 h-screen">
+<div class="table-inner-container p-8 h-screen">
     <mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="code">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Hesabı Kodu </mat-header-cell>
-            <mat-cell *matCellDef="let element">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Banka Hesabı Kodu </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                   height: '20px',
@@ -16,9 +16,9 @@
                 </ng-template>
             </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="cardtype">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Kart Türü </mat-header-cell>
-            <mat-cell *matCellDef="let element">
+        <ng-container matColumnDef="accountNo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Genel Muhasebe Hesabı Numarası </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                   height: '20px',
@@ -28,13 +28,13 @@
                 }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ renderCardType(element.cardtype) }}
+                    {{ element.accountNo}}
                 </ng-template>
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="definition">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Hesabı Adı </mat-header-cell>
-            <mat-cell *matCellDef="let element" (click)="openBankAccountLines(element)">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-250"> Banka Hesabı Adı </mat-header-cell>
+            <mat-cell *matCellDef="let element" (click)="openBankAccountLines(element)" class="table-column-250">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                   height: '20px',
@@ -50,9 +50,41 @@
                 </ng-template>
             </mat-cell>
         </ng-container>
+        <ng-container matColumnDef="cardtype">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Kart Türü </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-100">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ renderCardType(element.cardtype) }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="active">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Kullanım durumu </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ renderCardStatus(element.active) }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
         <ng-container matColumnDef="currency">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Hesap Para Birimi </mat-header-cell>
-            <mat-cell *matCellDef="let element">
+            <mat-header-cell *matHeaderCellDef mat-sort-header  class="table-column-150"> Hesap Para Birimi </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                     height: '20px',
@@ -67,8 +99,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="iban">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> IBAN </mat-header-cell>
-            <mat-cell *matCellDef="let element">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> IBAN </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                     height: '20px',
@@ -79,6 +111,118 @@
                 </ng-container>
                 <ng-template #content>
                     {{ element.iban }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="checklimit">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Çek Kredi Limiti </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-100">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.checklimit }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="checkmargin">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Çek Kredi Marjı </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-100">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.checkmargin }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="ckinterest">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Çek Kredi Marjı </mat-header-cell>
+            <mat-cell *matCellDef=" let element" class="table-column-100">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.ckinterest }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="skinterest">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Senet karşılığı kredi (Aylık) </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-100">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.skinterest }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="notelimit">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Senet kredi limiti </mat-header-cell>
+            <mat-cell *matCellDef=" let element" class="table-column-100">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.notelimit }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="capiblockNameCreatedby">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Oluşturan </mat-header-cell>
+            <mat-cell *matCellDef=" let element" class="table-column-200">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.capiblockNameCreatedby }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="capiblockCreadeddate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Oluşturulma Tarihi </mat-header-cell>
+            <mat-cell *matCellDef=" let element" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.capiblockCreadeddate | date: 'dd/MM/yyyy'}}
                 </ng-template>
             </mat-cell>
         </ng-container>

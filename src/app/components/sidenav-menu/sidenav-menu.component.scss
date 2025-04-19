@@ -1,5 +1,8 @@
 .sidenav-content {
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.6)), url(../../../assets/images/Pimak_FE_3.webp);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.6)), url(../../../assets/images/backgroud.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right bottom;
 
     .container {
         @apply p-5;
@@ -11,6 +14,7 @@
 
 
 .active {
+
     // background-color: #6b7d91;
     .has-child {
         height: unset;

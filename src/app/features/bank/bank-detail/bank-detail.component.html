@@ -16,7 +16,7 @@
                         <div class="w-full table-background">
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Kullanım durumu </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{renderCardStatus(card.active!)}}
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{renderStatus(card.active!)}}
                                 </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
@@ -70,7 +70,10 @@
 
         </mat-tab>
         <mat-tab label="Banka Hesapları" labelClass="bg-qub-primary">
-            <app-bank-accounts [bankId]="bankId"></app-bank-accounts>
+            <div class="flex">
+
+                <app-bank-accounts [bankId]="bankId"></app-bank-accounts>
+            </div>
         </mat-tab>
         <mat-tab label="Krediler" labelClass="bg-qub-primary">
             <div class="p-8 h-screen"> test </div>

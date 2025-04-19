@@ -13,6 +13,13 @@ import { CurrentAccountsDetailComponent } from './features/current-accounts/curr
 import { BankComponent } from './features/bank/bank.component';
 import { BankDetailComponent } from './features/bank/bank-detail/bank-detail.component';
 import { KsCardState } from './state/kscard/kscard.state';
+import { PurchaseInvoicesComponent } from './features/purchase-invoices/purchase-invoices.component';
+import { InvoiceState } from './state/invoice/invoice.state';
+import { InvoiceDetailComponent } from './features/invoice-detail/invoice-detail.component';
+import { SalesInvoicesComponent } from './features/sales-invoices/sales-invoices.component';
+import { BnCreditCardState } from './state/bncreditcard/bncreditcard.state';
+import { CreditCardsComponent } from './features/credit-cards/credit-cards.component';
+import { CreditCardDetailComponent } from './features/credit-cards/credit-card-detail/credit-card-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -22,7 +29,7 @@ export const routes: Routes = [
     component: HomepageComponent,
     children: [
       { path: 'home', component: HomeComponent },
-      {path: 'calendar', component: CalendarComponent},
+      { path: 'calendar', component: CalendarComponent },
       {
         path: 'cash-transactions',
         component: CashTransactionsComponent,
@@ -37,6 +44,21 @@ export const routes: Routes = [
         path: 'banks',
         component: BankComponent,
         providers: [provideStates([BnCardState])]
+      },
+      {
+        path: 'credits',
+        component: CreditCardsComponent,
+        providers: [provideStates([BnCreditCardState])]
+      },
+      {
+        path: 'purchase-invoices',
+        component: PurchaseInvoicesComponent,
+        providers: [provideStates([InvoiceState])]
+      },
+      {
+        path: 'sales-invoices',
+        component: SalesInvoicesComponent,
+        providers: [provideStates([InvoiceState])]
       }
     ],
   },
@@ -51,6 +73,18 @@ export const routes: Routes = [
   {
     path: 'banks/detail/:id',
     component: BankDetailComponent,
+  },
+  {
+    path: 'credits/detail/:id',
+    component: CreditCardDetailComponent,
+  },
+  {
+    path: 'purchase-invoices/detail/:id',
+    component: InvoiceDetailComponent,
+  },
+  {
+    path: 'sales-invoices/detail/:id',
+    component: InvoiceDetailComponent,
   },
   { path: '**', component: LoginComponent },
 ];

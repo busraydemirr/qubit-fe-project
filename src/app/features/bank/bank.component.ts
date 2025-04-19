@@ -12,7 +12,7 @@ import { Store } from '@ngxs/store';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -45,10 +45,10 @@ export class BankComponent {
   public elements: BnCardItemModel[] = [];
   public dataSource!: MatTableDataSource<BnCardItemModel>;
   public displayedColumns = [
-    'select',
-    'id',
     'code',
     'name',
+    'branch',
+    'town'
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -60,7 +60,7 @@ export class BankComponent {
   public bankFilterForm: FormGroup = new FormGroup({
     definition: new FormControl(null),
     phoneNumber: new FormControl(null),
-    email: new FormControl(null),
+    branch: new FormControl(null),
   });
 
   constructor(private _store: Store, private _router: Router) {
@@ -102,6 +102,18 @@ export class BankComponent {
     );
   }
 
+  public clearFilters(): void {
+    if (!this.bankFilterForm?.value?.definition && !this.bankFilterForm?.value?.phoneNumber && !this.bankFilterForm?.value?.branch ) {
+      return;
+    }
+
+    this.bankFilterForm.reset();
+    const queryParams = this._store.selectSnapshot(BnCardState.getBnCardQueryParams);
+    this._store.dispatch(
+      new BnCardActions.List({ size: queryParams.size, page: queryParams.page, filter: {} })
+    );
+  }
+
   public filter(): void {
     if (!this.bankFilterForm?.value || this.bankFilterForm.invalid) {
       return;
@@ -124,59 +136,59 @@ export class BankComponent {
             value: this.bankFilterForm.value.definition,
             operator: 'contains',
             logic: "and",
-            filters: {
+            filters: [{
               field: 'telnrs1',
               value: this.bankFilterForm.value.phoneNumber,
               operator: 'eq',
-            }
+            }]
           }
         };
 
-        if (this.bankFilterForm.value.email) {
+        if (this.bankFilterForm.value.branch) {
           filter = {
             filter: {
               field: 'definition',
               value: this.bankFilterForm.value.definition,
               operator: 'contains',
               logic: "and",
-              filters: {
+              filters: [{
                 field: 'telnrs1',
                 value: this.bankFilterForm.value.phoneNumber,
                 operator: 'eq',
-                logic: "and",
-                filters: {
-                  field: "emailaddr",
-                  value: this.bankFilterForm.value.email,
-                  operator: 'contains'
-                }
+              },
+              {
+                field: "branch",
+                value: this.bankFilterForm.value.branch,
+                operator: 'contains'
               }
+              ]
             }
           };
         }
       } else {
-        if (this.bankFilterForm.value.email) {
+        if (this.bankFilterForm.value.branch) {
           filter = {
             filter: {
               field: 'definition',
               value: this.bankFilterForm.value.definition,
               operator: 'contains',
               logic: "and",
-              filters: {
-                field: 'emailaddr',
-                value: this.bankFilterForm.value.email,
+              filters: [{
+                field: 'branch',
+                value: this.bankFilterForm.value.branch,
                 operator: 'contains',
-              }
+              }]
             }
           };
         }
       }
 
     } else {
-      if (this.bankFilterForm.value.email) {
+      if (this.bankFilterForm.value.branch) {
         filter = {
           filter: {
-            field: 'emailaddr',
-            value: this.bankFilterForm.value.email,
+            field: 'branch',
+            value: this.bankFilterForm.value.branch,
             operator: 'contains',
           }
         };
@@ -184,15 +196,15 @@ export class BankComponent {
         if (this.bankFilterForm.value.phoneNumber) {
           filter = {
             filter: {
-              field: 'emailaddr',
-              value: this.bankFilterForm.value.email,
+              field: 'branch',
+              value: this.bankFilterForm.value.branch,
               operator: 'contains',
               logic: "and",
-              filters: {
+              filters: [{
                 field: 'telnrs1',
                 value: this.bankFilterForm.value.phoneNumber,
                 operator: 'eq',
-              }
+              }]
             }
           };
         }
@@ -212,11 +224,10 @@ export class BankComponent {
     if (!filter) {
       return;
     }
-    console.log(filter);
 
-
+    const queryParams = this._store.selectSnapshot(BnCardState.getBnCardQueryParams);
     this._store.dispatch(
-      new BnCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter })
+      new BnCardActions.List({ size: queryParams.size, page: queryParams.page, filter })
     );
   }
 }

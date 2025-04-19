@@ -8,12 +8,12 @@ import { BnCardAccountModel } from '../../../models/bncard/bncard-account.model'
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CardType } from '../../../models/bncard/card-type.enum';
-import { Currency } from '../../../models/bncard/currency.enum';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog } from '@angular/material/dialog';
 import { BankAccountTransactionsDialogComponent } from '../bank-account-transactions-dialog/bank-account-transactions-dialog.component';
+import { renderCardType, renderCurrency, renderStatus } from '../../../utils/enum.utils';
 
 @Component({
   selector: 'app-bank-accounts',
@@ -24,6 +24,7 @@ import { BankAccountTransactionsDialogComponent } from '../bank-account-transact
     NgIf,
     AsyncPipe,
     NgxSkeletonLoaderModule,
+    DatePipe,
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
@@ -41,10 +42,19 @@ export class BankAccountsComponent implements OnInit {
   public dataSource!: MatTableDataSource<BnCardAccountModel>;
   public displayedColumns = [
     'code',
-    'cardtype',
+    'accountNo',
     'definition',
+    'cardtype',
+    'active',
     'currency',
-    'iban'
+    'iban',
+    'checklimit',
+    'checkmargin',
+    'ckinterest',
+    'skinterest',
+    'notelimit',
+    'capiblockNameCreatedby',
+    'capiblockCreadeddate',
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -54,6 +64,9 @@ export class BankAccountsComponent implements OnInit {
   };
   public loading$: Observable<boolean>;
   public cardType = CardType;
+  public renderCurrency = renderCurrency;
+  public renderCardType = renderCardType;
+  public renderCardStatus = renderStatus;
   private _dialog = inject(MatDialog);
 
   constructor(private _store: Store) {
@@ -90,28 +103,12 @@ export class BankAccountsComponent implements OnInit {
   public openBankAccountLines(element: BnCardAccountModel): void {
     const dialogRef = this._dialog.open(BankAccountTransactionsDialogComponent, {
       data: { element },
-      height: '400px',
-      width: '800px',
+      height: 'auto',
+      width: 'auto',
+      minHeight: '400px',
+      minWidth: '600px',
+      maxHeight: '90vh',
+      maxWidth: '90vw',
     });
-  }
-
-  public renderCardType(cardType: number): CardType | '' {
-    switch (cardType) {
-      case 1: return CardType.BankaHesabı;
-      case 2: return CardType.KrediKartı;
-      case 3: return CardType.SanalPos;
-      default: return '';
-    }
-  }
-
-  public renderCurrency(currency: number): Currency | '' {
-    switch (currency) {
-      case 0: return Currency.TRY;
-      case 1: return Currency.USD;
-      case 20: return Currency.EUR;
-      case 30: return Currency.GBP;
-      case 40: return Currency.JPY;
-      default: return '';
-    }
   }
 }
