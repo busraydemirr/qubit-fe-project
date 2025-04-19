@@ -1,0 +1,41 @@
+import { AccountedInfo } from "../shared/status.enum";
+
+export interface InvoiceModel {
+    id?: number;
+    accounted?: number;
+    accountref?: number;
+    adddiscounts?: number;
+    affectrisk?: number;
+    approve?: number;
+    cancelled?: number;
+    capiblockCreadeddate?: string;
+    capiblockNameCreatedby?: string;
+    clCardDefinition?: string;
+    clientref?: number;
+    cyphcode?: string;
+    date?: string;
+    docode?: string;
+    ficheno?: string;
+    fromkasa?: number;
+    genexctyp?: number;
+    grosstotal?: number;
+    grpcode?: number;
+    kastransref?: number;
+    ksLineLineexp?: string;
+    nettotal?: number;
+    paidincash?: number;
+    recstatus?: number;
+    reportnet?: number;
+    reportrate?: number;
+    salesmanref?: number;
+    sourceindex?: number;
+    specode?: string;
+    totaldiscounted?: number;
+    totaldiscounts?: number;
+    totalservices?: number;
+    totalvat?: number;
+    trcode?: number;
+    trcurr?: number;
+    trnet?: number;
+    trrate?: number;
+}
