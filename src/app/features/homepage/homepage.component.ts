@@ -37,7 +37,7 @@ export class HomepageComponent {
     },
     {
       label: 'Banka/Kredi İşlemleri',
-      url: 'current-accounts',
+      url: 'banks',
       isActive: false,
       children: [
         {
@@ -48,7 +48,7 @@ export class HomepageComponent {
         },
         {
           label: 'Kredi İşlemleri',
-          url: 'current-accounts',
+          url: 'credits',
           isActive: false,
           depth: 1,
         },
@@ -56,18 +56,18 @@ export class HomepageComponent {
     },
     {
       label: 'Faturalar',
-      url: 'current-accounts',
+      url: 'sales-invoices',
       isActive: false,
       children: [
         {
           label: 'Satış Faturaları',
-          url: 'banks',
+          url: 'sales-invoices',
           isActive: false,
           depth: 1,
         },
         {
           label: 'Alım Faturaları',
-          url: 'current-accounts',
+          url: 'purchase-invoices',
           isActive: false,
           depth: 1,
         },
