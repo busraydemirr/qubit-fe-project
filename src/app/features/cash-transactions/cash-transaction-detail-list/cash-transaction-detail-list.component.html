@@ -1,45 +1,121 @@
-<mat-table [dataSource]="dataSource" matSort>
-  <ng-container matColumnDef="code">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Kodu </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{ element.code }}
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Adı </mat-header-cell>
-    <mat-cell *matCellDef="let element" (click)="rowClicked(element)">
-      <div class="clickable-cell">
-        {{ element.name }}
-      </div>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="description">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
-      Açıklama
-    </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{ element.description }}
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="remainder">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
-      Bakiye
-    </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{ element.remainder }}
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="idRemainder">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>
-      İ.D. Bakiye
-    </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      {{ element.idRemainder }}
-    </mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-</mat-table>
+<div class="p-8 pt-4 !h-screen">
+  <div class="w-full">
+    <mat-form-field class="w-[300px]">
+      <mat-label>Dönem</mat-label>
+      <mat-select [formControl]="termControl">
+        <mat-option [value]="'01'">1</mat-option>
+        <mat-option [value]="'02'">2</mat-option>
+        <mat-option [value]="'03'">3</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="custtitle">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Kasa Açıklaması </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-200">
+        {{ element.custtitle }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="ficheno">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+        Fiş Numarası
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-150">
+        {{ element.ficheno }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="sign">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Borç/Alacak İşareti
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-100">
+        {{ renderSign(element.sign) }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="amount">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100">
+        Tutar
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-100">
+        {{ element.amount }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100">
+        Tarih
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-100">
+        {{ element.date | date: 'dd/MM/yyyy' }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="branch">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100">
+        İşyeri
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-100">
+        {{ element.branch }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="lineexp">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-250">
+        Satır Açıklaması
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-250">
+        {{ element.lineexp }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="reportrate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100">
+        RD Kuru
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-100">
+        {{ element.reportrate }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="trrate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+        İşlem dövizi kuru
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-150">
+        {{ element.trrate }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="trnet">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+        İşlem dövizi tutarı
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-150">
+        {{ element.trnet }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="trcurr">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+        İşlem dövizi türü
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-150">
+        {{ element.trcurr }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="capiblockNameCreatedby">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200">
+        Oluşturan
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-200">
+        {{ element.trcurcapiblockNameCreatedby }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="capiblockCreadeddate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+        Oluşturma Tarihi
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="table-column-150">
+        {{ element.capiblockCreadeddate | date: 'dd/MM/yyyy' }}
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
 
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-</mat-paginator>
+  <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"
+    [length]="queryParams.totalElements" (page)="changePaginationEvents($event)" showFirstLastButtons>
+  </mat-paginator>
+</div>

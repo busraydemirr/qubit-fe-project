@@ -1,84 +1,95 @@
-<!-- <form [formGroup]="cashFilterForm" class="flex w-full gap-4 px-3 mb-3">
-  <mat-form-field [appearance]="'outline'" class="w-1/3">
-    <input matInput placeholder="Isim" formControlName="name" />
-  </mat-form-field>
-  <mat-form-field [appearance]="'outline'" class="w-1/3">
-    <input
-      matInput
-      placeholder="Cep Telefonu"
-      formControlName="phoneNumber"
-      type="number"
-      pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
-      maxlength="10"
-      onKeyPress="if(this.value.length==10) return false;"
-    />
-    <mat-hint>
-      <mat-icon> info </mat-icon>
-      Başında 0 olmadan giriniz.
-    </mat-hint>
-  </mat-form-field>
-  <mat-form-field [appearance]="'outline'" class="w-1/3">
-    <input
-      matInput
-      placeholder="E-Posta"
-      formControlName="email"
-      type="email"
-    />
-  </mat-form-field>
-  <button
-    mat-icon-button
-    class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto"
-    (click)="filter()"
-  >
-    <mat-icon fontIcon="search"></mat-icon>
-  </button>
-</form> -->
-<mat-table [dataSource]="dataSource" matSort>
-  <ng-container matColumnDef="select" sticky>
-    <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-    <mat-cell [ngClass]="{ 'selected-row': element.select }" *matCellDef="let element">
-      <mat-checkbox [checked]="element.selected" [disableRipple]="true" (change)="checkedChanged($event, element)"
-        color="primary" class="column-checkbox">
-      </mat-checkbox>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="code">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Kodu </mat-header-cell>
-    <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
-      <ng-container *ngIf="(loading$ | async); else content">
-        <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-      </ng-container>
-      <ng-template #content>
-        {{ element.code }}
-      </ng-template>
-    </mat-cell>
-  </ng-container>
-  <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Adı </mat-header-cell>
-    <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
-      <ng-container *ngIf="(loading$ | async); else content">
-        <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-      </ng-container>
-      <ng-template #content>
-        <div class="clickable-cell">
-          {{ element.name }}
-        </div>
-      </ng-template>
-    </mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-</mat-table>
+<div class="container ml-auto mr-auto">
+  <form [formGroup]="cashFilterForm" class="flex flex-column w-full gap-4 mb-3">
+    <mat-form-field [appearance]="'fill'" class="w-2/3">
+      <mat-label> Kasa Adı </mat-label>
+      <input matInput placeholder="Banka Adı" formControlName="name" />
+    </mat-form-field>
+    <div class="w-1/3"></div>
+    <button mat-icon-button [disabled]="cashFilterForm.invalid"
+      class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
+      (click)="filter()">
+      <mat-icon fontIcon="search"></mat-icon>
+    </button>
+    <button mat-icon-button [disabled]="!cashFilterForm.value"
+      class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
+      (click)="clearFilters()">
+      <mat-icon fontIcon="delete"></mat-icon>
+    </button>
 
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-</mat-paginator>
+
+  </form>
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="code">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Kodu </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{ element.code }}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Adı </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          <div class="clickable-cell">
+            {{ element.name }}
+          </div>
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="explain">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Açıklama </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{ element.explain }}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="recstatus">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Kayıt Durumu </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{renderRectStatus(element.recstatus!)}}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"
+    [length]="queryParams.totalElements" (page)="changePaginationEvents($event)" showFirstLastButtons>
+  </mat-paginator>
+</div>

@@ -20,8 +20,8 @@ import { Store } from '@ngxs/store';
 import { KsCardState } from '../../../state/kscard/kscard.state';
 import { KsCardActions } from '../../../state/kscard/kscard.action';
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
-import { Status } from '../../../models/shared/status.enum';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { renderRectStatus, renderStatus } from '../../../utils/enum.utils';
 @Component({
   selector: 'app-cash-transaction-detail',
   imports: [
@@ -46,6 +46,8 @@ export class CashTransactionDetailComponent implements OnInit, OnDestroy {
   public ksCard$!: Observable<KsCardModel>;
   public cashFilterForm!: FormGroup;
   public loading$!: Observable<boolean>;
+  public renderRectStatus = renderRectStatus;
+  public renderStatus = renderStatus;
   private _subSink: SubSink = new SubSink();
 
   constructor(private route: ActivatedRoute, private _store: Store) { }
@@ -72,15 +74,7 @@ export class CashTransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   public filter(): void { }
-
-  public renderCardStatus(status: number): Status | '' {
-    switch (status) {
-      case 0: return Status.PASSIVE;
-      case 1: return Status.ACTIVE;
-      default: return '';
-    }
-  }
-
+  
   private _buildForm(): void {
     this.cashFilterForm = new FormGroup({
       name: new FormControl(''),
