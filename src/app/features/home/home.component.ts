@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { fetchWeatherApi } from 'openmeteo';
 import { WEATHER_STATUS } from '../../models/home/weather-status';
 import { DatePipe, NgFor, NgIf, SlicePipe } from '@angular/common';
@@ -26,7 +26,7 @@ import { InvoiceService } from '../../services/invoice.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
   @Input() user: any = 'Büşra Nur Aydemir'; // TODO: User model
   public weatherData =
     {
@@ -84,16 +84,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public chart: any = null;
   public chart2: any = null;
+  public invoinceInfo: any = null;
+  public orficheInfo: any = null;
 
   constructor(private _orficheService: OrficheService, private _invoiceService: InvoiceService) {
     this.test();
   }
 
-  public ngOnInit(): void {
-
-  }
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.viewOrficheData(this.timePeriodOrfiche);
     this.viewInvoinceData(this.timePeriodInvoince);
   }
@@ -132,6 +130,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this._orficheService.getTotalOrfiche(this.timePeriodOrfiche).subscribe((res) => {
       this.orficheLoading = false;
       if (res.data) {
+        this.orficheInfo = res.data;
         this.orficheData = {
           ...this.orficheData,
           datasets: [{
@@ -164,6 +163,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this._invoiceService.getTotalInvoice(this.timePeriodInvoince).subscribe((res) => {
       this.invoinceLoading = false;
       if (res.data) {
+        this.invoinceInfo = res.data;
         this.invoinceData = {
           ...this.invoinceData,
           datasets: [{

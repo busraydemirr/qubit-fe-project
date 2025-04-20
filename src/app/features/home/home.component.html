@@ -42,9 +42,15 @@
                         </div>
                     </div>
                     <div class="h-full w-full flex justify-center">
-                        <canvas id="canvas" [class]="{'hidden': invoinceLoading}">
+                        <canvas id="canvas"
+                            [class]="{'hidden': invoinceLoading || (!invoinceLoading && invoinceInfo && invoinceInfo.totalAmountPurchaseInvoice === 0 && invoinceInfo.totalAmountSalesInvoice === 0)}">
                             <div *ngIf="!invoinceLoading"> {{chart}}</div>
                         </canvas>
+                        <div
+                            *ngIf="!invoinceLoading && invoinceInfo && invoinceInfo.totalAmountPurchaseInvoice === 0 && invoinceInfo.totalAmountSalesInvoice === 0">
+                            <div class="flex w-full items-center justify-center text-gray-700 p-8">
+                                Seçtiğiniz aralık için veri bulunmamaktadır.</div>
+                        </div>
                         <div *ngIf="invoinceLoading">
                             <div class="flex w-full items-center justify-center p-8">
                                 <mat-spinner></mat-spinner>
@@ -70,14 +76,21 @@
                         </div>
                     </div>
                     <div class="h-full w-full flex justify-center">
-                        <canvas id="canvas2" [class]="{'hidden': orficheLoading}">
+                        <canvas id="canvas2"
+                            [class]="{'hidden': orficheLoading || (!orficheLoading && orficheInfo && orficheInfo.totalAmountReceivedOrder === 0 && orficheInfo.totalAmountPlacedOrder === 0)}">
                             <div *ngIf="!orficheLoading"> {{chart2}}</div>
                         </canvas>
+                        <div
+                            *ngIf="!orficheLoading && orficheInfo && orficheInfo.totalAmountReceivedOrder === 0 && orficheInfo.totalAmountPlacedOrder === 0">
+                            <div class="flex w-full items-center justify-center text-gray-700 p-8">
+                                Seçtiğiniz aralık için veri bulunmamaktadır.</div>
+                        </div>
                         <div *ngIf="orficheLoading">
                             <div class="flex w-full items-center justify-center p-8">
                                 <mat-spinner></mat-spinner>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
