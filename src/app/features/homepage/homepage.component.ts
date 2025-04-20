@@ -18,18 +18,18 @@ export class HomepageComponent {
     { label: 'Cari İşlemler', url: 'current-accounts', isActive: false },
     {
       label: 'Çek/Senet İşlemleri',
-      url: 'current-accounts',
+      url: 'customer-promissory-notes',
       isActive: false,
       children: [
         {
           label: 'Müşteri Çekleri',
-          url: 'current-accounts',
+          url: 'customer-promissory-notes',
           isActive: false,
           depth: 1,
         },
         {
           label: 'Pimak Çekleri',
-          url: 'current-accounts',
+          url: 'pimak-promissory-notes',
           isActive: false,
           depth: 1,
         },

@@ -20,6 +20,10 @@ import { SalesInvoicesComponent } from './features/sales-invoices/sales-invoices
 import { BnCreditCardState } from './state/bncreditcard/bncreditcard.state';
 import { CreditCardsComponent } from './features/credit-cards/credit-cards.component';
 import { CreditCardDetailComponent } from './features/credit-cards/credit-card-detail/credit-card-detail.component';
+import { PromissoryNoteDetailComponent } from './features/promissory-note-detail/promissory-note-detail.component';
+import { PimakPromissoryNotesComponent } from './features/pimak-promissory-notes/pimak-promissory-notes.component';
+import { CsCardState } from './state/cscard/cscard.state';
+import { CustomerPromissoryNotesComponent } from './features/customer-promissory-notes/customer-promissory-notes.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -59,6 +63,16 @@ export const routes: Routes = [
         path: 'sales-invoices',
         component: SalesInvoicesComponent,
         providers: [provideStates([InvoiceState])]
+      },
+      {
+        path: 'pimak-promissory-notes',
+        component: PimakPromissoryNotesComponent,
+        providers: [provideStates([CsCardState])]
+      },
+      {
+        path: 'customer-promissory-notes',
+        component: CustomerPromissoryNotesComponent,
+        providers: [provideStates([CsCardState])]
       }
     ],
   },
@@ -85,6 +99,14 @@ export const routes: Routes = [
   {
     path: 'sales-invoices/detail/:id',
     component: InvoiceDetailComponent,
+  },
+  {
+    path: 'pimak-promissory-notes/detail/:id',
+    component: PromissoryNoteDetailComponent,
+  },
+  {
+    path: 'customer-promissory-notes/detail/:id',
+    component: PromissoryNoteDetailComponent,
   },
   { path: '**', component: LoginComponent },
 ];
