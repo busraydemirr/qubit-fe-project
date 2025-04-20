@@ -7,6 +7,7 @@ import { CsCardService } from "../../services/cscard.service";
 import { CsCardLineModel } from "../../models/cscard/cscard-line.model";
 import { CsCardModel } from "../../models/cscard/cscard.model";
 import { CsCardActions } from "./cscard.action";
+import { FilterRequestModel } from "../../models/shared/filter-request.model";
 
 @State<CsCardStateModel>({
     name: 'cscard',
@@ -21,6 +22,8 @@ import { CsCardActions } from "./cscard.action";
         pimakSize: 10,
         pimakTotalElements: 0,
         pimakPages: 0,
+        pimakFilter: {},
+        cekFilter: {},
         loading: false,
         csCardDetail: {},
         detailLoading: false,
@@ -59,6 +62,16 @@ export class CsCardState {
     @Selector()
     static getPimakList({ pimakItems }: CsCardStateModel): CsCardModel[] {
         return pimakItems;
+    }
+
+    @Selector()
+    static getCekFilter({ cekFilter }: CsCardStateModel): FilterRequestModel {
+        return cekFilter;
+    }
+
+    @Selector()
+    static getPimakFilter({ pimakFilter }: CsCardStateModel): FilterRequestModel {
+        return pimakFilter;
     }
 
     @Selector()
@@ -104,7 +117,7 @@ export class CsCardState {
 
     @Action(CsCardActions.CsCardCekList)
     csCardCekList({ patchState }: StateContext<CsCardStateModel>, action: CsCardActions.CsCardCekList) {
-        patchState({ loading: true });
+        patchState({ loading: true, cekFilter: action.payload.filter });
         return this._csCardService.listCekCard(action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
             tap(data => {
                 patchState({
@@ -121,7 +134,7 @@ export class CsCardState {
 
     @Action(CsCardActions.CsCardPimakList)
     listPimakCard({ patchState }: StateContext<CsCardStateModel>, action: CsCardActions.CsCardPimakList) {
-        patchState({ loading: true });
+        patchState({ loading: true, pimakFilter: action.payload.filter });
         return this._csCardService.listPimakCard(action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
             tap(data => {
                 patchState({

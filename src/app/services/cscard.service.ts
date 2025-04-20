@@ -20,27 +20,54 @@ export class CsCardService {
     }
 
     public listCekCard(size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<CsCardModel>>> {
-        filter = {
-            filter: {
-                field: 'doc',
-                value: '1',
-                operator: 'eq',
-                ...filter?.filter?.filters ? { filters: filter.filter.filters } : {}
-            }
+        const docFilter = {
+            field: 'doc',
+            value: '1',
+            operator: 'eq',
         };
-        return this._http.post<ResponseModel<BaseResponseData<CsCardModel>>>(this.url + 'api/CsCard' + '?size=' + size + '&from=' + page + '&term=' + term, filter);
+        let newFilter = {};
+        if (filter?.filter) {
+            newFilter =
+            {
+                ...filter.filter,
+                logic: 'and',
+                filters: filter.filter.filters ? [...filter.filter.filters, docFilter] : [docFilter]
+            }
+        } else {
+            newFilter = {
+                filter: {
+                    field: 'doc',
+                    value: '1',
+                    operator: 'eq',
+                }
+            }
+        }
+        return this._http.post<ResponseModel<BaseResponseData<CsCardModel>>>(this.url + 'api/CsCard' + '?size=' + size + '&from=' + page + '&term=' + term, newFilter);
     }
 
     public listPimakCard(size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<CsCardModel>>> {
-        filter = {
-            filter: {
-                field: 'doc',
-                value: '3',
-                operator: 'eq',
-                ...filter?.filter?.filters ? { filters: filter.filter.filters } : {}
-            }
+        const docFilter = {
+            field: 'doc',
+            value: '3',
+            operator: 'eq',
         };
-        return this._http.post<ResponseModel<BaseResponseData<CsCardModel>>>(this.url + 'api/CsCard' + '?size=' + size + '&from=' + page + '&term=' + term, filter);
+        let newFilter = {};
+
+        if (filter?.filter) {
+            newFilter =
+            {
+                filter: {
+                    ...filter.filter,
+                    logic: 'and',
+                    filters: filter.filter.filters ? [...filter.filter.filters, docFilter] : [docFilter]
+                }
+            }
+        } else {
+            newFilter = {
+                filter: docFilter
+            }
+        }
+        return this._http.post<ResponseModel<BaseResponseData<CsCardModel>>>(this.url + 'api/CsCard' + '?size=' + size + '&from=' + page + '&term=' + term, newFilter);
     }
 
     public listCsCards(size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<CsCardModel>>> {

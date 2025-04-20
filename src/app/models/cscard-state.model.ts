@@ -1,5 +1,6 @@
 import { CsCardLineModel } from "./cscard/cscard-line.model";
 import { CsCardModel } from "./cscard/cscard.model";
+import { FilterRequestModel } from "./shared/filter-request.model";
 
 export interface CsCardStateModel { 
     cekItems: CsCardModel[];
@@ -21,4 +22,6 @@ export interface CsCardStateModel {
     lineSize: number;
     lineTotalElements: number;
     linePages: number;
+    pimakFilter: FilterRequestModel;
+    cekFilter: FilterRequestModel;
 }
