@@ -11,8 +11,31 @@ import { InvoiceState } from '../../state/invoice/invoice.state';
 import { InvoiceActions } from '../../state/invoice/invoice.action';
 import { Router } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import moment from 'moment';
+import { FilterRequestModel } from '../../models/shared/filter-request.model';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { renderCurrency } from '../../utils/enum.utils';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: ['DD/MM/YYYY'],
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
   selector: 'app-sales-invoices',
@@ -24,8 +47,21 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatSortModule,
     NgxSkeletonLoaderModule,
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    DatePipe,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatMomentDateModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
+    providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: DateAdapter, useClass: MomentDateAdapter },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+    ],
   templateUrl: './sales-invoices.component.html',
   styleUrl: './sales-invoices.component.scss'
 })
@@ -38,6 +74,10 @@ export class SalesInvoicesComponent {
   public displayedColumns = [
     'ficheno',
     'clCardDefinition',
+    'date',
+    'nettotal',
+    'genexp1',
+    'trcurr'
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -47,6 +87,12 @@ export class SalesInvoicesComponent {
   };
   public loading$: Observable<boolean>;
   public subsink = new SubSink();
+  public invoiceFilterForm: FormGroup = new FormGroup({
+    clCardDefinition: new FormControl(null),
+    start: new FormControl(null),
+    end: new FormControl(null),
+  });
+  public renderCurrency = renderCurrency;
 
   constructor(private _router: Router, private _store: Store) {
     this.loading$ = this._store.select(InvoiceState.getLoading);
@@ -83,4 +129,84 @@ export class SalesInvoicesComponent {
       new InvoiceActions.SalesInvoiceList({ size: event.pageSize, page: event.pageIndex, filter: {} })
     );
   }
+
+    public filter(): void {
+      if (!this.invoiceFilterForm?.value || this.invoiceFilterForm.invalid) {
+        return;
+      }
+  
+      let filter: FilterRequestModel | null = null;
+      if (this.invoiceFilterForm.value.clCardDefinition) {
+        filter = {
+          filter: {
+            field: 'clCardDefinition',
+            value: this.invoiceFilterForm.value.clCardDefinition,
+            operator: 'contains',
+          }
+        };
+  
+  
+        if (this.invoiceFilterForm.value.start && this.invoiceFilterForm.value.end) {
+          filter = {
+            filter: {
+              field: 'clCardDefinition',
+              value: this.invoiceFilterForm.value.clCardDefinition,
+              operator: 'contains',
+              logic: "and",
+              filters: [{
+                field: 'date',
+                value: moment(this.invoiceFilterForm.value.start).toISOString(),
+                operator: 'gt',
+              }, {
+                field: 'date',
+                value: moment(this.invoiceFilterForm.value.end).toISOString(),
+                operator: 'lt',
+              }]
+            }
+          };
+  
+        }
+      } else {
+        if (this.invoiceFilterForm.value.start && this.invoiceFilterForm.value.end) {
+          filter = {
+            filter: {
+              field: 'date',
+              value: moment(this.invoiceFilterForm.value.start).toISOString(),
+              operator: 'gt',
+              logic: "and",
+              filters: [{
+                field: 'date',
+                value: moment(this.invoiceFilterForm.value.end).toISOString(),
+                operator: 'lt',
+              }]
+            }
+          };
+        }
+      }
+  
+  
+      if (!filter) {
+        return;
+      }
+      console.log(filter);
+  
+  
+      this._store.dispatch(
+        new InvoiceActions.SalesInvoiceList({ size: this.queryParams.size, page: this.queryParams.page, filter })
+      );
+  
+  
+    }
+  
+    public clearFilters(): void {
+      if (!this.invoiceFilterForm?.value?.clCardDefinition && !this.invoiceFilterForm?.value?.start && !this.invoiceFilterForm?.value?.end) {
+        return;
+      }
+  
+      this.invoiceFilterForm.reset();
+      const queryParams = this._store.selectSnapshot(InvoiceState.getSalesInvoiceQueryParams);
+      this._store.dispatch(
+        new InvoiceActions.SalesInvoiceList({ size: queryParams.size, page: 0, filter: {} })
+      );
+    }
 }

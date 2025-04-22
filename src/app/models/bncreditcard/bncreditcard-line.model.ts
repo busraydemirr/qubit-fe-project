@@ -1,22 +1,18 @@
 export interface BnCreditCardLineModel {
     id?: number;
-    code?: string;
-    name?: string;
-    bankAccDefinition?: string;
-    bncrref?: number;
-    specode?: string;
-    cyphcode?: string;
-    crcardtype?: string;
-    credittype?: string;
-    gksno?: string;
-    begdate?: string;
-    enddate?: string;
-    trcurr?: number;
-    trtotal?: number;
-    trratecr?: number;
-    trrateacc?: number;
-    reportrate?: number;
-    intrate?: number;
+    creditref?: number;
+    creditName?: string;
+    pernr?: number;
+    transtype?: number;
+    totalAmount?: number | null;
     inttotal?: number;
-    commtotal?: number;
+    linenr?: number;
+    duedate?: string;
+    bnAccDefinition?: string;
+    bnaccref?: number;
+    capiblockNameCreatedby?: string;
+    capiblockCreatedby?: number;
+    capiblockCreadeddate?: string;
+    lineexp?: string;
+    total?: number;
 }

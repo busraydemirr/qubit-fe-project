@@ -16,27 +16,47 @@ export class InvoiceService {
     constructor(private _http: HttpClient) { }
 
     public listPurchaseInvoices(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<InvoiceModel>>> {
-        filter = {
-            filter: {
-                field: 'grpcode',
-                value: '1',
-                operator: 'eq',
-                ...filter?.filter?.filters ? { filters: filter.filter.filters } : {}
-            }
+        const codeFilter = {
+            field: 'grpcode',
+            value: '1',
+            operator: 'eq',
         };
-        return this._http.post<ResponseModel<BaseResponseData<InvoiceModel>>>(this.url + 'api/Invoice' + '?size=' + size + '&from=' + page, filter);
+        let newFilter = {};
+        if (filter?.filter) {
+            newFilter =
+            {
+                ...filter.filter,
+                logic: 'and',
+                filters: filter.filter.filters ? [...filter.filter.filters, codeFilter] : [codeFilter]
+            }
+        } else {
+            newFilter = {
+                filter: codeFilter
+            }
+        }
+        return this._http.post<ResponseModel<BaseResponseData<InvoiceModel>>>(this.url + 'api/Invoice' + '?size=' + size + '&from=' + page, newFilter);
     }
 
     public listSalesInvoices(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<InvoiceModel>>> {
-        filter = {
-            filter: {
-                field: 'grpcode',
-                value: '2',
-                operator: 'eq',
-                ...filter?.filter?.filters ? { filters: filter.filter.filters } : {}
-            }
+        const codeFilter = {
+            field: 'grpcode',
+            value: '2',
+            operator: 'eq',
         };
-        return this._http.post<ResponseModel<BaseResponseData<InvoiceModel>>>(this.url + 'api/Invoice' + '?size=' + size + '&from=' + page, filter);
+        let newFilter = {};
+        if (filter?.filter) {
+            newFilter =
+            {
+                ...filter.filter,
+                logic: 'and',
+                filters: filter.filter.filters ? [...filter.filter.filters, codeFilter] : [codeFilter]
+            }
+        } else {
+            newFilter = {
+                filter: codeFilter
+            }
+        }
+        return this._http.post<ResponseModel<BaseResponseData<InvoiceModel>>>(this.url + 'api/Invoice' + '?size=' + size + '&from=' + page, newFilter);
     }
 
     public listInvoices(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<InvoiceModel>>> {

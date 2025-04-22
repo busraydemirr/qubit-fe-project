@@ -9,7 +9,7 @@ import { BnCreditCardState } from '../../../state/bncreditcard/bncreditcard.stat
 import { Store } from '@ngxs/store';
 import { BnCreditCardActions } from '../../../state/bncreditcard/bncreditcard.action';
 import { renderCardType, renderCurrency } from '../../../utils/enum.utils';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
@@ -21,6 +21,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NgIf,
     AsyncPipe,
     NgxSkeletonLoaderModule,
+    CommonModule,
+    DatePipe
   ],
   templateUrl: './credit-lines.component.html',
   styleUrl: './credit-lines.component.scss'
@@ -34,11 +36,18 @@ export class CreditLinesComponent implements OnInit, AfterViewInit {
   public elements: BnCreditCardLineModel[] = [];
   public dataSource!: MatTableDataSource<BnCreditCardLineModel>;
   public displayedColumns = [
-    'code',
-    'cardtype',
-    'definition',
-    'currency',
-    'iban'
+    "creditName",
+    "pernr",
+    "transtype",
+    "totalAmount",
+    "inttotal",
+    "linenr",
+    "duedate",
+    "bnAccDefinition",
+    "capiblockNameCreatedby",
+    "capiblockCreadeddate",
+    "lineexp",
+    "total"
   ];
   public queryParams: QueryParams = {
     size: 10,

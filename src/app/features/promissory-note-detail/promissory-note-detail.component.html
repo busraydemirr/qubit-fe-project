@@ -1,1 +1,312 @@
-<p>promissory-note-detail works!</p>
+<ng-container *ngIf="csCard$ | async as csCard">
+    <app-banner [label]="csCard.bankname!" [subLabel]="csCard?.bnaccountno!"></app-banner>
+</ng-container>
+
+<div class="w-auto detail-background">
+    <mat-tab-group>
+        <mat-tab label="Genel Bilgiler" labelClass="bg-qub-primary">
+            <ng-container *ngIf="(loading$ | async); else content">
+                <div class="flex w-full items-center justify-center p-8">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-container>
+            <ng-template #content>
+                <ng-container *ngIf="csCard$ | async as csCard">
+                    <div class="p-8">
+                        <div class="w-full h-full table-background">
+                            <!-- Banka Hesabı Adı -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Banka Hesabı Adı
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.bankAccDefinition}}
+                                </span>
+                            </div>
+
+                            <!-- Doküman -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Çek/Senet Türü
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.doc === 1 ? 'Müşteri Çekleri' : 'Pimak'}}
+                                </span>
+                            </div>
+
+                            <!-- Mevcut Durum -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Mevcut Durum
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.currstat}}
+                                </span>
+                            </div>
+
+                            <!-- Portföy No -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Portföy Numarası
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.portfoyno}}
+                                </span>
+                            </div>
+
+                            <!-- Banka Adı -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Banka Adı
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.bankname}}
+                                </span>
+                            </div>
+
+                            <!-- Özel Kod -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Özel Kod
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.specode}}
+                                </span>
+                            </div>
+
+                            <!-- Şehir -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Şehir
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.city}}
+                                </span>
+                            </div>
+
+                            <!-- Borçlu -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Borçlu
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.owing}}
+                                </span>
+                            </div>
+
+                            <!-- Kefil -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Kefil
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.kefil}}
+                                </span>
+                            </div>
+
+                            <!-- Şube -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Şube
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.branch}}
+                                </span>
+                            </div>
+
+                            <!-- Vade Tarihi -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Vade Tarihi
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.duedate | date: "dd/MM/yyyy"}}
+                                </span>
+                            </div>
+
+                            <!-- Ayar Tarihi -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Tanzim Tarihi
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.setdate | date: "dd/MM/yyyy"}}
+                                </span>
+                            </div>
+
+                            <!-- Miktar -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Tutar
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.amount}}
+                                </span>
+                            </div>
+
+                            <!-- Döviz Türü -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    İşlem Dövizi Türü
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.trcurr}}
+                                </span>
+                            </div>
+
+                            <!-- İD Kur -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    İşlem Dövizi Kuru
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.trrate}}
+                                </span>
+                            </div>
+
+                            <!-- İD Tutarı -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    İşlem Dövizi Tutarı
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.trnet}}
+                                </span>
+                            </div>
+
+                            <!-- RD Kuru -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    RD Kuru
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.reportrate}}
+                                </span>
+                            </div>
+
+                            <!-- RD Tutarı -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    RD Tutarı
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.reportnet}}
+                                </span>
+                            </div>
+
+                            <!-- Devir -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Devir
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.devir === 1 ? 'Aktif' : 'Pasif'}}
+                                </span>
+                            </div>
+
+                            <!-- Kullanımda -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Kullanımda
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.inuse === 1 ? 'Kullanımda' : 'Kullanımda Değil'}}
+                                </span>
+                            </div>
+
+                            <!-- Oluşturulma Tarihi -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Oluşturulma Tarihi
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.capiblockCreadeddate | date: "dd/MM/yyyy"}}
+                                </span>
+                            </div>
+
+                            <!-- Banka Şube No -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Banka Şube No
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.bnbranchno}}
+                                </span>
+                            </div>
+
+                            <!-- Banka Hesap No -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Banka Hesap No
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.bnaccountno}}
+                                </span>
+                            </div>
+
+                            <!-- Vergi No -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Vergi Numarası
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.taxnr}}
+                                </span>
+                            </div>
+
+                            <!-- Banka Ref -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span
+                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                                    Banka Ref ID
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                                    {{csCard.bncreref}}
+                                </span>
+                            </div>
+
+                            <!-- IBAN -->
+                            <div class="flex w-full content-between flex-wrap flex-row">
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400">
+                                    IBAN
+                                </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400">
+                                    {{csCard.iban}}
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+        </mat-tab>
+        <mat-tab label="Çek/Senet Hareketleri" labelClass="bg-qub-primary">
+            <app-promissory-note-detail-list [csCardId]="csCardId" class="!h-screen"></app-promissory-note-detail-list>
+        </mat-tab>
+    </mat-tab-group>
+</div>

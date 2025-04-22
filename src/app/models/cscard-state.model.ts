@@ -24,4 +24,6 @@ export interface CsCardStateModel {
     linePages: number;
     pimakFilter: FilterRequestModel;
     cekFilter: FilterRequestModel;
+    cekTerm: string;
+    pimakTerm: string;
 }

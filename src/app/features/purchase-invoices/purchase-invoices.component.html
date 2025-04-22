@@ -1,39 +1,29 @@
 <div class="container ml-auto mr-auto">
-  <!-- <form [formGroup]="cashFilterForm" class="flex w-full gap-4 px-3 mb-3">
-  <mat-form-field [appearance]="'outline'" class="w-1/3">
-    <input matInput placeholder="Isim" formControlName="name" />
-  </mat-form-field>
-  <mat-form-field [appearance]="'outline'" class="w-1/3">
-    <input
-      matInput
-      placeholder="Cep Telefonu"
-      formControlName="phoneNumber"
-      type="number"
-      pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
-      maxlength="10"
-      onKeyPress="if(this.value.length==10) return false;"
-    />
-    <mat-hint>
-      <mat-icon> info </mat-icon>
-      Başında 0 olmadan giriniz.
-    </mat-hint>
-  </mat-form-field>
-  <mat-form-field [appearance]="'outline'" class="w-1/3">
-    <input
-      matInput
-      placeholder="E-Posta"
-      formControlName="email"
-      type="email"
-    />
-  </mat-form-field>
-  <button
-    mat-icon-button
-    class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto"
-    (click)="filter()"
-  >
-    <mat-icon fontIcon="search"></mat-icon>
-  </button>
-</form> -->
+  <form [formGroup]="invoiceFilterForm" class="flex w-full gap-4 mb-3">
+    <mat-form-field [appearance]="'fill'" class="w-1/2">
+      <input matInput placeholder="Cari Adı" formControlName="clCardDefinition" />
+    </mat-form-field>
+    <mat-form-field class="w-1/2" appearance="fill">
+      <mat-label>Tarih</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Başlangıç">
+        <input matEndDate formControlName="end" placeholder="Bitiş">
+      </mat-date-range-input>
+      <mat-hint>GG/AA/YYYY – GG/AA/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button mat-icon-button [disabled]="invoiceFilterForm.invalid"
+      class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
+      (click)="filter()">
+      <mat-icon fontIcon="search"></mat-icon>
+    </button>
+    <button mat-icon-button [disabled]="!invoiceFilterForm.value"
+      class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
+      (click)="clearFilters()">
+      <mat-icon fontIcon="delete"></mat-icon>
+    </button>
+  </form>
   <mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="ficheno">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Fiş No </mat-header-cell>
@@ -66,6 +56,73 @@
           <div class="clickable-cell">
             {{ element.clCardDefinition }}
           </div>
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tarih </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{ element.date | date: "dd/MM/yyyy"}}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nettotal">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Net Toplam </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{ element.nettotal }}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="genexp1">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Genel Açıklama </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{ element.genexp1 }}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="trcurr">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Para Birimi </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{ renderCurrency(element.trcurr) }}
         </ng-template>
       </mat-cell>
     </ng-container>

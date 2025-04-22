@@ -47,7 +47,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   public displayedColumns = [
     'bankname',
     'owing',
-    'bnAccountNo',
+    'bnaccountno',
   ];
   public queryParams: QueryParams = {
     size: 10,

@@ -24,25 +24,21 @@ import { FilterRequestModel } from "../../models/shared/filter-request.model";
         pimakPages: 0,
         pimakFilter: {},
         cekFilter: {},
+        cekTerm: '03',
+        pimakTerm: '03',
         loading: false,
         csCardDetail: {},
         detailLoading: false,
         linesListLoading: false,
         csCardLines: [{
-            custtitle: '',
-            branch: 11,
-            ficheno: '',
-            amount: 11,
+            devir: 21,
+            clCardDefinition: '',
         }, {
-            custtitle: '',
-            branch: 11,
-            ficheno: '',
-            amount: 11,
+            devir: 21,
+            clCardDefinition: '',
         }, {
-            custtitle: '',
-            branch: 11,
-            ficheno: '',
-            amount: 11,
+            devir: 21,
+            clCardDefinition: '',
         }],
         linePage: 0,
         lineSize: 10,
@@ -72,6 +68,16 @@ export class CsCardState {
     @Selector()
     static getPimakFilter({ pimakFilter }: CsCardStateModel): FilterRequestModel {
         return pimakFilter;
+    }
+
+    @Selector()
+    static getCekTerm({ cekTerm }: CsCardStateModel): string {
+        return cekTerm;
+    }
+
+    @Selector()
+    static getPimakTerm({ pimakTerm }: CsCardStateModel): string {
+        return pimakTerm;
     }
 
     @Selector()
@@ -117,7 +123,7 @@ export class CsCardState {
 
     @Action(CsCardActions.CsCardCekList)
     csCardCekList({ patchState }: StateContext<CsCardStateModel>, action: CsCardActions.CsCardCekList) {
-        patchState({ loading: true, cekFilter: action.payload.filter });
+        patchState({ loading: true, cekFilter: action.payload.filter, cekTerm: action.payload.term });
         return this._csCardService.listCekCard(action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
             tap(data => {
                 patchState({
@@ -134,7 +140,7 @@ export class CsCardState {
 
     @Action(CsCardActions.CsCardPimakList)
     listPimakCard({ patchState }: StateContext<CsCardStateModel>, action: CsCardActions.CsCardPimakList) {
-        patchState({ loading: true, pimakFilter: action.payload.filter });
+        patchState({ loading: true, pimakFilter: action.payload.filter, pimakTerm: action.payload.term });
         return this._csCardService.listPimakCard(action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
             tap(data => {
                 patchState({

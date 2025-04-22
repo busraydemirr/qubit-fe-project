@@ -31,7 +31,7 @@
     </mat-form-field>
   </div>
   <mat-table [dataSource]="dataSource" matSort>
-    <ng-container matColumnDef="bnAccountNo">
+    <ng-container matColumnDef="bnaccountno">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Hesabı Numarası </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
@@ -43,7 +43,7 @@
             }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
-          {{ element.bnAccountNo }}
+          {{ element.bnaccountno }}
         </ng-template>
       </mat-cell>
     </ng-container>

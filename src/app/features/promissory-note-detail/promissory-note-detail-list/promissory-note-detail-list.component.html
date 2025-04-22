@@ -1,0 +1,92 @@
+<div class="p-8 !h-screen table-inner-container">
+    <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Tarih </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.date | date: 'dd/MM/yyyy'}}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="clCardDefinition">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Cari Bilgisi </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.clCardDefinition }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="devir">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Devir </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{element.devir === 1 ? 'Aktif' : 'Pasif'}}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="statno">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Statü numarası
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.statno }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Durum </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.status === 1 ? 'Tamamlandı': 'İptal Edildi'}}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"
+        [length]="queryParams.totalElements" (page)="changePaginationEvents($event)" showFirstLastButtons>
+    </mat-paginator>
+</div>
