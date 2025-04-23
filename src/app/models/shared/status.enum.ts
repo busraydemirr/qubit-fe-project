@@ -23,3 +23,11 @@ export enum AccountedInfo {
     'ACCOUNTED' = 'Muhasebeleştirilmiş', // 1
     'NOT_ACCOUNTED' = 'Muhasebeleştirilmemiş' // 0
 }
+
+export enum OrficheStatus {
+    'WAITING' = 'Beklemede', // 0: Beklemede
+    'APPROVED' = 'Onaylandı', // 1: Onaylandı
+    'HALF_COMPLETED' = 'Kısmen Gerçekleşti', // 2: Kısmen Gerçekleşti
+    'COMPLETED' = 'Tamamlandı', // 3: Tamamlandı
+    'CLOSED' = 'Kapatıldı', // 4: Kapatıldı
+}

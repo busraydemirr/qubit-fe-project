@@ -15,7 +15,7 @@ export class OrficheService {
 
     constructor(private _http: HttpClient) { }
 
-    public listPlacedOrfiche(size: number, from: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<OrficheModel[]>>> {
+    public listPlacedOrfiche(size: number, from: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<OrficheModel>>> {
         const codeFilter = {
             field: 'trcode',
             value: '2', // verilen siparişler
@@ -34,10 +34,10 @@ export class OrficheService {
                 filter: codeFilter
             }
         }
-        return this._http.post<ResponseModel<BaseResponseData<OrficheModel[]>>>(this.url + 'api/Orfiche?size=' + size + '&from=' + from + '&term=' + term, newFilter);
+        return this._http.post<ResponseModel<BaseResponseData<OrficheModel>>>(this.url + 'api/Orfiche?size=' + size + '&from=' + from + '&term=' + term, newFilter);
     }
 
-    public listReceivedOrfiche(size: number, from: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<OrficheModel[]>>> {
+    public listReceivedOrfiche(size: number, from: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<OrficheModel>>> {
         const codeFilter = {
             field: 'trcode',
             value: '1', // alınan siparişler
@@ -56,7 +56,7 @@ export class OrficheService {
                 filter: codeFilter
             }
         }
-        return this._http.post<ResponseModel<BaseResponseData<OrficheModel[]>>>(this.url + 'api/Orfiche?size=' + size + '&from=' + from + '&term=' + term, newFilter);
+        return this._http.post<ResponseModel<BaseResponseData<OrficheModel>>>(this.url + 'api/Orfiche?size=' + size + '&from=' + from + '&term=' + term, newFilter);
     }
 
 

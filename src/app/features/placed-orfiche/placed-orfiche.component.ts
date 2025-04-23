@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { InvoiceModel } from '../../models/invoices/invoice.model';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QueryParams } from '../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
@@ -69,8 +68,8 @@ export class PlacedOrficheComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  public elements: InvoiceModel[] = [];
-  public dataSource!: MatTableDataSource<InvoiceModel>;
+  public elements: OrficheModel[] = [];
+  public dataSource!: MatTableDataSource<OrficheModel>;
   public displayedColumns = [
     'ficheno',
     'clientref',
@@ -132,7 +131,7 @@ export class PlacedOrficheComponent implements OnInit, AfterViewInit, OnDestroy 
     this.subsink.unsubscribe();
   }
 
-  public rowClicked(element: InvoiceModel): void {
+  public rowClicked(element: OrficheModel): void {
     this._store.dispatch(new OrficheActions.SetOrfiche(element));
     this._router.navigate(['placed-orfiches/detail', element.id]);
   }

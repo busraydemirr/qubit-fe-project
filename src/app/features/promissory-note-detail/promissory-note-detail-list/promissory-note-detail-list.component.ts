@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
-import { Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -27,7 +27,7 @@ import { SubSink } from 'subsink';
   templateUrl: './promissory-note-detail-list.component.html',
   styleUrl: './promissory-note-detail-list.component.scss'
 })
-export class PromissoryNoteDetailListComponent {
+export class PromissoryNoteDetailListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -88,5 +88,9 @@ export class PromissoryNoteDetailListComponent {
       new CsCardActions.GetCsCardLines
         ({ id: this.csCardId, size: event.pageSize, page: event.pageIndex, filter: {}, term: this.term })
     );
+  }
+
+  public ngOnDestroy(): void {
+    this._subSink.unsubscribe();
   }
 }

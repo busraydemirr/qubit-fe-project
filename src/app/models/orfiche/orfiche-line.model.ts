@@ -1,1 +1,40 @@
-export interface OrficheLineModel {}
+export interface OrficheLineModel {
+    id?: number;
+    itemCode?: string;
+    itemName?: string;
+    clCardDefinition?: string;
+    stockref?: number;
+    ordficheref?: number;
+    clientref?: number;
+    date?: string;
+    amount?: number;
+    price?: number;
+    total?: number;
+    shippedamount?: number;
+    discper?: number;
+    vat?: number;
+    vatamnt?: number;
+    vatmatrah?: number;
+    lineexp?: string;
+    uomref?: number;
+    uinfo1?: number;
+    uinfo2?: number;
+    uinfo3?: number;
+    uinfo4?: number;
+    uinfo5?: number;
+    uinfo6?: number;
+    uinfo7?: number;
+    uinfo8?: number;
+    duedate?: string;
+    linenet?: number;
+    salesmanref?: number;
+    status?: number;
+    grossuinfo1?: number;
+    grossuinfo2?: number;
+    cancelled?: number;
+    trcurr?: number;
+    trrate?: number;
+    orgduedate?: string;
+    orgamount?: number;
+    orgprice?: number;
+}

@@ -1,7 +1,7 @@
 import { CardType } from "../models/bncard/card-type.enum";
 import { Currency } from "../models/bncard/currency.enum";
 import { ClCardType } from "../models/clcard/clcard-type.enum";
-import { AccountedInfo, RectStatus, Sign, Status } from "../models/shared/status.enum";
+import { AccountedInfo, OrficheStatus, RectStatus, Sign, Status } from "../models/shared/status.enum";
 
 export function renderRectStatus(value: number): RectStatus | '' {
     switch (value) {
@@ -18,6 +18,17 @@ export function renderStatus(status: number): Status | '' {
     switch (status) {
         case 0: return Status.PASSIVE;
         case 1: return Status.ACTIVE;
+        default: return '';
+    }
+}
+
+export function renderOrficheStatus(status: number): OrficheStatus | '' {
+    switch (status) {
+        case 0: return OrficheStatus.WAITING;
+        case 1: return OrficheStatus.APPROVED;
+        case 2: return OrficheStatus.HALF_COMPLETED;
+        case 3: return OrficheStatus.COMPLETED;
+        case 4: return OrficheStatus.CLOSED;
         default: return '';
     }
 }
