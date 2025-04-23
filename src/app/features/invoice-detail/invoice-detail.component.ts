@@ -8,7 +8,7 @@ import { InvoiceState } from '../../state/invoice/invoice.state';
 import { InvoiceActions } from '../../state/invoice/invoice.action';
 import { InvoiceDetailListComponent } from './invoice-detail-list/invoice-detail-list.component';
 import { MatIconModule } from '@angular/material/icon';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -31,7 +31,8 @@ import { renderAccountedInfo } from '../../utils/enum.utils';
     InvoiceDetailListComponent,
     AsyncPipe,
     NgIf,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CommonModule
   ],
   templateUrl: './invoice-detail.component.html',
   styleUrl: './invoice-detail.component.scss'

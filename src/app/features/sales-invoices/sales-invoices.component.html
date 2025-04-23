@@ -42,7 +42,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="clCardDefinition">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Tanım </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Cari Adı </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -89,7 +89,7 @@
           }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
-          {{ element.nettotal }}
+          {{ element.nettotal | number:'1.2-2'}}
         </ng-template>
       </mat-cell>
     </ng-container>

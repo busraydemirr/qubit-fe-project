@@ -24,6 +24,10 @@ import { PromissoryNoteDetailComponent } from './features/promissory-note-detail
 import { PimakPromissoryNotesComponent } from './features/pimak-promissory-notes/pimak-promissory-notes.component';
 import { CsCardState } from './state/cscard/cscard.state';
 import { CustomerPromissoryNotesComponent } from './features/customer-promissory-notes/customer-promissory-notes.component';
+import { ReceivedOrficheComponent } from './features/received-orfiche/received-orfiche.component';
+import { OrficheState } from './state/orfiche/orfiche.state';
+import { OrficheDetailComponent } from './features/orfiche-detail/orfiche-detail.component';
+import { PlacedOrficheComponent } from './features/placed-orfiche/placed-orfiche.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -73,6 +77,16 @@ export const routes: Routes = [
         path: 'customer-promissory-notes',
         component: CustomerPromissoryNotesComponent,
         providers: [provideStates([CsCardState])]
+      },
+      {
+        path: 'received-orfiches',
+        component: ReceivedOrficheComponent,
+        providers: [provideStates([OrficheState])]
+      },
+      {
+        path: 'placed-orfiches',
+        component: PlacedOrficheComponent,
+        providers: [provideStates([OrficheState])]
       }
     ],
   },
@@ -107,6 +121,14 @@ export const routes: Routes = [
   {
     path: 'customer-promissory-notes/detail/:id',
     component: PromissoryNoteDetailComponent,
+  },
+  {
+    path: 'received-orfiches/detail/:id',
+    component: OrficheDetailComponent,
+  },
+  {
+    path: 'placed-orfiches/detail/:id',
+    component: OrficheDetailComponent,
   },
   { path: '**', component: LoginComponent },
 ];

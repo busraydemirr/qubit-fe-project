@@ -1,18 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { InvoiceModel } from '../../models/invoices/invoice.model';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QueryParams } from '../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
-import { SubSink } from 'subsink';
 import { Store } from '@ngxs/store';
-import { InvoiceState } from '../../state/invoice/invoice.state';
-import { InvoiceActions } from '../../state/invoice/invoice.action';
 import { Router } from '@angular/router';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AsyncPipe, CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { SubSink } from 'subsink';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -24,6 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { renderCurrency } from '../../utils/enum.utils';
+import { OrficheState } from '../../state/orfiche/orfiche.state';
+import { OrficheActions } from '../../state/orfiche/orfiche.action';
+import { OrficheModel } from '../../models/orfiche/orfiche.model';
 
 export const MY_FORMATS = {
   parse: {
@@ -38,10 +38,9 @@ export const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'app-sales-invoices',
+  selector: 'app-placed-orfiche',
   imports: [
     MatTableModule,
-    MatCheckboxModule,
     NgClass,
     MatPaginatorModule,
     MatSortModule,
@@ -63,10 +62,10 @@ export const MY_FORMATS = {
   { provide: DateAdapter, useClass: MomentDateAdapter },
   { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
-  templateUrl: './sales-invoices.component.html',
-  styleUrl: './sales-invoices.component.scss'
+  templateUrl: './placed-orfiche.component.html',
+  styleUrl: './placed-orfiche.component.scss'
 })
-export class SalesInvoicesComponent {
+export class PlacedOrficheComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -74,11 +73,11 @@ export class SalesInvoicesComponent {
   public dataSource!: MatTableDataSource<InvoiceModel>;
   public displayedColumns = [
     'ficheno',
+    'clientref',
     'clCardDefinition',
     'date',
     'nettotal',
     'genexp1',
-    'trcurr'
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -88,7 +87,8 @@ export class SalesInvoicesComponent {
   };
   public loading$: Observable<boolean>;
   public subsink = new SubSink();
-  public invoiceFilterForm: FormGroup = new FormGroup({
+  public termControl = new FormControl('03');
+  public orficheFilterForm: FormGroup = new FormGroup({
     clCardDefinition: new FormControl(null),
     start: new FormControl(null),
     end: new FormControl(null),
@@ -96,18 +96,30 @@ export class SalesInvoicesComponent {
   public renderCurrency = renderCurrency;
 
   constructor(private _router: Router, private _store: Store) {
-    this.loading$ = this._store.select(InvoiceState.getLoading);
+    this.loading$ = this._store.select(OrficheState.getLoading);
   }
 
   public ngOnInit(): void {
     this._store.dispatch(
-      new InvoiceActions.SalesInvoiceList({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
+      new OrficheActions.PlacedOrficheList({ size: this.queryParams.size, page: this.queryParams.page, filter: {}, term: this.termControl.value! })
     );
 
-    this.subsink.sink = this._store.select(InvoiceState.getSalesInvoices).subscribe((invoices: InvoiceModel[]) => {
-      this.elements = invoices;
-      this.dataSource = new MatTableDataSource<InvoiceModel>(this.elements);
-      this.queryParams = this._store.selectSnapshot(InvoiceState.getSalesInvoiceQueryParams);
+    this.subsink.sink = this._store.select(OrficheState.getplacedorfiches).subscribe((orfiches: OrficheModel[]) => {
+      this.elements = orfiches;
+      this.dataSource = new MatTableDataSource<OrficheModel>(this.elements);
+      this.queryParams = this._store.selectSnapshot(OrficheState.getPlacedOrficheQueryParams);
+    });
+
+    this.subsink.sink = this.termControl.valueChanges.subscribe((value) => {
+      const queryParams = this._store.selectSnapshot(OrficheState.getPlacedOrficheQueryParams);
+      const filter = this._store.selectSnapshot(OrficheState.getPlacedOrficheFilters);
+      const payload = {
+        size: queryParams.size,
+        page: 0,
+        term: value!,
+        filter: filter ?? {},
+      };
+      this._store.dispatch(new OrficheActions.PlacedOrficheList(payload));
     });
   }
 
@@ -121,46 +133,48 @@ export class SalesInvoicesComponent {
   }
 
   public rowClicked(element: InvoiceModel): void {
-    this._store.dispatch(new InvoiceActions.SetInvoice(element));
-    this._router.navigate(['sales-invoices/detail', element.id]);
+    this._store.dispatch(new OrficheActions.SetOrfiche(element));
+    this._router.navigate(['placed-orfiches/detail', element.id]);
   }
 
   public changePaginationEvents(event: PageEvent): void {
+    const filter = this._store.selectSnapshot(OrficheState.getPlacedOrficheFilters);
+    const term = this._store.selectSnapshot(OrficheState.getPlacedOrficheTerm);
     this._store.dispatch(
-      new InvoiceActions.SalesInvoiceList({ size: event.pageSize, page: event.pageIndex, filter: {} })
+      new OrficheActions.PlacedOrficheList({ size: event.pageSize, page: event.pageIndex, filter, term })
     );
   }
 
   public filter(): void {
-    if (!this.invoiceFilterForm?.value || this.invoiceFilterForm.invalid) {
+    if (!this.orficheFilterForm?.value || this.orficheFilterForm.invalid) {
       return;
     }
 
     let filter: FilterRequestModel | null = null;
-    if (this.invoiceFilterForm.value.clCardDefinition) {
+    if (this.orficheFilterForm.value.clCardDefinition) {
       filter = {
         filter: {
           field: 'clCardDefinition',
-          value: this.invoiceFilterForm.value.clCardDefinition,
+          value: this.orficheFilterForm.value.clCardDefinition,
           operator: 'contains',
         }
       };
 
 
-      if (this.invoiceFilterForm.value.start && this.invoiceFilterForm.value.end) {
+      if (this.orficheFilterForm.value.start && this.orficheFilterForm.value.end) {
         filter = {
           filter: {
             field: 'clCardDefinition',
-            value: this.invoiceFilterForm.value.clCardDefinition,
+            value: this.orficheFilterForm.value.clCardDefinition,
             operator: 'contains',
             logic: "and",
             filters: [{
               field: 'date',
-              value: moment(this.invoiceFilterForm.value.start).toISOString(),
+              value: moment(this.orficheFilterForm.value.start).toISOString(),
               operator: 'gt',
             }, {
               field: 'date',
-              value: moment(this.invoiceFilterForm.value.end).toISOString(),
+              value: moment(this.orficheFilterForm.value.end).toISOString(),
               operator: 'lt',
             }]
           }
@@ -168,16 +182,16 @@ export class SalesInvoicesComponent {
 
       }
     } else {
-      if (this.invoiceFilterForm.value.start && this.invoiceFilterForm.value.end) {
+      if (this.orficheFilterForm.value.start && this.orficheFilterForm.value.end) {
         filter = {
           filter: {
             field: 'date',
-            value: moment(this.invoiceFilterForm.value.start).toISOString(),
+            value: moment(this.orficheFilterForm.value.start).toISOString(),
             operator: 'gt',
             logic: "and",
             filters: [{
               field: 'date',
-              value: moment(this.invoiceFilterForm.value.end).toISOString(),
+              value: moment(this.orficheFilterForm.value.end).toISOString(),
               operator: 'lt',
             }]
           }
@@ -191,23 +205,23 @@ export class SalesInvoicesComponent {
     }
     console.log(filter);
 
-
+    const term = this._store.selectSnapshot(OrficheState.getPlacedOrficheTerm);
+    const queryParams = this._store.selectSnapshot(OrficheState.getPlacedOrficheQueryParams);
     this._store.dispatch(
-      new InvoiceActions.SalesInvoiceList({ size: this.queryParams.size, page: this.queryParams.page, filter })
+      new OrficheActions.PlacedOrficheList({ size: queryParams.size, page: 0, filter, term })
     );
-
-
   }
 
   public clearFilters(): void {
-    if (!this.invoiceFilterForm?.value?.clCardDefinition && !this.invoiceFilterForm?.value?.start && !this.invoiceFilterForm?.value?.end) {
+    if (!this.orficheFilterForm?.value?.clCardDefinition && !this.orficheFilterForm?.value?.start && !this.orficheFilterForm?.value?.end) {
       return;
     }
 
-    this.invoiceFilterForm.reset();
-    const queryParams = this._store.selectSnapshot(InvoiceState.getSalesInvoiceQueryParams);
+    this.orficheFilterForm.reset();
+    const queryParams = this._store.selectSnapshot(OrficheState.getPlacedOrficheQueryParams);
+    const term = this._store.selectSnapshot(OrficheState.getPlacedOrficheTerm);
     this._store.dispatch(
-      new InvoiceActions.SalesInvoiceList({ size: queryParams.size, page: 0, filter: {} })
+      new OrficheActions.PlacedOrficheList({ size: queryParams.size, page: 0, filter: {}, term })
     );
   }
 }

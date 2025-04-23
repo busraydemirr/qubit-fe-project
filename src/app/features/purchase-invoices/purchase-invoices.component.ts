@@ -10,7 +10,7 @@ import { InvoiceState } from '../../state/invoice/invoice.state';
 import { InvoiceActions } from '../../state/invoice/invoice.action';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
-import { AsyncPipe, DatePipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SubSink } from 'subsink';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -55,7 +55,8 @@ export const MY_FORMATS = {
     ReactiveFormsModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    CommonModule
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

@@ -75,18 +75,18 @@ export class HomepageComponent {
     },
     {
       label: 'Siparişler',
-      url: 'current-accounts',
+      url: 'received-orfiches',
       isActive: false,
       children: [
         {
           label: 'Alınan Siparişler',
-          url: 'banks',
+          url: 'received-orfiches',
           isActive: false,
           depth: 1,
         },
         {
           label: 'Verilen Siparişler',
-          url: 'current-accounts',
+          url: 'placed-orfiches',
           isActive: false,
           depth: 1,
         },

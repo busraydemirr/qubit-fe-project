@@ -106,8 +106,10 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   }
 
   public changePaginationEvents(event: PageEvent): void {
+    const filter = this._store.selectSnapshot(CsCardState.getPimakFilter);
+    const term = this._store.selectSnapshot(CsCardState.getPimakTerm);
     this._store.dispatch(
-      new CsCardActions.CsCardPimakList({ size: event.pageSize, page: event.pageIndex, filter: {}, term: this.termControl.value! })
+      new CsCardActions.CsCardPimakList({ size: event.pageSize, page: event.pageIndex, filter, term })
     );
   }
 
@@ -118,8 +120,9 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
 
     this.primossoryFilterForm.reset();
     const queryParams = this._store.selectSnapshot(CsCardState.getpimakQueryParams);
+    const term = this._store.selectSnapshot(CsCardState.getPimakTerm);
     this._store.dispatch(
-      new CsCardActions.CsCardPimakList({ size: queryParams.size, page: 0, filter: {}, term: this.termControl.value! })
+      new CsCardActions.CsCardPimakList({ size: queryParams.size, page: 0, filter: {}, term })
     );
   }
 
@@ -168,9 +171,11 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
     if (!filter) {
       return;
     }
+
+    const term = this._store.selectSnapshot(CsCardState.getPimakTerm);
     const queryParams = this._store.selectSnapshot(CsCardState.getpimakQueryParams);
     this._store.dispatch(
-      new CsCardActions.CsCardPimakList({ size: queryParams.size, page: 0, filter, term: this.termControl.value! })
+      new CsCardActions.CsCardPimakList({ size: queryParams.size, page: 0, filter, term })
     );
   }
 }
