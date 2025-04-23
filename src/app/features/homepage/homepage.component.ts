@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SidenavMenuComponent } from '../../components/sidenav-menu/sidenav-menu.component';
 import { MenuItem } from '../../models/shared/menu-item.model';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet, UrlSegment } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -12,7 +12,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class HomepageComponent {
   public menuItems: MenuItem[] = [
-    { label: 'Anasayfa', url: '/home', isActive: true },
+    { label: 'Anasayfa', url: '/home', isActive: false },
     { label: 'Takvim', url: '/calendar', isActive: false },
     { label: 'Kasa İşlemleri', url: 'cash-transactions', isActive: false },
     { label: 'Cari İşlemler', url: 'current-accounts', isActive: false },
@@ -94,7 +94,31 @@ export class HomepageComponent {
     },
   ];
   public opened: boolean = false;
-  public selectedMenuItem: MenuItem = this.menuItems[0];
+  public selectedMenuItem!: MenuItem;
+
+  constructor(public route: Router) { }
+
+  public ngOnInit(): void {
+    const selected = this.menuItems.find(item => this.route.url.includes(item.url));
+    if (selected) {
+      selected.isActive = true;
+      this.selectedMenuItem = selected!;
+    } else {
+      this.menuItems.forEach(item => {
+        const selectedChild = item.children?.find(item => this.route.url.includes(item.url));
+        if (selectedChild) {
+          selectedChild.isActive = true;
+          this.selectedMenuItem = selectedChild!;
+        }
+      })
+    }
+
+    if (!this.selectedMenuItem) {
+      this.menuItems[0].isActive = true;
+      this.selectedMenuItem = this.menuItems[0];
+      this.route.navigate(['home']);
+    }
+  }
 
   public openMenu(): void {
     this.opened = !this.opened;

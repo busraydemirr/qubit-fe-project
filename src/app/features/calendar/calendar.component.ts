@@ -122,7 +122,6 @@ export class CalendarComponent implements AfterViewInit {
 
     forkJoin([this._creditService.getDueCredits(this.timePeriod), this._csCardService.getPromissoryNote(this.timePeriod),])
       .subscribe(([res1, res2]) => {
-        console.log(res1, res2);
         if (res1.data) {
           this.events = res1.data.items.map((item) => {
             return {
@@ -148,7 +147,6 @@ export class CalendarComponent implements AfterViewInit {
           }
           ));
         }
-        console.log(this.events);
         this.calendarLoading = false;
         this.cdr.detectChanges();
       });

@@ -189,8 +189,6 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
     if (!filter) {
       return;
     }
-    console.log(filter);
-
 
     this._store.dispatch(
       new InvoiceActions.PurchaseInvoiceList({ size: this.queryParams.size, page: this.queryParams.page, filter })

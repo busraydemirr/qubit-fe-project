@@ -202,7 +202,6 @@ export class PlacedOrficheComponent implements OnInit, AfterViewInit, OnDestroy 
     if (!filter) {
       return;
     }
-    console.log(filter);
 
     const term = this._store.selectSnapshot(OrficheState.getPlacedOrficheTerm);
     const queryParams = this._store.selectSnapshot(OrficheState.getPlacedOrficheQueryParams);

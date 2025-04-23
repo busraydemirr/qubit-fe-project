@@ -202,7 +202,6 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
     if (!filter) {
       return;
     }
-    console.log(filter);
 
     const term = this._store.selectSnapshot(OrficheState.getReceivedOrficheTerm);
     const queryParams = this._store.selectSnapshot(OrficheState.getreceivedorficheQueryParams);

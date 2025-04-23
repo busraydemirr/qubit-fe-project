@@ -100,7 +100,6 @@ export class KsCardState {
         patchState({ loading: true, filter: action.payload.filter ?? {} });
         return this._ksCardService.listKsCards(action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
             tap(data => {
-                console.log(data);
                 patchState({
                     items: data.data.items,
                     page: data.data.index,

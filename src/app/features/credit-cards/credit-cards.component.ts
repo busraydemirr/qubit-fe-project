@@ -228,8 +228,6 @@ export class CreditCardsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!filter) {
       return;
     }
-    console.log(filter);
-
 
     this._store.dispatch(
       new BnCreditCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter })

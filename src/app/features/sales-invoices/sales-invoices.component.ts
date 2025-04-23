@@ -189,7 +189,6 @@ export class SalesInvoicesComponent {
     if (!filter) {
       return;
     }
-    console.log(filter);
 
 
     this._store.dispatch(
