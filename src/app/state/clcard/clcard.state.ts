@@ -100,7 +100,7 @@ export class ClCardState {
 
     @Action(ClCardActions.List)
     listClCards({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.List) {
-        patchState({ loading: true, filter: action.payload.filter, term: action.payload.term });
+        patchState({ loading: true, filter: action.payload.filter});
         return this._clCardService.listClCards(action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
             tap(data => {
                 patchState({
@@ -117,9 +117,9 @@ export class ClCardState {
 
     @Action(ClCardActions.GetClCardTotals)
     getClCardTotals({ patchState, getState }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardTotals) {
-        const { filter, term } = getState();
+        const { term } = getState();
         patchState({ linesListLoading: true });
-        return this._clCardService.getClCardTotals(action.payload, filter ?? {}, term ?? '03').pipe(
+        return this._clCardService.getClCardTotals(action.payload, {}, term ?? '03').pipe(
             tap(data => {
                 patchState({
                     totals: {
@@ -155,8 +155,8 @@ export class ClCardState {
     }
 
     @Action(ClCardActions.GetClCardLines)
-    getClCardLines({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardLines) {
-        patchState({ linesListLoading: true });
+    getClCardLines({ patchState, dispatch }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardLines) {
+        patchState({ linesListLoading: true, term: action.payload.term });
         return this._clCardService.getClCardLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
             tap(data => {
                 patchState({
@@ -167,6 +167,8 @@ export class ClCardState {
                     linePages: data.data.pages,
                     linesListLoading: false
                 });
+
+                dispatch(new ClCardActions.GetClCardTotals(action.payload.id));
             })
         );
     }

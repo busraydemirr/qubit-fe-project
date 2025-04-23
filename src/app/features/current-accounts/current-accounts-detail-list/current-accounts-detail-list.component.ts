@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { SubSink } from 'subsink';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ClCardTotalModel } from '../../../models/clcard/clcard-total.model';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-current-accounts-detail-list',
@@ -32,6 +33,7 @@ import { ClCardTotalModel } from '../../../models/clcard/clcard-total.model';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './current-accounts-detail-list.component.html',
   styleUrl: './current-accounts-detail-list.component.scss'
@@ -76,7 +78,7 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
   public termControl = new FormControl('03');
 
   constructor(private _store: Store) {
-    this.loading$ = this._store.select(KsCardState.getLinesListLoading);
+    this.loading$ = this._store.select(ClCardState.getLinesListLoading);
     this.totals$ = this._store.select(ClCardState.getClCardTotals);
   }
 
@@ -87,7 +89,7 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
       page: this.queryParams.page,
       filter: {}
     };
-    this._store.dispatch([new ClCardActions.GetClCardLines(payload), new ClCardActions.GetClCardTotals(this.cardId)]);
+    this._store.dispatch([new ClCardActions.GetClCardLines(payload)]);
 
     this.subsink.sink = this._store.select(ClCardState.getClCardLines).subscribe((cards: ClCardLineModel[]) => {
       this.elements = cards;
@@ -105,7 +107,7 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
         term,
       };
 
-      this._store.dispatch([new ClCardActions.GetClCardLines(payload), new ClCardActions.GetClCardTotals(this.cardId)]);
+      this._store.dispatch([new ClCardActions.GetClCardLines(payload)]);
     });
   }
 
