@@ -28,6 +28,7 @@ import { ReceivedOrficheComponent } from './features/received-orfiche/received-o
 import { OrficheState } from './state/orfiche/orfiche.state';
 import { OrficheDetailComponent } from './features/orfiche-detail/orfiche-detail.component';
 import { PlacedOrficheComponent } from './features/placed-orfiche/placed-orfiche.component';
+import { CanActivateTeam } from './services/canactivate';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -36,99 +37,102 @@ export const routes: Routes = [
     path: '',
     component: HomepageComponent,
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'calendar', component: CalendarComponent },
+      {
+        path: 'home', component: HomeComponent, canActivate: [CanActivateTeam]
+      },
+      { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateTeam] },
       {
         path: 'cash-transactions',
         component: CashTransactionsComponent,
-        providers: [provideStates([KsCardState])]
+        providers: [provideStates([KsCardState])],
+        canActivate: [CanActivateTeam]
       },
       {
         path: 'current-accounts',
         component: CurrentAccountsComponent,
-        providers: [provideStates([ClCardState])]
+        providers: [provideStates([ClCardState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'banks',
         component: BankComponent,
-        providers: [provideStates([BnCardState, BnCreditCardState])]
+        providers: [provideStates([BnCardState, BnCreditCardState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'credits',
         component: CreditCardsComponent,
-        providers: [provideStates([BnCreditCardState])]
+        providers: [provideStates([BnCreditCardState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'purchase-invoices',
         component: PurchaseInvoicesComponent,
-        providers: [provideStates([InvoiceState])]
+        providers: [provideStates([InvoiceState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'sales-invoices',
         component: SalesInvoicesComponent,
-        providers: [provideStates([InvoiceState])]
+        providers: [provideStates([InvoiceState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'pimak-promissory-notes',
         component: PimakPromissoryNotesComponent,
-        providers: [provideStates([CsCardState])]
+        providers: [provideStates([CsCardState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'customer-promissory-notes',
         component: CustomerPromissoryNotesComponent,
-        providers: [provideStates([CsCardState])]
+        providers: [provideStates([CsCardState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'received-orfiches',
         component: ReceivedOrficheComponent,
-        providers: [provideStates([OrficheState])]
+        providers: [provideStates([OrficheState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'placed-orfiches',
         component: PlacedOrficheComponent,
-        providers: [provideStates([OrficheState])]
+        providers: [provideStates([OrficheState])], canActivate: [CanActivateTeam]
       }
     ],
   },
   {
     path: 'cash-transactions/detail/:id',
-    component: CashTransactionDetailComponent,
+    component: CashTransactionDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'current-accounts/detail/:id',
-    component: CurrentAccountsDetailComponent,
+    component: CurrentAccountsDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'banks/detail/:id',
-    component: BankDetailComponent,
+    component: BankDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'credits/detail/:id',
-    component: CreditCardDetailComponent,
+    component: CreditCardDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'purchase-invoices/detail/:id',
-    component: InvoiceDetailComponent,
+    component: InvoiceDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'sales-invoices/detail/:id',
-    component: InvoiceDetailComponent,
+    component: InvoiceDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'pimak-promissory-notes/detail/:id',
-    component: PromissoryNoteDetailComponent,
+    component: PromissoryNoteDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'customer-promissory-notes/detail/:id',
-    component: PromissoryNoteDetailComponent,
+    component: PromissoryNoteDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'received-orfiches/detail/:id',
-    component: OrficheDetailComponent,
+    component: OrficheDetailComponent, canActivate: [CanActivateTeam]
   },
   {
     path: 'placed-orfiches/detail/:id',
-    component: OrficheDetailComponent,
+    component: OrficheDetailComponent, canActivate: [CanActivateTeam]
   },
   { path: '**', component: LoginComponent },
 ];

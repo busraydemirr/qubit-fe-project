@@ -27,7 +27,7 @@ import { InvoiceService } from '../../services/invoice.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  @Input() user: any = 'Büşra Nur Aydemir'; // TODO: User model
+  @Input() user: any; // TODO: User model
   public weatherData =
     {
       daily: {
