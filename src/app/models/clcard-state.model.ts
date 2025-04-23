@@ -1,5 +1,7 @@
 import { ClCardLineModel } from "./clcard/clcard-line.model";
+import { ClCardTotalModel } from "./clcard/clcard-total.model";
 import { ClCardItemModel } from "./clcard/clcard.model";
+import { FilterRequestModel } from "./shared/filter-request.model";
 
 export interface ClCardStateModel {
     items: ClCardItemModel[];
@@ -16,4 +18,7 @@ export interface ClCardStateModel {
     lineSize: number;
     lineTotalElements: number;
     linePages: number;
+    filter: FilterRequestModel;
+    term: string;
+    totals: ClCardTotalModel;                      
 }

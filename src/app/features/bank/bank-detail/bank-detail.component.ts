@@ -17,6 +17,7 @@ import { Store } from '@ngxs/store';
 import { BnCardState } from '../../../state/bncard/bncard.state';
 import { BnCardActions } from '../../../state/bncard/bncard.action';
 import { renderStatus } from '../../../utils/enum.utils';
+import { BankDetailCreditsComponent } from '../bank-detail-credits/bank-detail-credits.component';
 
 @Component({
   selector: 'app-bank-detail',
@@ -31,7 +32,8 @@ import { renderStatus } from '../../../utils/enum.utils';
     BankAccountsComponent,
     AsyncPipe,
     NgIf,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BankDetailCreditsComponent
   ],
   templateUrl: './bank-detail.component.html',
   styleUrl: './bank-detail.component.scss'

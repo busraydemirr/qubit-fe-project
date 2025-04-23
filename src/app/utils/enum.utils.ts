@@ -1,4 +1,4 @@
-import { CardType } from "../models/bncard/card-type.enum";
+import { CardType, CreditType } from "../models/bncard/card-type.enum";
 import { Currency } from "../models/bncard/currency.enum";
 import { ClCardType } from "../models/clcard/clcard-type.enum";
 import { AccountedInfo, OrficheStatus, RectStatus, Sign, Status } from "../models/shared/status.enum";
@@ -76,6 +76,16 @@ export function renderClCardType(cardType: number): ClCardType | '' {
         case 3: return ClCardType.Calisan;
         case 4: return ClCardType.Diğer;
         case 5: return ClCardType.Banka;
+        default: return '';
+    }
+}
+
+export function renderCreditType(type: number): CreditType | '' {
+    switch (type) {
+        case 1: return CreditType.PERSONEL;
+        case 2: return CreditType.COMMERCIAL;
+        case 3: return CreditType.CREDIT_CARD;
+        case 4: return CreditType.OTHER;
         default: return '';
     }
 }

@@ -51,7 +51,7 @@ export const routes: Routes = [
       {
         path: 'banks',
         component: BankComponent,
-        providers: [provideStates([BnCardState])]
+        providers: [provideStates([BnCardState, BnCreditCardState])]
       },
       {
         path: 'credits',

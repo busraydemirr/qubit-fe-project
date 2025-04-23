@@ -7,6 +7,7 @@ import { tap } from "rxjs";
 import { ClCardItemModel } from "../../models/clcard/clcard.model";
 import { QueryParams } from "../../models/shared/query-params.model";
 import { ClCardLineModel } from "../../models/clcard/clcard-line.model";
+import { ClCardTotalModel } from "../../models/clcard/clcard-total.model";
 
 @State<ClCardStateModel>({
     name: 'clcard',
@@ -18,6 +19,8 @@ import { ClCardLineModel } from "../../models/clcard/clcard-line.model";
         pages: 0,
         loading: false,
         clCardDetail: {},
+        filter: {},
+        term: '03',
         detailLoading: false,
         linesListLoading: false,
         cardLines: [{
@@ -43,6 +46,7 @@ import { ClCardLineModel } from "../../models/clcard/clcard-line.model";
         lineSize: 10,
         lineTotalElements: 0,
         linePages: 0,
+        totals: {}
     }
 })
 @Injectable()
@@ -89,9 +93,14 @@ export class ClCardState {
         return { page: linePage, size: lineSize, totalElements: lineTotalElements, pages: linePages };
     }
 
+    @Selector()
+    static getClCardTotals({ totals }: ClCardStateModel): ClCardTotalModel {
+        return totals;
+    }
+
     @Action(ClCardActions.List)
     listClCards({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.List) {
-        patchState({ loading: true });
+        patchState({ loading: true, filter: action.payload.filter, term: action.payload.term });
         return this._clCardService.listClCards(action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
             tap(data => {
                 patchState({
@@ -101,6 +110,24 @@ export class ClCardState {
                     totalElements: data.data.count,
                     pages: data.data.pages,
                     loading: false
+                });
+            })
+        );
+    }
+
+    @Action(ClCardActions.GetClCardTotals)
+    getClCardTotals({ patchState, getState }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardTotals) {
+        const { filter, term } = getState();
+        patchState({ linesListLoading: true });
+        return this._clCardService.getClCardTotals(action.payload, filter ?? {}, term ?? '03').pipe(
+            tap(data => {
+                patchState({
+                    totals: {
+                        totalDebt: data.data.totalDebt,
+                        totalCredit: data.data.totalCredit,
+                        totalAmount: data.data.totalAmount,
+                    },
+                    linesListLoading: false
                 });
             })
         );

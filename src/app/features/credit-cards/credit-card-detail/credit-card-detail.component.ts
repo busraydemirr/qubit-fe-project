@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BannerComponent } from '../../../components/banner/banner.component';
 import { CreditLinesComponent } from '../credit-lines/credit-lines.component';
+import { renderCreditType } from '../../../utils/enum.utils';
 
 @Component({
   selector: 'app-credit-card-detail',
@@ -39,6 +40,7 @@ export class CreditCardDetailComponent implements OnInit, OnDestroy {
   public creditId!: number;
   public bnCreditCard$!: Observable<BnCreditCardItemModel | null>;
   public loading$!: Observable<boolean>;
+  public renderCreditType = renderCreditType;
   private _subSink: SubSink = new SubSink();
 
   constructor(private route: ActivatedRoute, private _store: Store) { }

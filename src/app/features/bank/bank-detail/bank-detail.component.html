@@ -71,12 +71,11 @@
         </mat-tab>
         <mat-tab label="Banka Hesapları" labelClass="bg-qub-primary">
             <div class="flex">
-
                 <app-bank-accounts [bankId]="bankId"></app-bank-accounts>
             </div>
         </mat-tab>
         <mat-tab label="Krediler" labelClass="bg-qub-primary">
-            <div class="p-8 h-screen"> test </div>
+            <app-bank-detail-credits [bankId]="bankId"></app-bank-detail-credits>
         </mat-tab>
     </mat-tab-group>
 </div>

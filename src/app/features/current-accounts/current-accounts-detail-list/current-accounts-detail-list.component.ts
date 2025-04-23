@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SubSink } from 'subsink';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ClCardTotalModel } from '../../../models/clcard/clcard-total.model';
 
 @Component({
   selector: 'app-current-accounts-detail-list',
@@ -68,6 +69,7 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     pages: 0
   };
   public loading$: Observable<boolean>;
+  public totals$: Observable<ClCardTotalModel>;
   public renderSign = renderSign;
   public renderAccountedInfo = renderAccountedInfo;
   public subsink = new SubSink();
@@ -75,6 +77,7 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
 
   constructor(private _store: Store) {
     this.loading$ = this._store.select(KsCardState.getLinesListLoading);
+    this.totals$ = this._store.select(ClCardState.getClCardTotals);
   }
 
   public ngOnInit(): void {
@@ -84,7 +87,7 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
       page: this.queryParams.page,
       filter: {}
     };
-    this._store.dispatch(new ClCardActions.GetClCardLines(payload));
+    this._store.dispatch([new ClCardActions.GetClCardLines(payload), new ClCardActions.GetClCardTotals(this.cardId)]);
 
     this.subsink.sink = this._store.select(ClCardState.getClCardLines).subscribe((cards: ClCardLineModel[]) => {
       this.elements = cards;
@@ -97,12 +100,12 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
       const payload = {
         id: this.cardId,
         size: queryParams.size,
-        page:0,
+        page: 0,
         filter: {},
         term,
       };
 
-      this._store.dispatch(new ClCardActions.GetClCardLines(payload));
+      this._store.dispatch([new ClCardActions.GetClCardLines(payload), new ClCardActions.GetClCardTotals(this.cardId)]);
     });
   }
 

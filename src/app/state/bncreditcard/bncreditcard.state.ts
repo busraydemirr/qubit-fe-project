@@ -82,8 +82,18 @@ export class BnCreditCardState {
 
     @Action(BnCreditCardActions.List)
     listBnCreditCards({ patchState }: StateContext<BnCreditCardStateModel>, action: BnCreditCardActions.List) {
+        patchState({ loading: true });
         return this._bnCreditCardService.listBnCreditCards(action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
-            tap(data => { patchState({ items: data.data.items }); })
+            tap(data => {
+                patchState({
+                    items: data.data.items,
+                    page: data.data.index,
+                    size: data.data.size,
+                    totalElements: data.data.count,
+                    pages: data.data.pages,
+                    loading: false
+                });
+            })
         )
     }
 

@@ -7,7 +7,7 @@ export interface BnCreditCardItemModel {
     specode?: string;
     cyphcode?: string;
     crcardtype?: string;
-    credittype?: string;
+    credittype?: number;
     gksno?: string;
     begdate?: string;
     enddate?: string;
