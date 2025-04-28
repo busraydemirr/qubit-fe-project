@@ -18,7 +18,7 @@ export class HomepageComponent {
     { label: 'Cari İşlemler', url: 'current-accounts', isActive: false },
     {
       label: 'Çek/Senet İşlemleri',
-      url: 'customer-promissory-notes',
+      url: 'promissory-notes',
       isActive: false,
       children: [
         {
@@ -37,7 +37,7 @@ export class HomepageComponent {
     },
     {
       label: 'Banka/Kredi İşlemleri',
-      url: 'banks',
+      url: 'banks-credits',
       isActive: false,
       children: [
         {
@@ -56,7 +56,7 @@ export class HomepageComponent {
     },
     {
       label: 'Faturalar',
-      url: 'sales-invoices',
+      url: 'invoices',
       isActive: false,
       children: [
         {
@@ -75,7 +75,7 @@ export class HomepageComponent {
     },
     {
       label: 'Siparişler',
-      url: 'received-orfiches',
+      url: 'orfiches',
       isActive: false,
       children: [
         {
@@ -125,6 +125,9 @@ export class HomepageComponent {
   }
 
   public changeItem(item: MenuItem): void {
+    if (item.children && item.children.length > 0) {
+      return;
+    }
     this.selectedMenuItem = item;
   }
 }

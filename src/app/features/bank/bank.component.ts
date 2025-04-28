@@ -12,12 +12,13 @@ import { Store } from '@ngxs/store';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
 import { SubSink } from 'subsink';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-bank',
@@ -34,8 +35,11 @@ import { SubSink } from 'subsink';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatIconModule,
-    MatInputModule
+    MatInputModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
+  providers: [provideNgxMask(), NgxMaskPipe],
   templateUrl: './bank.component.html',
   styleUrl: './bank.component.scss'
 })
@@ -60,12 +64,12 @@ export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
   public loading$: Observable<boolean>;
   public bankFilterForm: FormGroup = new FormGroup({
     definition: new FormControl(null),
-    phoneNumber: new FormControl(null),
+    phoneNumber: new FormControl([null, Validators.pattern("[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}")]),
     branch: new FormControl(null),
   });
   public subsink = new SubSink();
 
-  constructor(private _store: Store, private _router: Router) {
+  constructor(private _store: Store, private _router: Router, private _mask: NgxMaskPipe) {
     this.loading$ = this._store.select(BnCardState.getLoading);
   }
 
@@ -89,7 +93,7 @@ export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngOnDestroy(): void {
     this.subsink.unsubscribe();
   }
-  
+
   public checkedChanged(
     event: MatCheckboxChange,
     element: BnCardItemModel
@@ -134,7 +138,6 @@ export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
           operator: 'contains',
         }
       };
-
       if (this.bankFilterForm.value.phoneNumber) {
         filter = {
           filter: {
@@ -144,8 +147,8 @@ export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
             logic: "and",
             filters: [{
               field: 'telnrs1',
-              value: this.bankFilterForm.value.phoneNumber,
-              operator: 'eq',
+              value: this._mask.transform(this.bankFilterForm.value.phoneNumber, '000 000 00 00'),
+              operator: 'contains',
             }]
           }
         };
@@ -159,8 +162,8 @@ export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
               logic: "and",
               filters: [{
                 field: 'telnrs1',
-                value: this.bankFilterForm.value.phoneNumber,
-                operator: 'eq',
+                value: this._mask.transform(this.bankFilterForm.value.phoneNumber, '000 000 00 00'),
+                operator: 'contains',
               },
               {
                 field: "branch",
@@ -208,8 +211,8 @@ export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
               logic: "and",
               filters: [{
                 field: 'telnrs1',
-                value: this.bankFilterForm.value.phoneNumber,
-                operator: 'eq',
+                value: this._mask.transform(this.bankFilterForm.value.phoneNumber, '000 000 00 00'),
+                operator: 'contains',
               }]
             }
           };
@@ -219,8 +222,8 @@ export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
           filter = {
             filter: {
               field: 'telnrs1',
-              value: this.bankFilterForm.value.phoneNumber,
-              operator: 'eq',
+              value: this._mask.transform(this.bankFilterForm.value.phoneNumber, '000 000 00 00'),
+              operator: 'contains',
             }
           };
         }

@@ -1,5 +1,5 @@
 import { CardType, CreditType } from "../models/bncard/card-type.enum";
-import { Currency } from "../models/bncard/currency.enum";
+import { Currency, CurrencyCode } from "../models/bncard/currency.enum";
 import { ClCardType } from "../models/clcard/clcard-type.enum";
 import { AccountedInfo, OrficheStatus, RectStatus, Sign, Status } from "../models/shared/status.enum";
 
@@ -56,6 +56,17 @@ export function renderCurrency(currency: number): Currency | '' {
         case 20: return Currency.EUR;
         case 30: return Currency.GBP;
         case 40: return Currency.JPY;
+        default: return '';
+    }
+}
+
+export function renderCurrencyCode(currency: number): CurrencyCode | '' {
+    switch (currency) {
+        case 0: return CurrencyCode.TRY;
+        case 1: return CurrencyCode.USD;
+        case 20: return CurrencyCode.EUR;
+        case 30: return CurrencyCode.GBP;
+        case 40: return CurrencyCode.JPY;
         default: return '';
     }
 }

@@ -6,3 +6,12 @@ export enum Currency {
     'JPY' = 'Japon Yeni(JPY)'// 40: Japon Yeni(JPY)
 
 }
+
+export enum CurrencyCode {
+    'TRY' = 'TRY', // 0: Türk Lirası (TRY)
+    'USD' = 'USD', // 1: ABD Doları (USD)
+    'EUR' = 'EUR', // 20: Euro (EUR)
+    'GBP' = 'GBP', // 30: İngiliz Sterlini (GBP)
+    'JPY' = 'JPY'// 40: Japon Yeni(JPY)
+
+}

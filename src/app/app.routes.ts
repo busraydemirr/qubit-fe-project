@@ -29,6 +29,7 @@ import { OrficheState } from './state/orfiche/orfiche.state';
 import { OrficheDetailComponent } from './features/orfiche-detail/orfiche-detail.component';
 import { PlacedOrficheComponent } from './features/placed-orfiche/placed-orfiche.component';
 import { CanActivateTeam } from './services/canactivate';
+import { EmptyPageComponent } from './features/empty-page/empty-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -91,7 +92,23 @@ export const routes: Routes = [
         path: 'placed-orfiches',
         component: PlacedOrficheComponent,
         providers: [provideStates([OrficheState])], canActivate: [CanActivateTeam]
-      }
+      },
+      {
+        path: 'promissory-notes',
+        component: EmptyPageComponent, canActivate: [CanActivateTeam]
+      },
+      {
+        path: 'banks-credits',
+        component: EmptyPageComponent, canActivate: [CanActivateTeam]
+      },
+      {
+        path: 'invoices',
+        component: EmptyPageComponent, canActivate: [CanActivateTeam]
+      },
+      {
+        path: 'orfiches',
+        component: EmptyPageComponent, canActivate: [CanActivateTeam]
+      },
     ],
   },
   {

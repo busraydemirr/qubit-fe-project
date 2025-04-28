@@ -64,7 +64,7 @@
                 }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.totalAmount }}
+                    {{ element.totalAmount | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -121,7 +121,8 @@
         </ng-container>
 
         <ng-container matColumnDef="bnAccDefinition">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-250"> Banka Hesap Tanımı </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-250"> Banka Hesap Tanımı
+            </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-250">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -155,7 +156,8 @@
         </ng-container>
 
         <ng-container matColumnDef="capiblockCreadeddate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Oluşturma Tarihi </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Oluşturma Tarihi
+            </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -172,7 +174,8 @@
         </ng-container>
 
         <ng-container matColumnDef="lineexp">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Satır Açıklaması </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Satır Açıklaması
+            </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -200,7 +203,7 @@
                 }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.total | number:'1.2-2' }}
+                    {{ element.total | number}}
                 </ng-template>
             </mat-cell>
         </ng-container>

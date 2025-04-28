@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PromissoryNoteDetailListComponent } from './promissory-note-detail-list/promissory-note-detail-list.component';
 
@@ -31,7 +31,8 @@ import { PromissoryNoteDetailListComponent } from './promissory-note-detail-list
     NgIf,
     MatProgressSpinnerModule,
     DatePipe,
-    PromissoryNoteDetailListComponent
+    PromissoryNoteDetailListComponent,
+    CommonModule
   ],
   templateUrl: './promissory-note-detail.component.html',
   styleUrl: './promissory-note-detail.component.scss'

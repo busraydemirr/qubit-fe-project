@@ -9,7 +9,7 @@ import { renderSign } from '../../../utils/enum.utils';
 import { Store } from '@ngxs/store';
 import { InvoiceState } from '../../../state/invoice/invoice.state';
 import { InvoiceActions } from '../../../state/invoice/invoice.action';
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
@@ -21,7 +21,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NgIf,
     AsyncPipe,
     NgxSkeletonLoaderModule,
-    DatePipe
+    DatePipe,
+    CommonModule
   ],
   templateUrl: './invoice-detail-list.component.html',
   styleUrl: './invoice-detail-list.component.scss'

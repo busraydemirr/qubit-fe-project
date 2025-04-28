@@ -6,7 +6,7 @@
 
     .container {
         @apply p-5;
-        height: calc(100vh - 100px);
+        height: calc(100vh - 64px) !important;
         width: calc(100% - 50px);
     }
 }
@@ -14,7 +14,6 @@
 
 
 .active {
-
     // background-color: #6b7d91;
     .has-child {
         height: unset;

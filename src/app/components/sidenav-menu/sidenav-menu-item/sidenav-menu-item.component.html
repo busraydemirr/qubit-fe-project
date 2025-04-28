@@ -1,5 +1,5 @@
 <mat-list-item class="!text-white" [ngStyle]="{ 'padding-left': item.depth ? item.depth * 30 + 'px' : '15px' }"
-  [ngClass]="{ child: isChild }" [routerLink]="[item.url]" [activated]="item.isActive && !item.children"
+  [ngClass]="{ child: isChild }" [routerLink]="route(item)" [activated]="item.isActive && !item.children"
   (click)="changeMenuItem(item, isChild)">
   {{ item.label }}
 </mat-list-item>
@@ -9,5 +9,6 @@
     'has-child': child.children,
     hidden: !item.isActive,
     visible: item.isActive
-  }" [menuItems]="menuItems" [item]="child" [isChild]="true"></app-sidenav-menu-item>
+  }" [menuItems]="menuItems" [item]="child" [isChild]="true"
+  (menuItemChanged)="changeItem($event)"></app-sidenav-menu-item>
 } }

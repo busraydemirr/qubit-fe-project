@@ -58,7 +58,7 @@
         <ng-container matColumnDef="clCardDefinition">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-300"> Cari Adı
             </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-300">
+            <mat-cell *matCellDef="let element" class="table-column-300" (click)="rowClicked(element)">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
           height: '20px',
@@ -68,7 +68,9 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.clCardDefinition }}
+                    <div class="clickable-cell">
+                        {{ element.clCardDefinition }}
+                    </div>
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -111,25 +113,6 @@
             </mat-cell>
         </ng-container>
 
-        <!-- Müşteri Referansı Sütunu -->
-        <ng-container matColumnDef="clientref">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Cari Hesap Referansı
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.clientref }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
         <!-- Tarih Sütunu -->
         <ng-container matColumnDef="date">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Tarih </mat-header-cell>
@@ -161,7 +144,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.amount }}
+                    {{ element.amount | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -179,7 +162,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.price | number: '1.2-2' }}
+                    {{ element.price | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -197,7 +180,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.total | number: '1.2-2' }}
+                    {{ element.total | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -216,7 +199,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.shippedamount }}
+                    {{ element.shippedamount | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -271,7 +254,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.vatamnt | number: '1.2-2' }}
+                    {{ element.vatamnt | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -289,7 +272,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.vatmatrah | number: '1.2-2' }}
+                    {{ element.vatmatrah | number}}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -508,7 +491,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.linenet | number: '1.2-2' }}
+                    {{ element.linenet | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -676,7 +659,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.orgamount }}
+                    {{ element.orgamount | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -696,7 +679,7 @@
         }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.orgprice | number: '1.2-2'}}
+                    {{ element.orgprice | number}}
                 </ng-template>
             </mat-cell>
         </ng-container>

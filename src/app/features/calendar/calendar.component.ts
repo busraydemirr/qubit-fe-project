@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgIf } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CsCardService } from '../../services/cscard.service';
+import { renderCurrencyCode } from '../../utils/enum.utils';
 
 const colors: any = {
   red: {
@@ -66,7 +67,7 @@ export class CalendarComponent implements AfterViewInit {
 
   viewDate: Date = new Date();
 
-  public timePeriod: TimePeriodEnum = TimePeriodEnum.TODAY;
+  public timePeriod: TimePeriodEnum = TimePeriodEnum.MONTH;
 
   public modalData: {
     action: string;
@@ -127,7 +128,7 @@ export class CalendarComponent implements AfterViewInit {
             return {
               start: new Date(item.duedate),
               end: new Date(item.duedate),
-              title: `${item.creditName} - ${item.inttotal} (${item.pernr}. taksit)`,
+              title: `${item.creditName} - ${item.inttotal} ${renderCurrencyCode(item.currency)} (${item.linenr}. taksit)`,
               color: colors.red,
               allDay: true,
             };
@@ -137,10 +138,17 @@ export class CalendarComponent implements AfterViewInit {
 
         if (res2.data) {
           this.events = this.events.concat(res2.data.items.map((item2) => {
+            let docType = "";
+            if (item2.doc === 1) {
+              docType = "Müşteri Çeki";
+            } else {
+              docType = "Pimak Çeki";
+            }
+
             return {
               start: new Date(item2.duedate),
               end: new Date(item2.duedate),
-              title: `${item2.owing} - ${item2.amount}`,
+              title: `${docType} - ${item2.owing} - ${item2.amount}`,
               color: colors.blue,
               allDay: true,
             };

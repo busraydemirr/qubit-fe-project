@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit {
   public orficheInfo: any = null;
 
   constructor(private _orficheService: OrficheService, private _invoiceService: InvoiceService) {
-    this.test();
+    this._renderWeatherTemplate();
   }
 
   ngOnInit(): void {
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
     this.viewInvoinceData(this.timePeriodInvoince);
   }
 
-  async test() {
+  async _renderWeatherTemplate() {
     const responses = await fetchWeatherApi(this.url, this.params);
 
     // Helper function to form time ranges

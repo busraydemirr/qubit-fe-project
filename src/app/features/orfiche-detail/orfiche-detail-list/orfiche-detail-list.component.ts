@@ -6,7 +6,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QueryParams } from '../../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
 import { SubSink } from 'subsink';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { OrficheState } from '../../../state/orfiche/orfiche.state';
 import { OrficheActions } from '../../../state/orfiche/orfiche.action';
@@ -44,7 +44,6 @@ export class OrficheDetailListComponent implements OnInit, AfterViewInit, OnDest
     'clCardDefinition',
     'stockref',
     'ordficheref',
-    'clientref',
     'date',
     'amount',
     'price',
@@ -89,7 +88,7 @@ export class OrficheDetailListComponent implements OnInit, AfterViewInit, OnDest
   public renderCurrency = renderCurrency;
   private _subSink = new SubSink();
 
-  constructor(private _route: ActivatedRoute, private _store: Store) {
+  constructor(private _route: ActivatedRoute, private _store: Store, private _router: Router) {
     this.loading$ = this._store.select(OrficheState.getLinesListLoading);
   }
 
@@ -126,6 +125,12 @@ export class OrficheDetailListComponent implements OnInit, AfterViewInit, OnDest
         ({ id: this.orficheId, size: event.pageSize, page: event.pageIndex, filter: {}, term: this.term })
     );
   }
+
+  public rowClicked(element: OrficheLineModel): void {
+    /*   this._store.dispatch(new BnCardActions.SetBnCard(element)); */
+    this._router.navigate(['current-accounts/detail', element.clientref]);
+  }
+
 
   public ngOnDestroy(): void {
     this._subSink.unsubscribe();

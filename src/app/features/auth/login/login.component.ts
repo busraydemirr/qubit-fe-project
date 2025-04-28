@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from '../../../services/login.service';
 
 @Component({
@@ -12,15 +13,18 @@ import { LoginService } from '../../../services/login.service';
 export class LoginComponent {
   public email: string = '';
   public password: string = '';
+  private _snackBar = inject(MatSnackBar);
 
   constructor(private _router: Router, private _loginService: LoginService) { }
 
   public onSubmit(): void {
     if (!this.email || !this.password) {
-      alert('Lütfen email ve şifre giriniz!');
+      this._snackBar.open('Lütfen kullanıcı adı ve şifre giriniz!', 'OK', {
+        duration: 3000
+      });
       return;
     }
-    
+
     const request = {
       username: this.email,
       password: this.password,
@@ -35,7 +39,9 @@ export class LoginComponent {
         } else {
           console.error('Login failed:', response.errorMessage);
           this._loginService.canActivate = false;
-          alert(response.errorMessage);
+          this._snackBar.open(response.errorMessage, 'OK', {
+            duration: 3000
+          });
         }
       },
       (error) => {

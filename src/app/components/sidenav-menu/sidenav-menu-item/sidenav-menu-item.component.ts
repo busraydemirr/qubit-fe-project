@@ -40,4 +40,16 @@ export class SidenavMenuItemComponent {
       item.isActive = true;
     }
   }
+
+  public changeItem(item: MenuItem): void {
+    this.menuItemChanged.emit(item);
+  }
+
+  route(item: MenuItem): null | string {
+    if (item.children && item.children.length > 0) {
+      return null;
+    }
+
+    return item.url;
+  }
 }

@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { BnCardAccountLineModel } from '../../../models/bncard/bncard-account-line.model';
 import { QueryParams } from '../../../models/shared/query-params.model';
@@ -37,6 +37,7 @@ import { SubSink } from 'subsink';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './bank-account-transactions-dialog.component.html',
   styleUrl: './bank-account-transactions-dialog.component.scss'

@@ -36,7 +36,7 @@
         Tutar
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-100">
-        {{ element.amount }}
+        {{ element.amount  | number }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="date">

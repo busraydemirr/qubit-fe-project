@@ -11,7 +11,7 @@ import { Store } from '@ngxs/store';
 import { KsCardLineModel } from '../../../models/kscard/kscard-line.model';
 import { KsCardActions } from '../../../state/kscard/kscard.action';
 import { renderSign } from '../../../utils/enum.utils';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -28,6 +28,7 @@ import { SubSink } from 'subsink';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
+    CommonModule
   ],
   templateUrl: './cash-transaction-detail-list.component.html',
   styleUrl: './cash-transaction-detail-list.component.scss',
