@@ -7,7 +7,8 @@ export class CanActivateTeam implements CanActivate {
     constructor(private loginService: LoginService, private router: Router) { }
 
     canActivate(): MaybeAsync<GuardResult> {
-        if (this.loginService.canActivate) {
+        const loggedIn = localStorage.getItem('token')
+        if (this.loginService.canActivate || loggedIn) {
             return true;
         } else {
             this.router.navigate(['login']);

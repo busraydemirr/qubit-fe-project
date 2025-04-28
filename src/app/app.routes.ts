@@ -66,12 +66,12 @@ export const routes: Routes = [
       {
         path: 'purchase-invoices',
         component: PurchaseInvoicesComponent,
-        providers: [provideStates([InvoiceState])], canActivate: [CanActivateTeam]
+        providers: [provideStates([InvoiceState, ClCardState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'sales-invoices',
         component: SalesInvoicesComponent,
-        providers: [provideStates([InvoiceState])], canActivate: [CanActivateTeam]
+        providers: [provideStates([InvoiceState, ClCardState])], canActivate: [CanActivateTeam]
       },
       {
         path: 'pimak-promissory-notes',

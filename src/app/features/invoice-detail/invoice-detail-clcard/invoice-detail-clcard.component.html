@@ -1,0 +1,151 @@
+<ng-container *ngIf="(loading$ | async); else content">
+    <div class="flex w-full items-center justify-center p-8">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+<ng-template #content>
+    <ng-container *ngIf="clCard$ | async as card">
+        <div class="p-8">
+            <div class="w-full h-full table-background">
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Kullanım
+                        durumu </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                        {{renderStatus(card?.active!)}} </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Cari
+                        Hesap
+                        Kart Türü </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                        {{renderClCardType(card?.cardType!)}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Cari
+                        Hesap
+                        Kodu </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.code}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Cari
+                        Hesap
+                        Ünvanı </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.definition}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Adres
+                    </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.addr1! +
+                        card?.addr2!}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Şehir
+                        Açıklaması </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.city}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Ülke
+                        Açıklaması </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.country}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> İlçe
+                        Açıklaması </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.town}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Semt
+                        Açıklaması </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.district}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> İlgili
+                    </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.inCharge}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Posta
+                        Kodu
+                    </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.postCode}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Telefon
+                        Numarası 1 </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.telNrs1}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Telefon
+                        Numarası 2 </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.telNrs2}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Faks
+                        Numarası </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.faxNr}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Vergi
+                        Numarası </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.taxNr}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Kayıt
+                        Durumu
+                    </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                        {{renderRecStatus(card?.recStatus!)}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Vergi
+                        dairesi </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.taxOffice}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> E-Posta
+                        Adresi </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0"> {{card?.emailAddr}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                        Oluşturulma
+                        Tarihi </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                        {{card?.capiBlock_CreatedDate}}
+                    </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                        Oluşturan
+                    </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                        {{card?.capiBlock_CreatedBy ||
+                        card.capiblockNameCreatedby!}} </span>
+                </div>
+                <div class="flex w-full content-between flex-wrap flex-row">
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-r-0"> Ödeme Planı
+                        Referansı
+                    </span>
+                    <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400"> {{card?.paymentRef}} </span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>

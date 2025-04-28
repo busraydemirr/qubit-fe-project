@@ -5,12 +5,13 @@ import { InvoiceLineModel } from '../../../models/invoices/invoice-line.model';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QueryParams } from '../../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
-import { renderSign } from '../../../utils/enum.utils';
+import { renderCurrency, renderIoCode, renderLineType, renderSign, renderTrCode } from '../../../utils/enum.utils';
 import { Store } from '@ngxs/store';
 import { InvoiceState } from '../../../state/invoice/invoice.state';
 import { InvoiceActions } from '../../../state/invoice/invoice.action';
 import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-invoice-detail-list',
@@ -36,9 +37,35 @@ export class InvoiceDetailListComponent implements OnInit, AfterViewInit {
   public elements: InvoiceLineModel[] = [];
   public dataSource!: MatTableDataSource<InvoiceLineModel>;
   public displayedColumns = [
-    'date',
-    'lineexp',
-    'amount'
+    "clCardDefinition",
+    "itemCode",
+    "itemName",
+    "unitName",
+    "stockref",
+    "linetype",
+    "trcode",
+    "date",
+    "iocode",
+    "invoiceref",
+    "delvrycode",
+    "amount",
+    "price",
+    "total",
+    "prcurr",
+    "reportrate",
+    "lineexp",
+    "uomref",
+    "plnamount",
+    "vat",
+    "vatamnt",
+    "vatmatrah",
+    "billed",
+    "linenet",
+    "prrate",
+    "ordficheref",
+    "month",
+    "year",
+    "affectrisk"
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -48,8 +75,12 @@ export class InvoiceDetailListComponent implements OnInit, AfterViewInit {
   };
   public loading$: Observable<boolean>;
   public renderSign = renderSign;
+  public renderCurrency = renderCurrency;
+  public renderLineType = renderLineType;
+  public renderTrCode = renderTrCode;
+  public renderIoCode = renderIoCode;
 
-  constructor(private _store: Store) {
+  constructor(private _store: Store, private _router: Router) {
     this.loading$ = this._store.select(InvoiceState.getLinesListLoading);
   }
 
@@ -74,10 +105,15 @@ export class InvoiceDetailListComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  public rowClicked(element: InvoiceLineModel): void {
+    /*   this._store.dispatch(new BnCardActions.SetBnCard(element)); */
+    this._router.navigate(['current-accounts/detail', element.clientref]);
+  }
+
   public changePaginationEvents(event: PageEvent): void {
     this._store.dispatch(
       new InvoiceActions.GetInvoiceLines
-      ({ id: this.invoiceId, size: event.pageSize, page: event.pageIndex, filter: {} })
+        ({ id: this.invoiceId, size: event.pageSize, page: event.pageIndex, filter: {} })
     );
   }
 }

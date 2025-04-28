@@ -113,7 +113,7 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public clearFilters(): void {
-    if (!this.accountFilterForm?.value?.definition && !this.accountFilterForm?.value?.phoneNumber && !this.accountFilterForm?.value?.branch) {
+    if (!this.accountFilterForm?.value?.definition && !this.accountFilterForm?.value?.phoneNumber && !this.accountFilterForm?.value?.emailaddr){
       return;
     }
 

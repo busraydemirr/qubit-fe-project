@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { renderAccountedInfo } from '../../utils/enum.utils';
+import { InvoiceDetailClcardComponent } from './invoice-detail-clcard/invoice-detail-clcard.component';
 
 @Component({
   selector: 'app-invoice-detail',
@@ -32,7 +33,8 @@ import { renderAccountedInfo } from '../../utils/enum.utils';
     AsyncPipe,
     NgIf,
     MatProgressSpinnerModule,
-    CommonModule
+    CommonModule,
+    InvoiceDetailClcardComponent
   ],
   templateUrl: './invoice-detail.component.html',
   styleUrl: './invoice-detail.component.scss'

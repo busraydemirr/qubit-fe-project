@@ -35,6 +35,7 @@ export class LoginComponent {
         if (response.isSuccess) {
           console.log('Login successful:', response);
           this._loginService.canActivate = true;
+          localStorage.setItem('token', response.data['message']);
           this._router.navigate(['/home']);
         } else {
           console.error('Login failed:', response.errorMessage);

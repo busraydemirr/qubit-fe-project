@@ -51,7 +51,7 @@
                                     Oluşturulma Tarihi
                                 </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{invoice.capiblockCreadeddate}}
+                                    {{invoice.capiblockCreadeddate | date: "dd/MM/yyyy"}}
                                 </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
@@ -83,7 +83,7 @@
                                     class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
                                     Tarih </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{invoice.date}}
+                                    {{invoice.date | date: "dd/MM/yyyy"}}
                                 </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
@@ -273,6 +273,12 @@
         </mat-tab>
         <mat-tab label="Fatura Hareketleri" labelClass="bg-qub-primary">
             <app-invoice-detail-list [invoiceId]="invoiceId" class="!h-screen"></app-invoice-detail-list>
+        </mat-tab>
+        <mat-tab label="Cari Bilgileri" labelClass="bg-qub-primary">
+            <ng-container *ngIf="invoice$ | async as invoice">
+                <app-invoice-detail-clcard [clCardId]="invoice.clientref!"
+                    class="!h-screen"></app-invoice-detail-clcard>
+            </ng-container>
         </mat-tab>
     </mat-tab-group>
 </div>

@@ -1,6 +1,9 @@
 import { CardType, CreditType } from "../models/bncard/card-type.enum";
 import { Currency, CurrencyCode } from "../models/bncard/currency.enum";
 import { ClCardType } from "../models/clcard/clcard-type.enum";
+import { IoCode } from "../models/invoices/io-code.enum";
+import { LineType } from "../models/invoices/line-type.enum";
+import { TrCode } from "../models/invoices/tr-code.enum";
 import { AccountedInfo, OrficheStatus, RectStatus, Sign, Status } from "../models/shared/status.enum";
 
 export function renderRectStatus(value: number): RectStatus | '' {
@@ -98,5 +101,87 @@ export function renderCreditType(type: number): CreditType | '' {
         case 3: return CreditType.CREDIT_CARD;
         case 4: return CreditType.OTHER;
         default: return '';
+    }
+}
+
+export function renderLineType(type: number): LineType | '' {
+    /* 0 Malzeme; 1 Promosyon; 2 İndirim; 3 Masraf; 4 Hizmet; 5 Depozit; 6 Karma koli; 7 Karma koli satırı; 8 Sabit kıymet; 9 Ek Malzeme; 10 Malzeme sınıfı; 11 Fason1 */
+    switch (type) {
+        case 0: return LineType.MALZEME;
+        case 1: return LineType.PROMOSYON;
+        case 2: return LineType.INDIRIM;
+        case 3: return LineType.MASRAF;
+        case 4: return LineType.HIZMET;
+        case 5: return LineType.DEPOZIT;
+        case 6: return LineType.KARMA_KOLI;
+        case 7: return LineType.KARMA_KOLI_SATIRI;
+        case 8: return LineType.SABIT_KIYMET;
+        case 9: return LineType.EK_MALZEME;
+        case 10: return LineType.MALZEME_SINIFI;
+        case 11: return LineType.FASON;
+        default: return '';
+    }
+}
+
+export function renderTrCode(code: number): string {
+    switch (code) {
+        case TrCode.RETAIL_SALES_INVOICE:
+            return "Perakende Satış Faturası";
+        case TrCode.WHOLESALE_SALES_INVOICE:
+            return "Toptan Satış Faturası";
+        case TrCode.PURCHASE_RETURN_INVOICE:
+            return "Alış İade Faturası";
+        case TrCode.SALES_RETURN_INVOICE:
+            return "Satış İade Faturası";
+        case TrCode.PURCHASE_PRICE_DIFF_INVOICE:
+            return "Alış Fiyat Farkı Faturası";
+        case TrCode.SALES_PRICE_DIFF_INVOICE:
+            return "Satış Fiyat Farkı Faturası";
+        case TrCode.PURCHASE_SERVICE_INVOICE:
+            return "Alış Hizmet Faturası";
+        case TrCode.SALES_SERVICE_INVOICE:
+            return "Satış Hizmet Faturası";
+        case TrCode.PURCHASE_SERVICE_RETURN_INVOICE:
+            return "Alış İade Hizmet Faturası";
+        case TrCode.SALES_SERVICE_RETURN_INVOICE:
+            return "Satış İade Hizmet Faturası";
+        case TrCode.PROFORMA_SALES_INVOICE:
+            return "Proforma Satış Faturası";
+        case TrCode.PROFORMA_PURCHASE_INVOICE:
+            return "Proforma Alış Faturası";
+        case TrCode.PURCHASE_PRICE_DIFF_RETURN_INVOICE:
+            return "Alış Fiyat Farkı İade Faturası";
+        case TrCode.SALES_PRICE_DIFF_RETURN_INVOICE:
+            return "Satış Fiyat Farkı İade Faturası";
+        case TrCode.PURCHASE_SERVICE_PRICE_DIFF_INVOICE:
+            return "Alış Hizmet Fiyat Farkı Faturası";
+        case TrCode.SALES_SERVICE_PRICE_DIFF_INVOICE:
+            return "Satış Hizmet Fiyat Farkı Faturası";
+        case TrCode.PURCHASE_SERVICE_PRICE_DIFF_RETURN_INVOICE:
+            return "Alış Hizmet Fiyat Farkı İade Faturası";
+        case TrCode.SALES_SERVICE_PRICE_DIFF_RETURN_INVOICE:
+            return "Satış Hizmet Fiyat Farkı İade Faturası";
+        case TrCode.PURCHASE_COMMISSION_INVOICE:
+            return "Alış Komisyon Faturası";
+        case TrCode.SALES_COMMISSION_INVOICE:
+            return "Satış Komisyon Faturası";
+        default:
+            return "";
+    }
+}
+
+
+export function renderIoCode(code: number): string {
+    switch (code) {
+        case IoCode.INPUT:
+            return "Girdi";
+        case IoCode.WAREHOUSE_IN:
+            return "Ambardan giriş";
+        case IoCode.WAREHOUSE_OUT:
+            return "Ambardan çıkış";
+        case IoCode.OUTPUT:
+            return "Çıktı";
+        default:
+            return "";
     }
 }

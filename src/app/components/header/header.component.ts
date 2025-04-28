@@ -18,5 +18,6 @@ export class HeaderComponent {
 
   public logout(): void{
     this._router.navigate(['login']);
+    localStorage.clear();
   }
 }

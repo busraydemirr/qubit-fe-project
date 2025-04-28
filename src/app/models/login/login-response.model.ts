@@ -1,1 +1,4 @@
-export interface LoginResponseModel { }
+export interface LoginResponseModel {
+    message: string;
+
+}
