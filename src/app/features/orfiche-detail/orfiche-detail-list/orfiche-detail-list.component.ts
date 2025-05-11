@@ -48,6 +48,10 @@ export class OrficheDetailListComponent implements OnInit, AfterViewInit, OnDest
     'amount',
     'price',
     'total',
+    'unitAmountPrice',
+    'allShippedAmountPrice',
+    'allAmountPrice',
+    'amountOfRemainingPrice',
     'shippedamount',
     'discper',
     'vat',
@@ -71,7 +75,6 @@ export class OrficheDetailListComponent implements OnInit, AfterViewInit, OnDest
      'grossuinfo2', */
     'cancelled',
     'trcurr',
-    'trrate',
     'orgduedate',
     'orgamount',
     'orgprice'

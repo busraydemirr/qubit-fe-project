@@ -16,7 +16,25 @@ export class ClCardService {
     constructor(private _http: HttpClient) { }
 
     public listClCards(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<ClCardItemModel>>> {
-        return this._http.post<ResponseModel<BaseResponseData<ClCardItemModel>>>(this.url + 'api/ClCard' + '?size=' + size + '&from=' + page, filter);
+        const activeFilter = {
+            field: 'active',
+            value: '0',
+            operator: 'eq',
+        };
+        let newFilter = {};
+        if (filter?.filter) {
+            newFilter =
+            {
+                ...filter.filter,
+                logic: 'and',
+                filters: filter.filter.filters ? [...filter.filter.filters, activeFilter] : [activeFilter]
+            }
+        } else {
+            newFilter = {
+                filter: activeFilter
+            }
+        }
+        return this._http.post<ResponseModel<BaseResponseData<ClCardItemModel>>>(this.url + 'api/ClCard' + '?size=' + size + '&from=' + page, newFilter);
     }
 
     public getClCardLines(id: number, size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<ClCardLineModel>>> {

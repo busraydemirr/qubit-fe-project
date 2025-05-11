@@ -1,8 +1,8 @@
 <div class="p-8 !h-screen">
     <mat-table [dataSource]="dataSource" matSort>
-        <ng-container matColumnDef="clCardDefinition">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-300"> Cari Adı </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-300" (click)="rowClicked(element)">
+        <ng-container matColumnDef="linetype">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Satır Tipi </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                         height: '20px',
@@ -12,9 +12,7 @@
                     }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    <div class="clickable-cell">
-                        {{ element.clCardDefinition }}
-                    </div>
+                    {{ renderLineType(element.linetype)}}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -53,6 +51,40 @@
             </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="amount">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Miktar </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-100">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                        height: '20px',
+                        width: '100%',
+                        'background-color': '#b7bec3',
+                        border: '1px solid #b7bec3'
+                    }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.amount | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Toplam </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                        height: '20px',
+                        width: '100%',
+                        'background-color': '#b7bec3',
+                        border: '1px solid #b7bec3'
+                    }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.total | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="unitName">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Birim </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
@@ -70,9 +102,8 @@
             </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="stockref">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Stok Referansı
-            </mat-header-cell>
+        <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Fiyat </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -83,14 +114,14 @@
                     }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.stockref }}
+                    {{ element.price | number}}
                 </ng-template>
             </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="linetype">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Satır Tipi </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
+        <ng-container matColumnDef="clCardDefinition">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-300"> Cari Adı </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-300" (click)="rowClicked(element)">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                         height: '20px',
@@ -100,25 +131,9 @@
                     }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ renderLineType(element.linetype)}}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="trcode">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Bağlı Fiş Türü
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-200">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ renderTrCode(element.trcode) }}
+                    <div class="clickable-cell">
+                        {{ element.clCardDefinition }}
+                    </div>
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -158,93 +173,6 @@
             </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="invoiceref">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Fatura Referansı
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.invoiceref }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="delvrycode">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Teslimat Kodu
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.delvrycode }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Miktar </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.amount | number }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="price">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Fiyat </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.price | number}}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="total">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Toplam </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.total | number }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
         <ng-container matColumnDef="prcurr">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Para Birimi </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-200">
@@ -258,23 +186,6 @@
                 </ng-container>
                 <ng-template #content>
                     {{ renderCurrency(element.prcurr) }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="reportrate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Rapor Oranı </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-200">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.reportrate }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -293,42 +204,6 @@
                 </ng-container>
                 <ng-template #content>
                     {{ element.lineexp }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="uomref">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Ölçü Birimi Ref
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.uomref }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="plnamount">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Planlanan Miktar
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.plnamount | number}}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -384,24 +259,6 @@
             </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="billed">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Faturalandırıldı
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.billed === 1 ? 'Evet' : 'Hayır' }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
         <ng-container matColumnDef="linenet">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Satır Net </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
@@ -415,41 +272,6 @@
                 </ng-container>
                 <ng-template #content>
                     {{ element.linenet }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="prrate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Fiyat Oranı </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.prrate }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="ordficheref">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Sipariş Referansı
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.ordficheref }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -488,22 +310,6 @@
             </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="affectrisk">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Risk Etkisi </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                        height: '20px',
-                        width: '100%',
-                        'background-color': '#b7bec3',
-                        border: '1px solid #b7bec3'
-                    }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.affectrisk === 1 ? 'Riski Etkiler' : 'Riski Etkilemez' }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>

@@ -10,7 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OrficheDetailListComponent } from './orfiche-detail-list/orfiche-detail-list.component';
 import { OrficheModel } from '../../models/orfiche/orfiche.model';
@@ -32,7 +32,8 @@ import { renderOrficheStatus } from '../../utils/enum.utils';
     NgIf,
     MatProgressSpinnerModule,
     OrficheDetailListComponent,
-    DatePipe
+    DatePipe,
+    CommonModule
   ],
   templateUrl: './orfiche-detail.component.html',
   styleUrl: './orfiche-detail.component.scss'

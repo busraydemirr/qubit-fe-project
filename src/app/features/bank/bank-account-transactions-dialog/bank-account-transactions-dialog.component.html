@@ -111,38 +111,6 @@
                 </ng-template>
             </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="reportnet">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> RD Tutarı </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.reportnet }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="reportrate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> RD Kuru </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.reportrate }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
         <ng-container matColumnDef="sign">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Borç/Alacak İşareti
             </mat-header-cell>
@@ -207,40 +175,6 @@
                 </ng-container>
                 <ng-template #content>
                     {{ element.capiblockNameCreatedby }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="capiblockCreadeddate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Oluşturma Tarihi
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.capiblockCreadeddate | date: "dd/MM/yyyy" }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="capiblockModifieddate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Değiştirilme Tarihi
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.capiblockModifieddate | date: "dd/MM/yyyy" }}
                 </ng-template>
             </mat-cell>
         </ng-container>

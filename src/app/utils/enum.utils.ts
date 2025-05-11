@@ -19,8 +19,8 @@ export function renderRectStatus(value: number): RectStatus | '' {
 
 export function renderStatus(status: number): Status | '' {
     switch (status) {
-        case 0: return Status.PASSIVE;
-        case 1: return Status.ACTIVE;
+        case 0: return Status.ACTIVE;
+        case 1: return Status.PASSIVE;
         default: return '';
     }
 }

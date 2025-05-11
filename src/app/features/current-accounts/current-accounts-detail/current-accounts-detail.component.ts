@@ -16,8 +16,8 @@ import { ClCardState } from '../../../state/clcard/clcard.state';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ClCardActions } from '../../../state/clcard/clcard.action';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Status } from '../../../models/shared/status.enum';
 import { renderClCardType, renderRectStatus, renderStatus } from '../../../utils/enum.utils';
+import { CurrentAccountsDetailOrfichesComponent } from '../current-accounts-detail-orfiches/current-accounts-detail-orfiches.component';
 
 @Component({
   selector: 'app-current-accounts-detail',
@@ -32,7 +32,8 @@ import { renderClCardType, renderRectStatus, renderStatus } from '../../../utils
     CurrentAccountsDetailListComponent,
     AsyncPipe,
     NgIf,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CurrentAccountsDetailOrfichesComponent,
   ],
   templateUrl: './current-accounts-detail.component.html',
   styleUrl: './current-accounts-detail.component.scss',

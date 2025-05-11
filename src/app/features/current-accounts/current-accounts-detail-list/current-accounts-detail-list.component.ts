@@ -75,7 +75,7 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
   public renderSign = renderSign;
   public renderAccountedInfo = renderAccountedInfo;
   public subsink = new SubSink();
-  public termControl = new FormControl('03');
+  public termControl = new FormControl(['03']);
 
   constructor(private _store: Store) {
     this.loading$ = this._store.select(ClCardState.getLinesListLoading);

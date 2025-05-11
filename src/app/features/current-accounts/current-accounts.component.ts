@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
 import { SubSink } from 'subsink';
+import { renderCurrency } from '../../utils/enum.utils';
 
 @Component({
   selector: 'app-current-accounts',
@@ -52,8 +53,8 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestro
   public displayedColumns = [
     'code',
     'name',
-    'telnrs1',
-    'city',
+    'ccurrency',
+    'country',
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -67,6 +68,7 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestro
     phoneNumber: new FormControl(null),
     emailaddr: new FormControl(null),
   });
+  public renderCurrency = renderCurrency;
   public subsink = new SubSink();
 
   constructor(private _store: Store, private _router: Router) {

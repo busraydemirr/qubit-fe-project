@@ -15,7 +15,25 @@ export class KsCardService {
     constructor(private _http: HttpClient) { }
 
     public listKsCards(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<KsCardModel>>> {
-        return this._http.post<ResponseModel<BaseResponseData<KsCardModel>>>(this.url + 'api/KsCard' + '?size=' + size + '&from=' + page, filter);
+        const activeFilter = {
+            field: 'active',
+            value: '0',
+            operator: 'eq',
+        };
+        let newFilter = {};
+        if (filter?.filter) {
+            newFilter =
+            {
+                ...filter.filter,
+                logic: 'and',
+                filters: filter.filter.filters ? [...filter.filter.filters, activeFilter] : [activeFilter]
+            }
+        } else {
+            newFilter = {
+                filter: activeFilter
+            }
+        }
+        return this._http.post<ResponseModel<BaseResponseData<KsCardModel>>>(this.url + 'api/KsCard' + '?size=' + size + '&from=' + page, newFilter);
     }
 
     public getKsCardLines(id: number, size: number, page: number, filter: FilterRequestModel, term?: string): Observable<ResponseModel<BaseResponseData<KsCardLineModel>>> {

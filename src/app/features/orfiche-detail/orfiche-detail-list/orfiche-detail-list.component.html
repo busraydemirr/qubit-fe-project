@@ -185,6 +185,80 @@
             </mat-cell>
         </ng-container>
 
+        <!-- Birim Fiyat Sütunu -->
+        <ng-container matColumnDef="unitAmountPrice">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Birim Fiyat </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-200">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.unitAmountPrice | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Teslim Edilen Bakiye Sütunu -->
+        <ng-container matColumnDef="allShippedAmountPrice">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Teslim Edilen Bakiye
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-200">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.allShippedAmountPrice | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Tüm Bakiye Sütunu -->
+        <ng-container matColumnDef="allAmountPrice">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Tüm Bakiye </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-200">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.allAmountPrice | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Teslim Edilmemiş(Kalan) Bakiye Sütunu -->
+        <ng-container matColumnDef="amountOfRemainingPrice">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Teslim Edilmemiş(Kalan) Bakiye
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-column-200">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.amountOfRemainingPrice | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
         <!-- Sevk Edilen Miktar Sütunu -->
         <ng-container matColumnDef="shippedamount">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Sevk Edilen Miktar
@@ -602,25 +676,6 @@
                 </ng-container>
                 <ng-template #content>
                     {{ renderCurrency(element.trcurr) }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <!-- İşlem Kuru Sütunu -->
-        <ng-container matColumnDef="trrate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> İşlem Dövizi Kuru
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-200">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.trrate }}
                 </ng-template>
             </mat-cell>
         </ng-container>

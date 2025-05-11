@@ -48,7 +48,9 @@ export class LoginComponent {
       (error) => {
         console.error('Login failed:', error);
         this._loginService.canActivate = false;
-        alert('Giriş başarısız, lütfen tekrar deneyiniz!');
+        this._snackBar.open('Giriş başarısız, lütfen tekrar deneyiniz!', 'OK', {
+          duration: 3000
+        });
       }
     );
   }

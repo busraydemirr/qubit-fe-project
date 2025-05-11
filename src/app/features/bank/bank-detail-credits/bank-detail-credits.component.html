@@ -76,82 +76,6 @@
             </mat-cell>
         </ng-container>
 
-        <!-- Banka Kredi Referansı Sütunu -->
-        <ng-container matColumnDef="bncrref">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Kredi Referansı
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.bncrref }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <!-- Özel Kod Sütunu -->
-        <ng-container matColumnDef="specode">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Özel Kod
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.specode }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <!-- Yetki Kodu Sütunu -->
-        <ng-container matColumnDef="cyphcode">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Yetki Kodu
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.cyphcode }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <!-- Kredi Kartı Tipi Sütunu -->
-        <ng-container matColumnDef="crcardtype">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Kredi Kartı Tipi
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ renderCardType(element.crcardtype) }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
         <!-- Kredi Tipi Sütunu -->
         <ng-container matColumnDef="credittype">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Kredi Tipi
@@ -167,25 +91,6 @@
                 </ng-container>
                 <ng-template #content>
                     {{ renderCreditType(element.credittype) }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <!-- GKS No Sütunu -->
-        <ng-container matColumnDef="gksno">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> GKS No
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.gksno }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -262,63 +167,6 @@
                 </ng-container>
                 <ng-template #content>
                     {{ element.trtotal | number }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <!-- Kredi İşlem Kuru Sütunu -->
-        <ng-container matColumnDef="trratecr">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Kredi İşlem Kuru
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.trratecr | number }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <!-- Hesap İşlem Kuru Sütunu -->
-        <ng-container matColumnDef="trrateacc">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Hesap İşlem Kuru
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.trrateacc | number }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <!-- Rapor Kuru Sütunu -->
-        <ng-container matColumnDef="reportrate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Rapor Kuru
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-100">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.reportrate | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>

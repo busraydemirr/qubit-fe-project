@@ -5,7 +5,7 @@ import {
   MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass, NgIf } from '@angular/common';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { QueryParams } from '../../models/shared/query-params.model';
@@ -39,6 +39,7 @@ import { FilterRequestModel } from '../../models/shared/filter-request.model';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    CommonModule,
   ],
   templateUrl: './cash-transactions.component.html',
   styleUrl: './cash-transactions.component.scss',
@@ -52,6 +53,7 @@ export class CashTransactionsComponent implements OnInit, AfterViewInit {
   public displayedColumns = [
     'code',
     'name',
+    'totalCashierPrice',
     'explain',
     'recstatus',
   ];

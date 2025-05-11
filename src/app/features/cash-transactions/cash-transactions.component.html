@@ -53,6 +53,22 @@
         </ng-template>
       </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="totalCashierPrice">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Kasa Bakiyesi </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+          height: '20px',
+          width: '100%',
+          'background-color': '#b7bec3',
+          border: '1px solid #b7bec3'
+        }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{ element.totalCashierPrice | number }}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="explain">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Açıklama </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">

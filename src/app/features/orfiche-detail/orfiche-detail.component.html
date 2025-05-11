@@ -98,7 +98,7 @@
                                     İndirimler Toplamı
                                 </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{orfiche.totaldiscounted}}
+                                    {{orfiche.totaldiscounted | number}}
                                 </span>
                             </div>
 
@@ -109,7 +109,7 @@
                                     Toplam KDV
                                 </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{orfiche.totalvat}}
+                                    {{orfiche.totalvat | number}}
                                 </span>
                             </div>
 
@@ -120,7 +120,7 @@
                                     Toplam
                                 </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{orfiche.grosstotal}}
+                                    {{orfiche.grosstotal | number}}
                                 </span>
                             </div>
 
@@ -131,7 +131,7 @@
                                     Net Toplam
                                 </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{orfiche.nettotal}}
+                                    {{orfiche.nettotal | number}}
                                 </span>
                             </div>
 
@@ -179,17 +179,6 @@
                                 </span>
                             </div>
 
-                            <!-- İşlem Kuru -->
-                            <div class="flex w-full content-between flex-wrap flex-row">
-                                <span
-                                    class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
-                                    İşlem Dövizi Kuru
-                                </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{orfiche.trrate}}
-                                </span>
-                            </div>
-
                             <!-- İşlem Net -->
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span
@@ -197,7 +186,7 @@
                                     İşlem Dövizi Tutarı
                                 </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{orfiche.trnet}}
+                                    {{orfiche.trnet | number}}
                                 </span>
                             </div>
                         </div>

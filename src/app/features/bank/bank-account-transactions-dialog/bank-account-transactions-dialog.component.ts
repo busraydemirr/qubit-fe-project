@@ -55,15 +55,10 @@ export class BankAccountTransactionsDialogComponent implements OnInit, AfterView
     'amount',
     'lineexp',
     'ksLineexp',
-    'reportnet',
-    'reportrate',
     'sign',
     'tranno',
     'transduedate',
     'capiblockNameCreatedby',
-    'capiblockCreadeddate',
-    'capiblockModifieddate',
-
   ];
   public queryParams: QueryParams = {
     size: 10,
