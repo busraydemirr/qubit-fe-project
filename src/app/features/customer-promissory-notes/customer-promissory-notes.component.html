@@ -31,24 +31,9 @@
         </mat-form-field>
     </div>
     <mat-table [dataSource]="dataSource" matSort>
-        <ng-container matColumnDef="bnAccountNo">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Hesabı Numarası </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                height: '20px',
-                width: '100%',
-                'background-color': '#b7bec3',
-                border: '1px solid #b7bec3'
-              }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.bnAccountNo }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="bankname">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Adı</mat-header-cell>
+        <!-- newserino kolonu -->
+        <ng-container matColumnDef="newserino">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Çek Numarası </mat-header-cell>
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }"
                 (click)="rowClicked(element)">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -61,7 +46,7 @@
                 </ng-container>
                 <ng-template #content>
                     <div class="clickable-cell">
-                        {{ element.bankname }}
+                        {{ element.newserino }}
                     </div>
                 </ng-template>
             </mat-cell>
@@ -79,6 +64,59 @@
                 </ng-container>
                 <ng-template #content>
                     {{ element.owing }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <!-- amount kolonu -->
+        <ng-container matColumnDef="amount">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Tutar </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.amount | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- duedate kolonu -->
+        <ng-container matColumnDef="duedate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Vade Tarihi </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.duedate | date: "dd/MM/yyyy" }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- setdate kolonu -->
+        <ng-container matColumnDef="setdate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Çek Alındığı Tarih </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ element.setdate | date: "dd/MM/yyyy"}}
                 </ng-template>
             </mat-cell>
         </ng-container>

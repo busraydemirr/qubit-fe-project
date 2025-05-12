@@ -4,11 +4,12 @@
       <mat-label> Banka Adı </mat-label>
       <input matInput placeholder="Banka Adı" formControlName="bankname" />
     </mat-form-field>
-    <mat-form-field [appearance]="'fill'" class="w-1/2">
+   <!--  <mat-form-field [appearance]="'fill'" class="w-1/2">
       <mat-label> Borçlu </mat-label>
       <input matInput placeholder="Borçlu" formControlName="owing" />
     </mat-form-field>
-  
+ -->
+    <div class="w-1/2"></div>
     <button mat-icon-button [disabled]="primossoryFilterForm.invalid"
       class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
       (click)="filter()">
@@ -31,54 +32,73 @@
     </mat-form-field>
   </div>
   <mat-table [dataSource]="dataSource" matSort>
-    <ng-container matColumnDef="bnaccountno">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Hesabı Numarası </mat-header-cell>
-      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
-        <ng-container *ngIf="(loading$ | async); else content">
-          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-              height: '20px',
-              width: '100%',
-              'background-color': '#b7bec3',
-              border: '1px solid #b7bec3'
-            }"></ngx-skeleton-loader>
-        </ng-container>
-        <ng-template #content>
-          {{ element.bnaccountno }}
-        </ng-template>
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="bankname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Adı</mat-header-cell>
+    <!-- newserino kolonu -->
+    <ng-container matColumnDef="newserino">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Çek Numarası </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-              height: '20px',
-              width: '100%',
-              'background-color': '#b7bec3',
-              border: '1px solid #b7bec3'
-            }"></ngx-skeleton-loader>
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
           <div class="clickable-cell">
-            {{ element.bankname }}
+            {{ element.newserino }}
           </div>
         </ng-template>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="owing">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Borçlu </mat-header-cell>
+    <!-- amount kolonu -->
+    <ng-container matColumnDef="amount">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tutar </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-              height: '20px',
-              width: '100%',
-              'background-color': '#b7bec3',
-              border: '1px solid #b7bec3'
-            }"></ngx-skeleton-loader>
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
-          {{ element.owing }}
+          {{ element.amount | number }}
         </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <!-- duedate kolonu -->
+    <ng-container matColumnDef="duedate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Vade Tarihi </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>
+          {{ element.duedate | date: "dd/MM/yyyy" }}
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="bankname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Adı</mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>{{ element.bankname }}</ng-template>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

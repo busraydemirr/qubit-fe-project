@@ -3,7 +3,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { CsCardModel } from '../../models/cscard/cscard.model';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -34,6 +34,8 @@ import { FilterRequestModel } from '../../models/shared/filter-request.model';
     ReactiveFormsModule,
     MatIconModule,
     MatInputModule,
+    CommonModule,
+    DatePipe
   ],
   templateUrl: './customer-promissory-notes.component.html',
   styleUrl: './customer-promissory-notes.component.scss'
@@ -45,9 +47,11 @@ export class CustomerPromissoryNotesComponent implements OnInit, AfterViewInit, 
   public elements: CsCardModel[] = [];
   public dataSource!: MatTableDataSource<CsCardModel>;
   public displayedColumns = [
-    'bankname',
+    'newserino',
     'owing',
-    'bnAccountNo',
+    'amount',
+    'duedate',
+    'setdate',
   ];
   public queryParams: QueryParams = {
     size: 10,

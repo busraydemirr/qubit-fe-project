@@ -11,7 +11,7 @@ import { CsCardState } from '../../state/cscard/cscard.state';
 import { CsCardActions } from '../../state/cscard/cscard.action';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,6 +34,8 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     MatIconModule,
     MatInputModule,
+    DatePipe,
+    CommonModule,
   ],
   templateUrl: './pimak-promissory-notes.component.html',
   styleUrl: './pimak-promissory-notes.component.scss'
@@ -45,9 +47,10 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   public elements: CsCardModel[] = [];
   public dataSource!: MatTableDataSource<CsCardModel>;
   public displayedColumns = [
+    'newserino',
+    'amount',
+    'duedate',
     'bankname',
-    'owing',
-    'bnaccountno',
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -60,7 +63,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   public termControl = new FormControl('03');
   public primossoryFilterForm: FormGroup = new FormGroup({
     bankname: new FormControl(null),
-    owing: new FormControl(null),
+   /*  owing: new FormControl(null), */
   });
 
   constructor(private _router: Router, private _store: Store) {
@@ -114,7 +117,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   }
 
   public clearFilters(): void {
-    if (!this.primossoryFilterForm?.value?.bankname && !this.primossoryFilterForm?.value?.owing) {
+    if (!this.primossoryFilterForm?.value?.bankname) {
       return;
     }
 
@@ -141,7 +144,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
         }
       };
 
-      if (this.primossoryFilterForm.value.owing) {
+      /* if (this.primossoryFilterForm.value.owing) {
         filter = {
           filter: {
             field: 'bankname',
@@ -155,8 +158,9 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
             }]
           }
         };
-      }
-    } else {
+      } */
+    } 
+    /* else {
       if (this.primossoryFilterForm.value.owing) {
         filter = {
           filter: {
@@ -166,7 +170,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
           }
         };
       }
-    }
+    } */
 
     if (!filter) {
       return;

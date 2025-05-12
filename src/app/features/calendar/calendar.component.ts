@@ -137,7 +137,7 @@ export class CalendarComponent implements AfterViewInit {
         }
 
         if (res2.data) {
-          this.events = this.events.concat(res2.data.items.map((item2) => {
+          this.events = this.events.concat(res2.data.csCards.items.map((item2: any) => {
             let docType = "";
             if (item2.doc === 1) {
               docType = "Müşteri Çeki";
