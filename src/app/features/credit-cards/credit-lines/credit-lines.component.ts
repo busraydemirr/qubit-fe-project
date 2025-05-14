@@ -44,9 +44,7 @@ export class CreditLinesComponent implements OnInit, AfterViewInit {
     "linenr",
     "duedate",
     "bnAccDefinition",
-    "capiblockNameCreatedby",
     "capiblockCreadeddate",
-    "lineexp",
     "total"
   ];
   public queryParams: QueryParams = {

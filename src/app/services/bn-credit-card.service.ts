@@ -7,6 +7,7 @@ import { FilterRequestModel } from '../models/shared/filter-request.model';
 import { BnCreditCardItemModel } from '../models/bncreditcard/bncreditcard.model';
 import { BnCardAccountLineModel } from '../models/bncard/bncard-account-line.model';
 import { TimePeriodEnum } from '../models/shared/time-period.enum';
+import moment from 'moment';
 
 @Injectable({
     providedIn: 'root',
@@ -16,8 +17,27 @@ export class BnCreditCardService {
 
     constructor(private _http: HttpClient) { }
 
-    public listBnCreditCards(size: number, page: number, body: FilterRequestModel): Observable<ResponseModel<BaseResponseData<BnCreditCardItemModel>>> {
-        return this._http.post<ResponseModel<BaseResponseData<BnCreditCardItemModel>>>(this.url + 'api/Bncreditcard' + '?size=' + size + '&from=' + page, body);
+    public listBnCreditCards(size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<BnCreditCardItemModel>>> {
+        const value = moment().subtract(7, 'd').toISOString();
+        const dateFilter = {
+            field: 'enddate',
+            value,
+            operator: 'gt',
+        };
+        let newFilter = {};
+        if (filter?.filter) {
+            newFilter =
+            {
+                ...filter.filter,
+                logic: 'and',
+                filters: filter.filter.filters ? [...filter.filter.filters, dateFilter] : [dateFilter]
+            }
+        } else {
+            newFilter = {
+                filter: dateFilter
+            }
+        }
+        return this._http.post<ResponseModel<BaseResponseData<BnCreditCardItemModel>>>(this.url + 'api/Bncreditcard' + '?size=' + size + '&from=' + page, newFilter);
     }
 
     public listBnCreditCardLines(id: number, size: number, page: number, filter: FilterRequestModel): Observable<ResponseModel<BaseResponseData<BnCardAccountLineModel>>> {

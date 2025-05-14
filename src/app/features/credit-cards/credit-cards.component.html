@@ -36,8 +36,8 @@
     </form>
     <mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="code">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Kredi Kodu </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Kredi Kodu </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
               height: '20px',
@@ -52,8 +52,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Kredi Adı </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }"
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-250"> Kredi Adı </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-250"
                 (click)="rowClicked(element)">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -71,8 +71,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="begdate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Başlangıç Tarihi </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Başlangıç Tarihi </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
               height: '20px',
@@ -88,8 +88,8 @@
         </ng-container>
 
         <ng-container matColumnDef="enddate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Bitiş Tarihi </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Bitiş Tarihi </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
               height: '20px',
@@ -105,8 +105,8 @@
         </ng-container>
 
         <ng-container matColumnDef="trtotal">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Kredi Tutarı </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Kredi Tutarı </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
               height: '20px',
@@ -122,8 +122,8 @@
         </ng-container>
 
         <ng-container matColumnDef="trcurr">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Para Birimi </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">Para Birimi </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
               height: '20px',
@@ -134,6 +134,114 @@
                 </ng-container>
                 <ng-template #content>
                     {{ renderCurrency(element.trcurr)}}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Ana Para Column -->
+        <ng-container matColumnDef="totalAmountOfBncrepay">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Ana Para </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else totalAmountContent">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+            }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #totalAmountContent>
+                    {{ element.totalAmountOfBncrepay | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Ödenen Ana Para Column -->
+        <ng-container matColumnDef="paidTotalAmountOfBncrepay">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Ödenen Ana Para </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else paidTotalAmountContent">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+            }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #paidTotalAmountContent>
+                    {{ element.paidTotalAmountOfBncrepay | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Faiz Column -->
+        <ng-container matColumnDef="totalIntAmountOfBncrepay">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Faiz </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else totalIntAmountContent">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+            }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #totalIntAmountContent>
+                    {{ element.totalIntAmountOfBncrepay | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Ödenen Faiz Column -->
+        <ng-container matColumnDef="paidTotalIntAmountOfBncrepay">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Ödenen Faiz </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else paidTotalIntAmountContent">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+            }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #paidTotalIntAmountContent>
+                    {{ element.paidTotalIntAmountOfBncrepay | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- BSMV Faiz Column -->
+        <ng-container matColumnDef="totalBsmvAmountOfBncrepay">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> BSMV Faiz </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else totalBsmvAmountContent">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+            }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #totalBsmvAmountContent>
+                    {{ element.totalBsmvAmountOfBncrepay | number }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Ödenen BSMV Faiz Column -->
+        <ng-container matColumnDef="paidTotalBsmvAmountOfBncrepay">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Ödenen BSMV Faiz </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
+                <ng-container *ngIf="(loading$ | async); else paidTotalBsmvAmountContent">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+            }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #paidTotalBsmvAmountContent>
+                    {{ element.paidTotalBsmvAmountOfBncrepay | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>

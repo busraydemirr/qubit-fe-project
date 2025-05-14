@@ -1,3 +1,5 @@
+import { CurrencyType } from "../shared/currency.enum";
+
 export interface BnCreditCardItemModel {
     id?: number;
     code?:string;
@@ -11,7 +13,7 @@ export interface BnCreditCardItemModel {
     gksno?: string;
     begdate?: string;
     enddate?: string;
-    trcurr?: number;
+    trcurr?: CurrencyType;
     trtotal?: number;
     trratecr?: number;
     trrateacc?: number;

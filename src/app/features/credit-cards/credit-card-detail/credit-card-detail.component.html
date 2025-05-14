@@ -21,7 +21,7 @@
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Başlangıç Tarihi </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.begdate}} </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.begdate | date:'dd.MM.yyyy'}} </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Referansı </span>
@@ -33,7 +33,7 @@
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Masraf ve Komisyon Tutarı </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.commtotal}} </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.commtotal | number}} </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Kart Türü </span>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Bitiş Tarihi </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.enddate}} </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.enddate | date:'dd.MM.yyyy'}} </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Genel Sözleşme Numarası </span>
@@ -61,15 +61,11 @@
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Faiz Tutarı </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.inttotal}} </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.inttotal | number}} </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Adı </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.name}} </span>
-                            </div>
-                            <div class="flex w-full content-between flex-wrap flex-row">
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> Raporlama Para Birimi </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.reportrate}} </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Özel Kodu </span>
@@ -77,7 +73,7 @@
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Hareket Para Birimi </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.trcurr}} </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{renderCurrency(card?.trcurr!)}} </span>
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Hareket Hesap Oranı </span>
@@ -89,7 +85,7 @@
                             </div>
                             <div class="flex w-full content-between flex-wrap flex-row">
                                 <span class="flex w-1/2 py-1 px-2 border border-1"> Kredi Tutarı </span>
-                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.trtotal!}} </span>
+                                <span class="flex w-1/2 py-1 px-2 border border-1"> {{card?.trtotal! | number}} </span>
                             </div>
                         </div>
                     </div>

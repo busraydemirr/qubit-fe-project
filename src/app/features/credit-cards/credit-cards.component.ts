@@ -79,170 +79,177 @@ export class CreditCardsComponent implements OnInit, AfterViewInit, OnDestroy {
     'begdate',
     'enddate',
     'trtotal',
-    'trcurr'
+    'trcurr',
+    "totalAmountOfBncrepay", // ana para,
+    "paidTotalAmountOfBncrepay", // ödenen ana para
+    "totalIntAmountOfBncrepay", // faiz
+    "paidTotalIntAmountOfBncrepay", // ödenen faiz
+    "totalBsmvAmountOfBncrepay", // BSMV Faiz
+    "paidTotalBsmvAmountOfBncrepay", // Ödenen BSMV Faiz
+
   ];
   public queryParams: QueryParams = {
-    size: 10,
-    page: 0,
-    totalElements: 0,
-    pages: 0
-  };
+  size: 10,
+  page: 0,
+  totalElements: 0,
+  pages: 0
+};
   public loading$: Observable<boolean>;
   public bankFilterForm: FormGroup = new FormGroup({
-    definition: new FormControl(null),
-    date: new FormControl(null),
-    start: new FormControl(null),
-    end: new FormControl(null),
-  });
+  definition: new FormControl(null),
+  date: new FormControl(null),
+  start: new FormControl(null),
+  end: new FormControl(null),
+});
   public subsink = new SubSink();
   public renderCurrency = renderCurrency;
 
-  constructor(private _store: Store, private _router: Router) {
-    this.loading$ = this._store.select(BnCreditCardState.getLoading);
-  }
+constructor(private _store: Store, private _router: Router) {
+  this.loading$ = this._store.select(BnCreditCardState.getLoading);
+}
 
   public ngOnInit(): void {
-    this._store.dispatch(
-      new BnCreditCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
-    );
+  this._store.dispatch(
+    new BnCreditCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
+  );
 
-    this.subsink.sink = this._store.select(BnCreditCardState.getBnCreditCards).subscribe((cards: BnCreditCardItemModel[]) => {
-      this.elements = cards;
-      this.dataSource = new MatTableDataSource<BnCreditCardItemModel>(this.elements);
-      this.queryParams = this._store.selectSnapshot(BnCreditCardState.getBnCreditCardQueryParams);
-    });
-  }
+  this.subsink.sink = this._store.select(BnCreditCardState.getBnCreditCards).subscribe((cards: BnCreditCardItemModel[]) => {
+    this.elements = cards;
+    this.dataSource = new MatTableDataSource<BnCreditCardItemModel>(this.elements);
+    this.queryParams = this._store.selectSnapshot(BnCreditCardState.getBnCreditCardQueryParams);
+  });
+}
 
   public ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  this.dataSource.paginator = this.paginator;
+  this.dataSource.sort = this.sort;
+}
 
   public ngOnDestroy(): void {
-    this.subsink.unsubscribe();
-  }
+  this.subsink.unsubscribe();
+}
 
   public rowClicked(element: BnCreditCardItemModel): void {
-    this._store.dispatch(new BnCreditCardActions.SetBnCreditCard(element));
-    this._router.navigate(['credits/detail', element.id]);
-  }
+  this._store.dispatch(new BnCreditCardActions.SetBnCreditCard(element));
+  this._router.navigate(['credits/detail', element.id]);
+}
 
   public changePaginationEvents(event: PageEvent): void {
-    this._store.dispatch(
-      new BnCreditCardActions.List({ size: event.pageSize, page: event.pageIndex, filter: {} })
-    );
-  }
+  this._store.dispatch(
+    new BnCreditCardActions.List({ size: event.pageSize, page: event.pageIndex, filter: {} })
+  );
+}
 
   public filter(): void {
-    if (!this.bankFilterForm?.value || this.bankFilterForm.invalid) {
-      return;
-    }
+  if(!this.bankFilterForm?.value || this.bankFilterForm.invalid) {
+  return;
+}
 
-    let filter: FilterRequestModel | null = null;
-    if (this.bankFilterForm.value.definition) {
+let filter: FilterRequestModel | null = null;
+if (this.bankFilterForm.value.definition) {
+  filter = {
+    filter: {
+      field: 'name',
+      value: this.bankFilterForm.value.definition,
+      operator: 'contains',
+    }
+  };
+
+  if (this.bankFilterForm.value.date) {
+    if (this.bankFilterForm.value.date === 'begdate' && this.bankFilterForm.value.start && this.bankFilterForm.value.end) {
       filter = {
         filter: {
           field: 'name',
           value: this.bankFilterForm.value.definition,
           operator: 'contains',
+          logic: "and",
+          filters: [{
+            field: 'begdate',
+            value: moment(this.bankFilterForm.value.start).toISOString(),
+            operator: 'gt',
+          }, {
+            field: 'begdate',
+            value: moment(this.bankFilterForm.value.end).toISOString(),
+            operator: 'lt',
+          }]
         }
       };
-
-      if (this.bankFilterForm.value.date) {
-        if (this.bankFilterForm.value.date === 'begdate' && this.bankFilterForm.value.start && this.bankFilterForm.value.end) {
-          filter = {
-            filter: {
-              field: 'name',
-              value: this.bankFilterForm.value.definition,
-              operator: 'contains',
-              logic: "and",
-              filters: [{
-                field: 'begdate',
-                value: moment(this.bankFilterForm.value.start).toISOString(),
-                operator: 'gt',
-              }, {
-                field: 'begdate',
-                value: moment(this.bankFilterForm.value.end).toISOString(),
-                operator: 'lt',
-              }]
-            }
-          };
-        }
-
-        if (this.bankFilterForm.value.date === 'enddate' && this.bankFilterForm.value.start && this.bankFilterForm.value.end) {
-          filter = {
-            filter: {
-              field: 'name',
-              value: this.bankFilterForm.value.definition,
-              operator: 'contains',
-              logic: "and",
-              filters: [{
-                field: 'enddate',
-                value: moment(this.bankFilterForm.value.start).toISOString(),
-                operator: 'gt',
-              }, {
-                field: 'enddate',
-                value: moment(this.bankFilterForm.value.end).toISOString(),
-                operator: 'lt',
-              }]
-            }
-          };
-        }
-      }
-    } else {
-      if (this.bankFilterForm.value.date) {
-        if (this.bankFilterForm.value.date === 'begdate' && this.bankFilterForm.value.start && this.bankFilterForm.value.end) {
-          filter = {
-            filter: {
-              field: 'begdate',
-              value: moment(this.bankFilterForm.value.start).toISOString(),
-              operator: 'gt',
-              logic: "and",
-              filters: [{
-                field: 'begdate',
-                value: moment(this.bankFilterForm.value.end).toISOString(),
-                operator: 'lt',
-              }]
-            }
-          };
-        }
-
-        if (this.bankFilterForm.value.date === 'enddate' && this.bankFilterForm.value.start && this.bankFilterForm.value.end) {
-          filter = {
-            filter: {
-              field: 'enddate',
-              value: moment(this.bankFilterForm.value.start).toISOString(),
-              operator: 'gt',
-              logic: "and",
-              filters: [{
-                field: 'enddate',
-                value: moment(this.bankFilterForm.value.end).toISOString(),
-                operator: 'lt',
-              }]
-            }
-          };
-        }
-      }
     }
 
-    if (!filter) {
-      return;
+    if (this.bankFilterForm.value.date === 'enddate' && this.bankFilterForm.value.start && this.bankFilterForm.value.end) {
+      filter = {
+        filter: {
+          field: 'name',
+          value: this.bankFilterForm.value.definition,
+          operator: 'contains',
+          logic: "and",
+          filters: [{
+            field: 'enddate',
+            value: moment(this.bankFilterForm.value.start).toISOString(),
+            operator: 'gt',
+          }, {
+            field: 'enddate',
+            value: moment(this.bankFilterForm.value.end).toISOString(),
+            operator: 'lt',
+          }]
+        }
+      };
+    }
+  }
+} else {
+  if (this.bankFilterForm.value.date) {
+    if (this.bankFilterForm.value.date === 'begdate' && this.bankFilterForm.value.start && this.bankFilterForm.value.end) {
+      filter = {
+        filter: {
+          field: 'begdate',
+          value: moment(this.bankFilterForm.value.start).toISOString(),
+          operator: 'gt',
+          logic: "and",
+          filters: [{
+            field: 'begdate',
+            value: moment(this.bankFilterForm.value.end).toISOString(),
+            operator: 'lt',
+          }]
+        }
+      };
     }
 
-    this._store.dispatch(
-      new BnCreditCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter })
-    );
+    if (this.bankFilterForm.value.date === 'enddate' && this.bankFilterForm.value.start && this.bankFilterForm.value.end) {
+      filter = {
+        filter: {
+          field: 'enddate',
+          value: moment(this.bankFilterForm.value.start).toISOString(),
+          operator: 'gt',
+          logic: "and",
+          filters: [{
+            field: 'enddate',
+            value: moment(this.bankFilterForm.value.end).toISOString(),
+            operator: 'lt',
+          }]
+        }
+      };
+    }
+  }
+}
+
+if (!filter) {
+  return;
+}
+
+this._store.dispatch(
+  new BnCreditCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter })
+);
   }
 
   public clearFilters(): void {
-    if (!this.bankFilterForm?.value?.definition && !this.bankFilterForm?.value?.date) {
-      return;
-    }
+  if(!this.bankFilterForm?.value?.definition && !this.bankFilterForm?.value?.date) {
+  return;
+}
 
-    this.bankFilterForm.reset();
-    const queryParams = this._store.selectSnapshot(BnCreditCardState.getBnCreditCardQueryParams);
-    this._store.dispatch(
-      new BnCreditCardActions.List({ size: queryParams.size, page: 0, filter: {} })
-    );
+this.bankFilterForm.reset();
+const queryParams = this._store.selectSnapshot(BnCreditCardState.getBnCreditCardQueryParams);
+this._store.dispatch(
+  new BnCreditCardActions.List({ size: queryParams.size, page: 0, filter: {} })
+);
   }
 }
