@@ -10,6 +10,11 @@ import { TimePeriodEnum } from '../../models/shared/time-period.enum';
 import { OrficheService } from '../../services/orfiche.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InvoiceService } from '../../services/invoice.service';
+import { CsCardService } from '../../services/cscard.service';
+import { elementAt } from 'rxjs';
+import { FilterRequestModel } from '../../models/shared/filter-request.model';
+import moment from 'moment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -47,9 +52,11 @@ export class HomeComponent implements OnInit {
   public weatherStatus = WEATHER_STATUS;
   public timePeriodOrfiche = TimePeriodEnum.TODAY;
   public timePeriodInvoince = TimePeriodEnum.TODAY;
+  public timePeriodPromissory = TimePeriodEnum.TODAY;
   public timePeriodEnum = TimePeriodEnum;
   public orficheLoading = false;
   public invoinceLoading = false;
+  public promissoryLoading = false;
   public orficheData = {
     labels: [
       'Alınan Siparişler',
@@ -82,18 +89,43 @@ export class HomeComponent implements OnInit {
     }]
   };
 
+  public promissoryData = {
+    labels: [
+      'Müşteri Çekleri',
+      'Pimak Çekleri',
+    ],
+    datasets: [{
+      label: 'Çek ve Senetler',
+      data: [],
+      backgroundColor: [
+        '#2e4f6e',
+        'rgb(54, 162, 235)'
+      ],
+      hoverOffset: 20
+    }]
+  };
+
   public chart: any = null;
   public chart2: any = null;
+  public chart3: any = null;
   public invoinceInfo: any = null;
   public orficheInfo: any = null;
+  public promissoryInfo: any = null;
+  private _filter!: FilterRequestModel;
 
-  constructor(private _orficheService: OrficheService, private _invoiceService: InvoiceService) {
+  constructor(
+    private _orficheService: OrficheService,
+    private _invoiceService: InvoiceService,
+    private _csCardService: CsCardService,
+    private _router: Router
+  ) {
     this._renderWeatherTemplate();
   }
 
   ngOnInit(): void {
     this.viewOrficheData(this.timePeriodOrfiche);
     this.viewInvoinceData(this.timePeriodInvoince);
+    this.viewPromissoryData(this.timePeriodPromissory);
   }
 
   async _renderWeatherTemplate() {
@@ -147,6 +179,18 @@ export class HomeComponent implements OnInit {
             maintainAspectRatio: false,
             responsive: false,
             aspectRatio: 1,
+            onClick: (event, element, chart) => {
+              console.log(event, element, chart);
+              if (element[0].index === 0) {
+                // Alınan Siparişler
+                this._router.navigate(['received-orfiches'], { queryParams: { timePeriod: this.timePeriodOrfiche } });
+              }
+
+              if (element[0].index === 1) {
+                // Verilen Siparişler
+                this._router.navigate(['placed-invoices'], { queryParams: { timePeriod: this.timePeriodOrfiche } });
+              }
+            }
           }
         });
       } else {
@@ -180,11 +224,68 @@ export class HomeComponent implements OnInit {
             maintainAspectRatio: false,
             responsive: false,
             aspectRatio: 1,
+            onClick: (event, element, chart) => {
+              console.log(event, element, chart);
+              if (element[0].index === 0) {
+                // Alış Faturaları
+                this._router.navigate(['purchase-invoices'], { queryParams: { timePeriod: this.timePeriodInvoince } });
+              }
+
+              if (element[0].index === 1) {
+                // Satış Faturaları
+                this._router.navigate(['sales-invoices'], { queryParams: { timePeriod: this.timePeriodInvoince } });
+              }
+            }
           }
         });
       } else {
         this.chart.data = this.invoinceData;
         this.chart.update();
+      }
+    });
+  }
+
+  public viewPromissoryData(data: TimePeriodEnum): void {
+    this.timePeriodPromissory = data;
+    this.promissoryLoading = true;
+
+    this._csCardService.getPromissoryNote(this.timePeriodPromissory).subscribe((res) => {
+      this.promissoryLoading = false;
+      if (res.data) {
+        this.promissoryInfo = res.data;
+        this.promissoryData = {
+          ...this.promissoryData,
+          datasets: [{
+            ...this.promissoryData.datasets[0],
+            data: [res.data.totalAmountForCustomer as never, res.data.totalAmountForPimak as never]
+          }]
+        };
+      }
+      if (!this.chart3) {
+        this.chart3 = new Chart('canvas3', {
+          type: 'doughnut',
+          data: this.promissoryData,
+          options: {
+            maintainAspectRatio: false,
+            responsive: false,
+            aspectRatio: 1,
+            onClick: (event, element, chart) => {
+              console.log(event, element, chart);
+              if (element[0].index === 0) {
+                // Müşteri Çekleri
+                this._router.navigate(['customer-promissory-notes'], { queryParams: { timePeriod: this.timePeriodPromissory } });
+              }
+
+              if (element[0].index === 1) {
+                // Pimak Çekleri
+                this._router.navigate(['pimak-promissory-notes'], { queryParams: { timePeriod: this.timePeriodPromissory } });
+              }
+            }
+          }
+        });
+      } else {
+        this.chart3.data = this.promissoryData;
+        this.chart3.update();
       }
     });
   }

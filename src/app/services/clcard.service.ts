@@ -21,20 +21,25 @@ export class ClCardService {
             value: '0',
             operator: 'eq',
         };
+        console.log(filter);
         let newFilter = {};
         if (filter?.filter) {
             newFilter =
             {
-                ...filter.filter,
-                logic: 'and',
-                filters: filter.filter.filters ? [...filter.filter.filters, activeFilter] : [activeFilter]
+                ...filter.sort ? { sort: filter.sort } : {},
+                filter: {
+                    ...filter.filter,
+                    logic: 'and',
+                    filters: filter.filter.filters ? [...filter.filter.filters, activeFilter] : [activeFilter]
+                }
             }
         } else {
             newFilter = {
+                ...filter.sort ? { sort: filter.sort } : {},
                 filter: activeFilter
             }
         }
-        return this._http.post<ResponseModel<BaseResponseData<ClCardItemModel>>>(this.url + 'api/ClCard' + '?size=' + size + '&from=' + page, newFilter);
+        return this._http.post<ResponseModel<BaseResponseData<ClCardItemModel>>>(this.url + 'api/ClCard/v2' + '?size=' + size + '&from=' + page, newFilter);
     }
 
     public getClCardLines(id: number, size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<ClCardLineModel>>> {

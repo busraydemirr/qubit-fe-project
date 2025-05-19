@@ -1,7 +1,7 @@
 <div class="p-8 !h-screen">
     <mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="linetype">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Satır Tipi </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-150"> Satır Tipi </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -18,7 +18,7 @@
         </ng-container>
 
         <ng-container matColumnDef="itemCode">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Malzeme Kodu </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-200"> Malzeme Kodu </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -35,7 +35,7 @@
         </ng-container>
 
         <ng-container matColumnDef="itemName">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-250"> Malzeme Adı </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-250"> Malzeme Adı </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-250">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -52,7 +52,7 @@
         </ng-container>
 
         <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Miktar </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> Miktar </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -69,7 +69,7 @@
         </ng-container>
 
         <ng-container matColumnDef="total">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Toplam </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-150"> Toplam </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -86,7 +86,7 @@
         </ng-container>
 
         <ng-container matColumnDef="unitName">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Birim </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-150"> Birim </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -103,7 +103,7 @@
         </ng-container>
 
         <ng-container matColumnDef="price">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Fiyat </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-150"> Fiyat </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -120,7 +120,7 @@
         </ng-container>
 
         <ng-container matColumnDef="clCardDefinition">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-300"> Cari Adı </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-300"> Cari Adı </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-300" (click)="rowClicked(element)">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -139,7 +139,7 @@
         </ng-container>
 
         <ng-container matColumnDef="date">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Tarih </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-200"> Tarih </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -156,7 +156,7 @@
         </ng-container>
 
         <ng-container matColumnDef="iocode">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Girdi/Çıktı
+            <mat-header-cell *matHeaderCellDef   class="table-column-150"> Girdi/Çıktı
                 Kodu</mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -174,7 +174,7 @@
         </ng-container>
 
         <ng-container matColumnDef="prcurr">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Para Birimi </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-200"> Para Birimi </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -191,7 +191,7 @@
         </ng-container>
 
         <ng-container matColumnDef="lineexp">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Satır Açıklaması
+            <mat-header-cell *matHeaderCellDef   class="table-column-200"> Satır Açıklaması
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -209,7 +209,7 @@
         </ng-container>
 
         <ng-container matColumnDef="vat">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> KDV </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> KDV </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -226,7 +226,7 @@
         </ng-container>
 
         <ng-container matColumnDef="vatamnt">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> KDV Tutarı </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> KDV Tutarı </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -243,7 +243,7 @@
         </ng-container>
 
         <ng-container matColumnDef="vatmatrah">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> KDV Matrahı </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> KDV Matrahı </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -260,7 +260,7 @@
         </ng-container>
 
         <ng-container matColumnDef="linenet">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Satır Net </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-150"> Satır Net </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -277,7 +277,7 @@
         </ng-container>
 
         <ng-container matColumnDef="month">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Ay </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> Ay </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -294,7 +294,7 @@
         </ng-container>
 
         <ng-container matColumnDef="year">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Yıl </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> Yıl </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 

@@ -8,6 +8,7 @@ import { ClCardItemModel } from "../../models/clcard/clcard.model";
 import { QueryParams } from "../../models/shared/query-params.model";
 import { ClCardLineModel } from "../../models/clcard/clcard-line.model";
 import { ClCardTotalModel } from "../../models/clcard/clcard-total.model";
+import { FilterRequestModel } from "../../models/shared/filter-request.model";
 
 @State<ClCardStateModel>({
     name: 'clcard',
@@ -46,7 +47,19 @@ import { ClCardTotalModel } from "../../models/clcard/clcard-total.model";
         lineSize: 10,
         lineTotalElements: 0,
         linePages: 0,
-        totals: {}
+        cardLines1: [],
+        linePage1: 0,
+        lineSize1: 10,
+        lineTotalElements1: 0,
+        linePages1: 0,
+        cardLines2: [],
+        linePage2: 0,
+        lineSize2: 10,
+        lineTotalElements2: 0,
+        linePages2: 0,
+        totals: {},
+        linesListLoading2: false,
+        linesListLoading1: false,
     }
 })
 @Injectable()
@@ -56,6 +69,11 @@ export class ClCardState {
     @Selector()
     static getClCards({ items }: ClCardStateModel): ClCardItemModel[] {
         return items;
+    }
+
+    @Selector()
+    static getClCardFilter({ filter }: ClCardStateModel): FilterRequestModel {
+        return filter;
     }
 
     @Selector()
@@ -84,13 +102,47 @@ export class ClCardState {
     }
 
     @Selector()
+    static getClCardLines2({ cardLines2 }: ClCardStateModel): ClCardLineModel[] {
+        return cardLines2;
+    }
+
+    @Selector()
+    static getClCardLines1({ cardLines1 }: ClCardStateModel): ClCardLineModel[] {
+        return cardLines1;
+    }
+
+    @Selector()
     static getLinesListLoading({ linesListLoading }: ClCardStateModel): boolean {
         return linesListLoading;
     }
 
     @Selector()
-    static getClCardLineQueryParams({ linePage, lineSize, lineTotalElements, linePages }: ClCardStateModel): QueryParams {
+    static getLinesListLoading2({ linesListLoading2 }: ClCardStateModel): boolean {
+        return linesListLoading2;
+    }
+
+    @Selector()
+    static getLinesListLoading1({ linesListLoading1 }: ClCardStateModel): boolean {
+        return linesListLoading1;
+    }
+
+    @Selector()
+    static getClCardLineQueryParams({ linePage, lineSize, lineTotalElements, linePages,
+    }: ClCardStateModel): QueryParams {
         return { page: linePage, size: lineSize, totalElements: lineTotalElements, pages: linePages };
+    }
+
+    @Selector()
+    static getClCardLineQueryParams2({
+        linePage2, lineSize2, lineTotalElements2, linePages2,
+    }: ClCardStateModel): QueryParams {
+        return { page: linePage2, size: lineSize2, totalElements: lineTotalElements2, pages: linePages2 };
+    }
+
+    @Selector()
+    static getClCardLineQueryParams1({
+        linePage1, lineSize1, lineTotalElements1, linePages1 }: ClCardStateModel): QueryParams {
+        return { page: linePage1, size: lineSize1, totalElements: lineTotalElements1, pages: linePages1 };
     }
 
     @Selector()
@@ -100,7 +152,7 @@ export class ClCardState {
 
     @Action(ClCardActions.List)
     listClCards({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.List) {
-        patchState({ loading: true, filter: action.payload.filter});
+        patchState({ loading: true, filter: action.payload.filter });
         return this._clCardService.listClCards(action.payload.size, action.payload.page, action.payload.filter ?? {}).pipe(
             tap(data => {
                 patchState({
@@ -119,7 +171,7 @@ export class ClCardState {
     getClCardTotals({ patchState, getState }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardTotals) {
         const { term } = getState();
         patchState({ linesListLoading: true });
-        return this._clCardService.getClCardTotals(action.payload, {}, term ?? '03').pipe(
+        return this._clCardService.getClCardTotals(action.payload, {}, '03').pipe(
             tap(data => {
                 patchState({
                     totals: {
@@ -156,6 +208,7 @@ export class ClCardState {
 
     @Action(ClCardActions.GetClCardLines)
     getClCardLines({ patchState, dispatch }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardLines) {
+        console.log('getClCardLines', action.payload.term);
         patchState({ linesListLoading: true, term: action.payload.term });
         return this._clCardService.getClCardLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
             tap(data => {
@@ -168,7 +221,47 @@ export class ClCardState {
                     linesListLoading: false
                 });
 
+
                 dispatch(new ClCardActions.GetClCardTotals(action.payload.id));
+            })
+        );
+    }
+
+
+    @Action(ClCardActions.GetClCardLines2)
+    getClCardLines2({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardLines2) {
+        console.log('getClCardLines2', action.payload.term);
+        patchState({ linesListLoading2: true, term: action.payload.term });
+        return this._clCardService.getClCardLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
+            tap(data => {
+                patchState({
+                    cardLines2: data.data.items,
+                    linePage2: data.data.index,
+                    lineSize2: data.data.size,
+                    lineTotalElements2: data.data.count,
+                    linePages2: data.data.pages,
+                    linesListLoading2: false
+                });
+            })
+        );
+    }
+
+
+
+    @Action(ClCardActions.GetClCardLines1)
+    getClCardLines1({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.GetClCardLines1) {
+        console.log('getClCardLines1', action.payload.term);
+        patchState({ linesListLoading1: true, term: action.payload.term });
+        return this._clCardService.getClCardLines(action.payload.id, action.payload.size, action.payload.page, action.payload.filter ?? {}, action.payload.term ?? '03').pipe(
+            tap(data => {
+                patchState({
+                    cardLines1: data.data.items,
+                    linePage1: data.data.index,
+                    lineSize1: data.data.size,
+                    lineTotalElements1: data.data.count,
+                    linePages1: data.data.pages,
+                    linesListLoading1: false
+                });
             })
         );
     }

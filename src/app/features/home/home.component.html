@@ -93,6 +93,40 @@
 
                     </div>
                 </div>
+
+                 <div class="bg-gray-300 h-full w-full rounded">
+                    <div class="h-18 w-full flex justify-between items-center bg-gray-400 py-2 px-4">
+                        <div class="flex justify-start justify-center text-xl font-bold text-gray-700"> Çek ve Senetler</div>
+                        <div class="flex justify-end items-center">
+                            <mat-form-field appearance="fill" class="w-2/3 mb-[-16px]">
+                                <mat-label>Periyot</mat-label>
+                                <mat-select [(ngModel)]="timePeriodPromissory" (ngModelChange)="viewPromissoryData($event)">
+                                    <mat-option [value]="timePeriodEnum.TODAY">Dün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.WEEK">Son 7 gün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.MONTH">Son 30 gün</mat-option>
+                                    <mat-option [value]="timePeriodEnum.THREE_MONTHS">Son 90 gün</mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="h-full w-full flex justify-center">
+                        <canvas id="canvas3"
+                            [class]="{'hidden': promissoryLoading || (!promissoryLoading && promissoryInfo && promissoryInfo.totalAmountForCustomer === 0 && promissoryInfo.totalAmountForPimak === 0)}">
+                            <div *ngIf="!promissoryLoading"> {{chart3}}</div>
+                        </canvas>
+                        <div
+                            *ngIf="!promissoryLoading && promissoryInfo && promissoryInfo.totalAmountForCustomer === 0 && promissoryInfo.totalAmountForPimak === 0">
+                            <div class="flex w-full items-center justify-center text-gray-700 p-8">
+                                Seçtiğiniz aralık için veri bulunmamaktadır.</div>
+                        </div>
+                        <div *ngIf="promissoryLoading">
+                            <div class="flex w-full items-center justify-center p-8">
+                                <mat-spinner></mat-spinner>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

@@ -16,8 +16,10 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngxs/store';
 import { CsCardState } from '../../state/cscard/cscard.state';
 import { CsCardActions } from '../../state/cscard/cscard.action';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
+import { TimePeriodEnum } from '../../models/shared/time-period.enum';
+import moment from 'moment';
 
 @Component({
   selector: 'app-customer-promissory-notes',
@@ -67,13 +69,63 @@ export class CustomerPromissoryNotesComponent implements OnInit, AfterViewInit, 
     owing: new FormControl(null),
   });
 
-  constructor(private _router: Router, private _store: Store) {
+  private _filter!: FilterRequestModel;
+
+  constructor(private _router: Router, private _store: Store, private _route: ActivatedRoute) {
     this.loading$ = this._store.select(CsCardState.getLoading);
+
+    this.subsink.sink = this._route.queryParams.subscribe((queryParams) => {
+      if (queryParams?.['timePeriod']) {
+        this._setFilter(queryParams['timePeriod'], 'duedate');
+      }
+    });
+  }
+
+  private _setFilter(timePeriod: TimePeriodEnum, field: string) {
+    if (timePeriod === TimePeriodEnum.TODAY) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.WEEK) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(7, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.MONTH) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(30, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.THREE_MONTHS) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(90, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
   }
 
   public ngOnInit(): void {
     this._store.dispatch(
-      new CsCardActions.CsCardCekList({ size: this.queryParams.size, page: this.queryParams.page, filter: {}, term: this.termControl.value! })
+      new CsCardActions.CsCardCekList({ size: this.queryParams.size, page: this.queryParams.page, filter: this._filter ?? {}, term: this.termControl.value! })
     );
 
     this.subsink.sink = this._store.select(CsCardState.getCekItems).subscribe((csCard: CsCardModel[]) => {

@@ -43,6 +43,8 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
   @ViewChild(MatSort) sort!: MatSort;
 
   @Input() cardId!: number;
+  @Input() term!: string;
+  @Input() id!: string;
 
   public elements: ClCardLineModel[] = [];
   public dataSource!: MatTableDataSource<ClCardLineModel>;
@@ -70,16 +72,22 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     totalElements: 0,
     pages: 0
   };
-  public loading$: Observable<boolean>;
-  public totals$: Observable<ClCardTotalModel>;
+  public loading$!: Observable<boolean>;
+  public totals$!: Observable<ClCardTotalModel>;
   public renderSign = renderSign;
   public renderAccountedInfo = renderAccountedInfo;
   public subsink = new SubSink();
   public termControl = new FormControl(['03']);
 
   constructor(private _store: Store) {
-    this.loading$ = this._store.select(ClCardState.getLinesListLoading);
-    this.totals$ = this._store.select(ClCardState.getClCardTotals);
+    if (!this.term || this.term === '03') {
+      this.loading$ = this._store.select(ClCardState.getLinesListLoading);
+      this.totals$ = this._store.select(ClCardState.getClCardTotals);
+    } else if (this.term === '02') {
+      this.loading$ = this._store.select(ClCardState.getLinesListLoading2);
+    } else if (this.term === '01') {
+      this.loading$ = this._store.select(ClCardState.getLinesListLoading1);
+    }
   }
 
   public ngOnInit(): void {
@@ -87,28 +95,33 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
       id: this.cardId,
       size: this.queryParams.size,
       page: this.queryParams.page,
-      filter: {}
+      filter: {},
+      term: this.term ?? '03'
     };
-    this._store.dispatch([new ClCardActions.GetClCardLines(payload)]);
 
-    this.subsink.sink = this._store.select(ClCardState.getClCardLines).subscribe((cards: ClCardLineModel[]) => {
-      this.elements = cards;
-      this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
-      this.queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams);
-    });
-
-    this.subsink.sink = this.termControl.valueChanges.subscribe((term: any) => {
-      const queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams);
-      const payload = {
-        id: this.cardId,
-        size: queryParams.size,
-        page: 0,
-        filter: {},
-        term,
-      };
-
+    if (!this.term || this.term === '03') {
       this._store.dispatch([new ClCardActions.GetClCardLines(payload)]);
-    });
+      this.subsink.sink = this._store.select(ClCardState.getClCardLines).subscribe((cards: ClCardLineModel[]) => {
+        this.elements = cards;
+        this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
+        this.queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams);
+      });
+    } else if (this.term === '02') {
+      this._store.dispatch([new ClCardActions.GetClCardLines2(payload)]);
+      this.subsink.sink = this._store.select(ClCardState.getClCardLines2).subscribe((cards: ClCardLineModel[]) => {
+        this.elements = cards;
+        this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
+        this.queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams2);
+      });
+    } else if (this.term === '01') {
+      this._store.dispatch([new ClCardActions.GetClCardLines1(payload)]);
+      this.subsink.sink = this._store.select(ClCardState.getClCardLines1).subscribe((cards: ClCardLineModel[]) => {
+        this.elements = cards;
+        this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
+        this.queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams1);
+      });
+    }
+
   }
 
   public ngAfterViewInit(): void {
@@ -118,11 +131,23 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
 
   public ngOnDestroy(): void {
     this.subsink.unsubscribe();
+    this.elements = [];
+    this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
   }
 
   public changePaginationEvents(event: PageEvent): void {
-    this._store.dispatch(
-      new ClCardActions.GetClCardLines({ id: this.cardId, size: event.pageSize, page: event.pageIndex, filter: {} })
-    );
+    if (!this.term || this.term === '03') {
+      this._store.dispatch(
+        new ClCardActions.GetClCardLines({ id: this.cardId, size: event.pageSize, page: event.pageIndex, filter: {}, term: this.term ?? '03' })
+      );
+    } else if (this.term === '02') {
+      this._store.dispatch(
+        new ClCardActions.GetClCardLines2({ id: this.cardId, size: event.pageSize, page: event.pageIndex, filter: {}, term: this.term ?? '03' })
+      );
+    } else if (this.term === '01') {
+      this._store.dispatch(
+        new ClCardActions.GetClCardLines1({ id: this.cardId, size: event.pageSize, page: event.pageIndex, filter: {}, term: this.term ?? '03' })
+      );
+    }
   }
 }

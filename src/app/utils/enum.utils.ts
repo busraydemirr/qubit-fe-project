@@ -53,6 +53,22 @@ export function renderAccountedInfo(value: number): AccountedInfo | '' {
     }
 }
 
+export function renderBankProcType(value: number): string | '' {
+    switch (value) {
+        case 1: return 'Banka İşlem Fişi';
+        case 2: return 'Banka Virman Fişi';
+        case 3: return 'Gelen Havale - EFT';
+        case 4: return 'Gönderilen EFT/Havale';
+        case 5: return 'Banka Açılış Fişi';
+        case 6: return 'Banka Kur Farkı Fişi';
+        case 16: return 'Banka Alınan Hizmet Faturası';
+        case 17: return 'Banka Verilen Hizmet Faturası';
+        case 18: return 'Bankadan Çek Ödemesi';
+        case 19: return 'Bankadan Senet Ödemesi';
+        default: return '';
+    }
+}
+
 // Döviz türlerinin tanımlarını getiren yardımcı fonksiyon
 export function renderCurrency(currencyType: CurrencyType): any {
     switch (currencyType) {

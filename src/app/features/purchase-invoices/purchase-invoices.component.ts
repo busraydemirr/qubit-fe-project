@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { InvoiceState } from '../../state/invoice/invoice.state';
 import { InvoiceActions } from '../../state/invoice/invoice.action';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
-import { Router } from '@angular/router';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AsyncPipe, CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SubSink } from 'subsink';
@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { renderCurrency } from '../../utils/enum.utils';
+import { TimePeriodEnum } from '../../models/shared/time-period.enum';
 
 export const MY_FORMATS = {
   parse: {
@@ -94,14 +95,63 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
     end: new FormControl(null),
   });
   public renderCurrency = renderCurrency;
+  private _filter!: FilterRequestModel;
 
-  constructor(private _router: Router, private _store: Store) {
+  constructor(private _router: Router, private _store: Store, private _route: ActivatedRoute) {
     this.loading$ = this._store.select(InvoiceState.getLoading);
+
+    this.subsink.sink = this._route.queryParams.subscribe((queryParams) => {
+      if (queryParams?.['timePeriod']) {
+        this._setFilter(queryParams['timePeriod'], 'date');
+      }
+    });
+  }
+
+  private _setFilter(timePeriod: TimePeriodEnum, field: string) {
+    if (timePeriod === TimePeriodEnum.TODAY) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.WEEK) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(7, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.MONTH) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(30, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.THREE_MONTHS) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(90, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
   }
 
   public ngOnInit(): void {
     this._store.dispatch(
-      new InvoiceActions.PurchaseInvoiceList({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
+      new InvoiceActions.PurchaseInvoiceList({ size: this.queryParams.size, page: this.queryParams.page, filter: this._filter ?? {} })
     );
 
     this.subsink.sink = this._store.select(InvoiceState.getPurchaseInvoices).subscribe((invoices: InvoiceModel[]) => {

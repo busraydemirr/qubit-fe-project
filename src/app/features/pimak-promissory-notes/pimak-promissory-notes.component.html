@@ -34,7 +34,7 @@
   <mat-table [dataSource]="dataSource" matSort>
     <!-- newserino kolonu -->
     <ng-container matColumnDef="newserino">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Çek Numarası </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  > Çek Numarası </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -53,7 +53,7 @@
     </ng-container>
     <!-- amount kolonu -->
     <ng-container matColumnDef="amount">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Tutar </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  > Tutar </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -71,7 +71,7 @@
 
     <!-- duedate kolonu -->
     <ng-container matColumnDef="duedate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Vade Tarihi </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  > Vade Tarihi </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -88,7 +88,7 @@
     </ng-container>
 
     <ng-container matColumnDef="bankname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Banka Adı</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  > Banka Adı</mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 

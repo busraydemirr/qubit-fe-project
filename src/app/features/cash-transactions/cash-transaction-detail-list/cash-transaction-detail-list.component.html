@@ -11,13 +11,13 @@
   </div>
   <mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="custtitle">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Kasa Açıklaması </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef   class="table-column-200"> Kasa Açıklaması </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-200">
         {{ element.custtitle }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="ficheno">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+      <mat-header-cell *matHeaderCellDef   class="table-column-150">
         Fiş Numarası
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-150">
@@ -25,14 +25,14 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="sign">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Borç/Alacak İşareti
+      <mat-header-cell *matHeaderCellDef   class="table-column-100"> Borç/Alacak İşareti
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-100">
         {{ renderSign(element.sign) }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="amount">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100">
+      <mat-header-cell *matHeaderCellDef   class="table-column-100">
         Tutar
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-100">
@@ -40,7 +40,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100">
+      <mat-header-cell *matHeaderCellDef   class="table-column-100">
         Tarih
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-100">
@@ -48,7 +48,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="branch">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100">
+      <mat-header-cell *matHeaderCellDef   class="table-column-100">
         İşyeri
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-100">
@@ -56,7 +56,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="lineexp">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-250">
+      <mat-header-cell *matHeaderCellDef   class="table-column-250">
         Satır Açıklaması
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-250">
@@ -64,7 +64,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="reportrate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100">
+      <mat-header-cell *matHeaderCellDef   class="table-column-100">
         RD Kuru
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-100">
@@ -72,7 +72,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="trrate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+      <mat-header-cell *matHeaderCellDef   class="table-column-150">
         İşlem dövizi kuru
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-150">
@@ -80,7 +80,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="trnet">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+      <mat-header-cell *matHeaderCellDef   class="table-column-150">
         İşlem dövizi tutarı
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-150">
@@ -88,7 +88,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="trcurr">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+      <mat-header-cell *matHeaderCellDef   class="table-column-150">
         İşlem dövizi türü
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-150">
@@ -96,7 +96,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="capiblockNameCreatedby">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200">
+      <mat-header-cell *matHeaderCellDef   class="table-column-200">
         Oluşturan
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-200">
@@ -104,7 +104,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="capiblockCreadeddate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150">
+      <mat-header-cell *matHeaderCellDef   class="table-column-150">
         Oluşturma Tarihi
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-150">

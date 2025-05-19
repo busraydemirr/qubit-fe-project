@@ -5,7 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QueryParams } from '../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AsyncPipe, CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SubSink } from 'subsink';
@@ -23,6 +23,7 @@ import { renderCurrency } from '../../utils/enum.utils';
 import { OrficheState } from '../../state/orfiche/orfiche.state';
 import { OrficheActions } from '../../state/orfiche/orfiche.action';
 import { OrficheModel } from '../../models/orfiche/orfiche.model';
+import { TimePeriodEnum } from '../../models/shared/time-period.enum';
 
 export const MY_FORMATS = {
   parse: {
@@ -98,13 +99,63 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
   });
   public renderCurrency = renderCurrency;
 
-  constructor(private _router: Router, private _store: Store) {
+  private _filter!: FilterRequestModel;
+
+  constructor(private _router: Router, private _store: Store, private _route: ActivatedRoute) {
     this.loading$ = this._store.select(OrficheState.getLoading);
+
+    this.subsink.sink = this._route.queryParams.subscribe((queryParams) => {
+      if (queryParams?.['timePeriod']) {
+        this._setFilter(queryParams['timePeriod'], 'date');
+      }
+    });
+  }
+
+  private _setFilter(timePeriod: TimePeriodEnum, field: string) {
+    if (timePeriod === TimePeriodEnum.TODAY) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.WEEK) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(7, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.MONTH) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(30, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.THREE_MONTHS) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(90, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
   }
 
   public ngOnInit(): void {
     this._store.dispatch(
-      new OrficheActions.ReceivedOrficheList({ size: this.queryParams.size, page: this.queryParams.page, filter: {}, term: this.termControl.value! })
+      new OrficheActions.ReceivedOrficheList({ size: this.queryParams.size, page: this.queryParams.page, filter: this._filter ?? {}, term: this.termControl.value! })
     );
 
     this.subsink.sink = this._store.select(OrficheState.getreceivedorfiches).subscribe((orfiches: OrficheModel[]) => {

@@ -1,9 +1,9 @@
 <div class="container ml-auto mr-auto">
-    <form [formGroup]="orficheFilterForm" class="flex w-full gap-4 mb-3">
-        <mat-form-field [appearance]="'fill'" class="w-1/2">
+    <form [formGroup]="orficheFilterForm" class="md:flex sm:inline-block w-full gap-4 mb-3">
+        <mat-form-field [appearance]="'fill'" class="md:w-1/2 sm:w-full">
             <input matInput placeholder="Cari Adı" formControlName="clCardDefinition" />
         </mat-form-field>
-        <mat-form-field class="w-1/2" appearance="fill">
+        <mat-form-field class="md:w-1/2 sm:w-full" appearance="fill">
             <mat-label>Tarih</mat-label>
             <mat-date-range-input [rangePicker]="picker">
                 <input matStartDate formControlName="start" placeholder="Başlangıç">
@@ -14,12 +14,12 @@
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
         <button mat-icon-button [disabled]="orficheFilterForm.invalid"
-            class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
+            class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md md:flex sm:inline-block items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
             (click)="filter()">
             <mat-icon fontIcon="search"></mat-icon>
         </button>
         <button mat-icon-button [disabled]="!orficheFilterForm.value"
-            class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
+            class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md md:flex sm:inline-block items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
             (click)="clearFilters()">
             <mat-icon fontIcon="delete"></mat-icon>
         </button>
@@ -37,8 +37,8 @@
     <mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="ficheno">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Fiş No </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-100" >
+            <mat-header-cell *matHeaderCellDef class="table-column-100"> Fiş No </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                   height: '20px',
@@ -53,8 +53,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="clientref">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Cari Hesap Ref. </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-100" >
+            <mat-header-cell *matHeaderCellDef class="table-column-100"> Cari Hesap Ref. </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                 height: '20px',
@@ -69,8 +69,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="clCardDefinition">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Cari Adı </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-200" 
+            <mat-header-cell *matHeaderCellDef class="table-column-200"> Cari Adı </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-200"
                 (click)="rowClicked(element)">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -88,8 +88,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="trcurr">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Döviz Kuru </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150" >
+            <mat-header-cell *matHeaderCellDef class="table-column-150"> Döviz Kuru </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                 height: '20px',
@@ -104,8 +104,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="totalAmountPrice">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Bakiye </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-100" >
+            <mat-header-cell *matHeaderCellDef class="table-column-100"> Bakiye </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                 height: '20px',
@@ -120,8 +120,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="allShippedAmountPrice">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Teslim Edilen Bakiye </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150" >
+            <mat-header-cell *matHeaderCellDef class="table-column-150"> Teslim Edilen Bakiye </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                 height: '20px',
@@ -136,8 +136,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="amountOfRemainingPrice">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Teslim Edilmemiş Bakiye </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150" >
+            <mat-header-cell *matHeaderCellDef class="table-column-150"> Teslim Edilmemiş Bakiye </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                 height: '20px',
@@ -152,8 +152,8 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="date">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Tarih </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150" >
+            <mat-header-cell *matHeaderCellDef class="table-column-150"> Tarih </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                   height: '20px',
@@ -169,8 +169,8 @@
         </ng-container>
 
         <ng-container matColumnDef="nettotal">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Net Toplam </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150" >
+            <mat-header-cell *matHeaderCellDef class="table-column-150"> Net Toplam </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                   height: '20px',
@@ -186,8 +186,8 @@
         </ng-container>
 
         <ng-container matColumnDef="genexp1">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-200"> Genel Açıklama </mat-header-cell>
-            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-200" >
+            <mat-header-cell *matHeaderCellDef class="table-column-200"> Genel Açıklama </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                   height: '20px',

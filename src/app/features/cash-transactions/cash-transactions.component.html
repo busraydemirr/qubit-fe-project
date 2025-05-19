@@ -20,7 +20,7 @@
   </form>
   <mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="code">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Kodu </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  > Kodu </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -36,7 +36,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Adı </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  > Adı </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -54,7 +54,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="totalCashierPrice">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Kasa Bakiyesi </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  > Kasa Bakiyesi </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -70,7 +70,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="explain">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Açıklama </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef  > Açıklama </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -86,7 +86,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="recstatus">
-      <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Kayıt Durumu </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef   class="table-column-150"> Kayıt Durumu </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 

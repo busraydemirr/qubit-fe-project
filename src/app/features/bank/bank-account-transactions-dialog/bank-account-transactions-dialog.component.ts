@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { BnCardState } from '../../../state/bncard/bncard.state';
 import { BnCardActions } from '../../../state/bncard/bncard.action';
-import { renderAccountedInfo, renderSign } from '../../../utils/enum.utils';
+import { renderAccountedInfo, renderBankProcType, renderSign } from '../../../utils/enum.utils';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -69,6 +69,7 @@ export class BankAccountTransactionsDialogComponent implements OnInit, AfterView
   public loading$: Observable<boolean>;
   public termControl = new FormControl('03');
   public renderAccountedInfo = renderAccountedInfo;
+  public renderBankProcType = renderBankProcType;
   public renderSign = renderSign;
 
   private _subsink = new SubSink();

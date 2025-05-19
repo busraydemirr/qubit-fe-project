@@ -2,7 +2,7 @@
     <mat-table [dataSource]="dataSource" matSort>
         <!-- ID Sütunu -->
         <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> ID
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> ID
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -21,7 +21,7 @@
 
         <!-- Kod Sütunu -->
         <ng-container matColumnDef="code">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-120"> Kredi Kodu
+            <mat-header-cell *matHeaderCellDef   class="table-column-120"> Kredi Kodu
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-120">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -40,7 +40,7 @@
 
         <!-- İsim Sütunu -->
         <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-300"> Kredi Adı
+            <mat-header-cell *matHeaderCellDef   class="table-column-300"> Kredi Adı
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-300">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -59,7 +59,7 @@
 
         <!-- Banka Hesabı Tanımı Sütunu -->
         <ng-container matColumnDef="bankAccDefinition">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-300"> Banka Hesabı Adı
+            <mat-header-cell *matHeaderCellDef   class="table-column-300"> Banka Hesabı Adı
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-300">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -78,7 +78,7 @@
 
         <!-- Kredi Tipi Sütunu -->
         <ng-container matColumnDef="credittype">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-150"> Kredi Tipi
+            <mat-header-cell *matHeaderCellDef   class="table-column-150"> Kredi Tipi
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -97,7 +97,7 @@
 
         <!-- Başlangıç Tarihi Sütunu -->
         <ng-container matColumnDef="begdate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-130"> Başlangıç Tarihi
+            <mat-header-cell *matHeaderCellDef   class="table-column-130"> Başlangıç Tarihi
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-130">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -116,7 +116,7 @@
 
         <!-- Bitiş Tarihi Sütunu -->
         <ng-container matColumnDef="enddate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-130"> Bitiş Tarihi
+            <mat-header-cell *matHeaderCellDef   class="table-column-130"> Bitiş Tarihi
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-130">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -135,7 +135,7 @@
 
         <!-- İşlem Dövizi Sütunu -->
         <ng-container matColumnDef="trcurr">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-180"> İşlem Dövizi
+            <mat-header-cell *matHeaderCellDef   class="table-column-180"> İşlem Dövizi
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-180">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -154,7 +154,7 @@
 
         <!-- İşlem Toplamı Sütunu -->
         <ng-container matColumnDef="trtotal">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> İşlem Toplamı
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> İşlem Toplamı
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -173,7 +173,7 @@
 
         <!-- Faiz Oranı Sütunu -->
         <ng-container matColumnDef="intrate">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Faiz Oranı
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> Faiz Oranı
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -192,7 +192,7 @@
 
         <!-- Faiz Toplamı Sütunu -->
         <ng-container matColumnDef="inttotal">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Faiz Toplamı
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> Faiz Toplamı
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -211,7 +211,7 @@
 
         <!-- Komisyon Toplamı Sütunu -->
         <ng-container matColumnDef="commtotal">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-column-100"> Komisyon Toplamı
+            <mat-header-cell *matHeaderCellDef   class="table-column-100"> Komisyon Toplamı
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">

@@ -9,7 +9,7 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngxs/store';
 import { CsCardState } from '../../state/cscard/cscard.state';
 import { CsCardActions } from '../../state/cscard/cscard.action';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -18,6 +18,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { TimePeriodEnum } from '../../models/shared/time-period.enum';
+import moment from 'moment';
 
 @Component({
   selector: 'app-pimak-promissory-notes',
@@ -63,16 +65,66 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   public termControl = new FormControl('03');
   public primossoryFilterForm: FormGroup = new FormGroup({
     bankname: new FormControl(null),
-   /*  owing: new FormControl(null), */
+    /*  owing: new FormControl(null), */
   });
 
-  constructor(private _router: Router, private _store: Store) {
+  private _filter!: FilterRequestModel;
+
+  constructor(private _router: Router, private _store: Store, private _route: ActivatedRoute) {
     this.loading$ = this._store.select(CsCardState.getLoading);
+
+    this.subsink.sink = this._route.queryParams.subscribe((queryParams) => {
+      if (queryParams?.['timePeriod']) {
+        this._setFilter(queryParams['timePeriod'], 'duedate');
+      }
+    });
+  }
+
+  private _setFilter(timePeriod: TimePeriodEnum, field: string) {
+    if (timePeriod === TimePeriodEnum.TODAY) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.WEEK) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(7, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.MONTH) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(30, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
+
+    if (timePeriod === TimePeriodEnum.THREE_MONTHS) {
+      this._filter = {
+        filter: {
+          field,
+          value: moment().subtract(90, 'd').toISOString(),
+          operator: 'gte'
+        }
+      }
+    }
   }
 
   public ngOnInit(): void {
     this._store.dispatch(
-      new CsCardActions.CsCardPimakList({ size: this.queryParams.size, page: this.queryParams.page, filter: {}, term: this.termControl.value! })
+      new CsCardActions.CsCardPimakList({ size: this.queryParams.size, page: this.queryParams.page, filter: this._filter ?? {}, term: this.termControl.value! })
     );
 
     this.subsink.sink = this._store.select(CsCardState.getPimakList).subscribe((csCard: CsCardModel[]) => {
@@ -159,7 +211,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
           }
         };
       } */
-    } 
+    }
     /* else {
       if (this.primossoryFilterForm.value.owing) {
         filter = {

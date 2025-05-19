@@ -6,7 +6,7 @@ import {
   MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass, NgIf } from '@angular/common';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -39,7 +39,8 @@ import { renderCurrency } from '../../utils/enum.utils';
     MatButtonModule,
     MatIconModule,
     MatInput,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './current-accounts.component.html',
   styleUrl: './current-accounts.component.scss',
@@ -54,6 +55,7 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestro
     'code',
     'name',
     'ccurrency',
+    'totalBalance',
     'country',
   ];
   public queryParams: QueryParams = {
@@ -109,13 +111,14 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public changePaginationEvents(event: PageEvent): void {
+    const filter = this._store.selectSnapshot(ClCardState.getClCardFilter);
     this._store.dispatch(
-      new ClCardActions.List({ size: event.pageSize, page: event.pageIndex, filter: {} })
+      new ClCardActions.List({ size: event.pageSize, page: event.pageIndex, filter: filter ?? {} })
     );
   }
 
   public clearFilters(): void {
-    if (!this.accountFilterForm?.value?.definition && !this.accountFilterForm?.value?.phoneNumber && !this.accountFilterForm?.value?.emailaddr){
+    if (!this.accountFilterForm?.value?.definition && !this.accountFilterForm?.value?.phoneNumber && !this.accountFilterForm?.value?.emailaddr) {
       return;
     }
 
@@ -126,7 +129,24 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestro
     );
   }
 
+  public announceSortChange(event: any): void {
+    const queryParams = this._store.selectSnapshot(ClCardState.getClCardQueryParams);
+    const filter = this._store.selectSnapshot(ClCardState.getClCardFilter);
+    const newFilter: FilterRequestModel = {
+      sort: [{
+        field: event.active,
+        dir: event.direction
+      }],
+      ...filter?.filter ? { filter: filter?.filter } : {},
+    };
+    this._store.dispatch(
+      new ClCardActions.List({ size: queryParams.size, page: queryParams.page, filter: newFilter ?? {} })
+    );
+  }
+
   public filter(): void {
+    const oldfilter = this._store.selectSnapshot(ClCardState.getClCardFilter);
+
     if (!this.accountFilterForm?.value || this.accountFilterForm.invalid) {
       return;
     }
@@ -237,7 +257,7 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestro
 
     const queryparams = this._store.selectSnapshot(ClCardState.getClCardQueryParams);
     this._store.dispatch(
-      new ClCardActions.List({ size: queryparams.size, page: 0, filter })
+      new ClCardActions.List({ size: queryparams.size, page: 0, filter: { filter: filter.filter, ...oldfilter.sort ? { sort: oldfilter.sort } : {} } })
     );
   }
 }
