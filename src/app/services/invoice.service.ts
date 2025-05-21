@@ -25,9 +25,11 @@ export class InvoiceService {
         if (filter?.filter) {
             newFilter =
             {
-                ...filter.filter,
-                logic: 'and',
-                filters: filter.filter.filters ? [...filter.filter.filters, codeFilter] : [codeFilter]
+                filter: {
+                    ...filter.filter,
+                    logic: 'and',
+                    filters: filter.filter.filters ? [...filter.filter.filters, codeFilter] : [codeFilter]
+                }
             }
         } else {
             newFilter = {
@@ -47,9 +49,11 @@ export class InvoiceService {
         if (filter?.filter) {
             newFilter =
             {
-                ...filter.filter,
-                logic: 'and',
-                filters: filter.filter.filters ? [...filter.filter.filters, codeFilter] : [codeFilter]
+                filter: {
+                    ...filter.filter,
+                    logic: 'and',
+                    filters: filter.filter.filters ? [...filter.filter.filters, codeFilter] : [codeFilter]
+                }
             }
         } else {
             newFilter = {

@@ -1,7 +1,7 @@
 export interface OrficheModel {
     id?: number;
     ficheno?: string;
-    clCardDefinition?: string;
+    clCard?: { definition?: string };
     clientref?: string;
     trcode?: number;
     date?: string;

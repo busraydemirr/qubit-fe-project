@@ -24,9 +24,11 @@ export class KsCardService {
         if (filter?.filter) {
             newFilter =
             {
-                ...filter.filter,
-                logic: 'and',
-                filters: filter.filter.filters ? [...filter.filter.filters, activeFilter] : [activeFilter]
+                filter: {
+                    ...filter.filter,
+                    logic: 'and',
+                    filters: filter.filter.filters ? [...filter.filter.filters, activeFilter] : [activeFilter]
+                }
             }
         } else {
             newFilter = {

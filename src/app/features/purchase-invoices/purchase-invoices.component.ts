@@ -112,8 +112,8 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
       this._filter = {
         filter: {
           field,
-          value: moment().toISOString(),
-          operator: 'gte'
+          value: moment().subtract(1, 'd').toISOString(),
+          operator: 'lt'
         }
       }
     }
@@ -123,7 +123,7 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
         filter: {
           field,
           value: moment().subtract(7, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }
@@ -133,7 +133,7 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
         filter: {
           field,
           value: moment().subtract(30, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }
@@ -143,7 +143,7 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
         filter: {
           field,
           value: moment().subtract(90, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }
@@ -190,7 +190,7 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
     if (this.invoiceFilterForm.value.clCardDefinition) {
       filter = {
         filter: {
-          field: 'clCardDefinition',
+          field: 'clCard.definition',
           value: this.invoiceFilterForm.value.clCardDefinition,
           operator: 'contains',
         }
@@ -200,7 +200,7 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
       if (this.invoiceFilterForm.value.start && this.invoiceFilterForm.value.end) {
         filter = {
           filter: {
-            field: 'clCardDefinition',
+            field: 'clCard.definition',
             value: this.invoiceFilterForm.value.clCardDefinition,
             operator: 'contains',
             logic: "and",

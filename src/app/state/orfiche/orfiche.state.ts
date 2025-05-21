@@ -12,8 +12,8 @@ import { FilterRequestModel } from "../../models/shared/filter-request.model";
 @State<OrficheStateModel>({
     name: 'orfiche',
     defaults: {
-        placedItems: [{ id: 1, ficheno: 'test', clCardDefinition: '' }, { id: 1, ficheno: 'test', clCardDefinition: '' }, { id: 1, ficheno: 'test', clCardDefinition: '' }],
-        receivedItems: [{ id: 1, ficheno: 'test', clCardDefinition: '' }, { id: 1, ficheno: 'test', clCardDefinition: '' }, { id: 1, ficheno: 'test', clCardDefinition: '' }],
+        placedItems: [{ id: 1, ficheno: 'test', clCard: {definition: ''} }, { id: 1, ficheno: 'test', clCard: {definition: ''} }, { id: 1, ficheno: 'test', clCard: {definition: ''} }],
+        receivedItems: [{ id: 1, ficheno: 'test', clCard: {definition: ''} }, { id: 1, ficheno: 'test', clCard: {definition: ''} }, { id: 1, ficheno: 'test', clCard: {definition: ''} }],
         placedPage: 0,
         placedSize: 10,
         placedTotalElements: 0,

@@ -39,7 +39,6 @@ export class CreditLinesComponent implements OnInit, AfterViewInit {
     "creditName",
     "pernr",
     "transtype",
-    "totalAmount",
     "inttotal",
     "linenr",
     "duedate",

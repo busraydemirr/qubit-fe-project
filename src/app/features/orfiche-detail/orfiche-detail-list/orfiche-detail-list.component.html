@@ -75,25 +75,6 @@
             </mat-cell>
         </ng-container>
 
-        <!-- Stok Referansı Sütunu -->
-        <ng-container matColumnDef="stockref">
-            <mat-header-cell *matHeaderCellDef   class="table-column-150"> Malzeme Kartı Referansı
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.stockref }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
         <!-- Sipariş Fiş Referansı Sütunu -->
         <ng-container matColumnDef="ordficheref">
             <mat-header-cell *matHeaderCellDef   class="table-column-200"> Sipariş Fiş Referansı

@@ -1,5 +1,5 @@
 <ng-container *ngIf="orfiche$ | async as orfiche">
-    <app-banner [label]="orfiche.clCardDefinition!" [subLabel]="orfiche.clientref!"></app-banner>
+    <app-banner [label]="orfiche.clCard?.definition!" [subLabel]="orfiche.clientref!"></app-banner>
 </ng-container>
 
 <div class="w-auto detail-background h-screen">
@@ -32,7 +32,7 @@
                                     Cari Adı
                                 </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{orfiche.clCardDefinition}}
+                                    {{orfiche.clCard?.definition}}
                                 </span>
                             </div>
 

@@ -10,7 +10,7 @@ import { KsCardState } from '../../../state/kscard/kscard.state';
 import { Store } from '@ngxs/store';
 import { KsCardLineModel } from '../../../models/kscard/kscard-line.model';
 import { KsCardActions } from '../../../state/kscard/kscard.action';
-import { renderSign } from '../../../utils/enum.utils';
+import { renderCurrency, renderSign } from '../../../utils/enum.utils';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -49,7 +49,6 @@ export class CashTransactionDetailListComponent implements OnInit, AfterViewInit
     'date',
     'branch',
     'lineexp',
-    'reportrate',
     'trrate',
     'trnet',
     'trcurr',
@@ -68,6 +67,7 @@ export class CashTransactionDetailListComponent implements OnInit, AfterViewInit
   };
   public loading$: Observable<boolean>;
   public renderSign = renderSign;
+  public renderCurrency = renderCurrency;
 
   constructor(private _store: Store, private _router: Router) {
     this.loading$ = this._store.select(KsCardState.getLinesListLoading);

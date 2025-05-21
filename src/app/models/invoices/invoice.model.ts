@@ -1,5 +1,3 @@
-import { AccountedInfo } from "../shared/status.enum";
-
 export interface InvoiceModel {
     id?: number;
     accounted?: number;
@@ -10,7 +8,7 @@ export interface InvoiceModel {
     cancelled?: number;
     capiblockCreadeddate?: string;
     capiblockNameCreatedby?: string;
-    clCardDefinition?: string;
+    clCard?: {definition?: string};
     clientref?: number;
     cyphcode?: string;
     date?: string;

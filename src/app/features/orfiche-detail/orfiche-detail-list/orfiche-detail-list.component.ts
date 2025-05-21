@@ -42,7 +42,6 @@ export class OrficheDetailListComponent implements OnInit, AfterViewInit, OnDest
     'itemCode',
     'itemName',
     'clCardDefinition',
-    'stockref',
     'ordficheref',
     'date',
     'amount',

@@ -85,8 +85,8 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
       this._filter = {
         filter: {
           field,
-          value: moment().toISOString(),
-          operator: 'gte'
+          value: moment().subtract(1, 'd').toISOString(),
+          operator: 'lt'
         }
       }
     }
@@ -96,7 +96,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
         filter: {
           field,
           value: moment().subtract(7, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }
@@ -106,7 +106,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
         filter: {
           field,
           value: moment().subtract(30, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }
@@ -116,7 +116,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
         filter: {
           field,
           value: moment().subtract(90, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }

@@ -72,6 +72,7 @@ export function renderBankProcType(value: number): string | '' {
 // Döviz türlerinin tanımlarını getiren yardımcı fonksiyon
 export function renderCurrency(currencyType: CurrencyType): any {
     switch (currencyType) {
+        case CurrencyType.TRY0: return "Türk Lirası (TRY)";
         case CurrencyType.USD: return "ABD Doları (USD)";
         case CurrencyType.DEM: return "Alman Markı (DEM)";
         case CurrencyType.AUD: return "Avustralya Doları (AUD)";
@@ -124,7 +125,7 @@ export function renderCurrency(currencyType: CurrencyType): any {
         case CurrencyType.ROL: return "Romen Leyi (ROL)";
         case CurrencyType.RUB: return "Rus Rublesi (RUB)";
         case CurrencyType.TWD: return "Tayvan Doları (TWD)";
-        case CurrencyType.TRY: return "Türk Lirası (TRY)";
+        case CurrencyType.TRY1: return "Türk Lirası (TRY)";
         case CurrencyType.JOD: return "Ürdün Dinarı (JOD)";
         case CurrencyType.GRD: return "Yunan Drahmisi (GRD)";
         case CurrencyType.ARS: return "Arjantin Pesosu (ARS)";
@@ -264,6 +265,7 @@ export function renderCurrency(currencyType: CurrencyType): any {
 
 export function renderCurrencyCode(currency: CurrencyType): string {
     switch (currency) {
+        case CurrencyType.TRY0: return "TRY";
         case CurrencyType.USD: return "USD";
         case CurrencyType.DEM: return "DEM";
         case CurrencyType.AUD: return "AUD";
@@ -316,7 +318,7 @@ export function renderCurrencyCode(currency: CurrencyType): string {
         case CurrencyType.ROL: return "ROL";
         case CurrencyType.RUB: return "RUB";
         case CurrencyType.TWD: return "TWD";
-        case CurrencyType.TRY: return "TRY";
+        case CurrencyType.TRY1: return "TRY";
         case CurrencyType.JOD: return "JOD";
         case CurrencyType.GRD: return "GRD";
         case CurrencyType.ARS: return "ARS";

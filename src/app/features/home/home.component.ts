@@ -188,7 +188,7 @@ export class HomeComponent implements OnInit {
 
               if (element[0].index === 1) {
                 // Verilen Siparişler
-                this._router.navigate(['placed-invoices'], { queryParams: { timePeriod: this.timePeriodOrfiche } });
+                this._router.navigate(['placed-orfiches'], { queryParams: { timePeriod: this.timePeriodOrfiche } });
               }
             }
           }

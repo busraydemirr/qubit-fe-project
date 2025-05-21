@@ -1,4 +1,5 @@
 export enum CurrencyType {
+    TRY0 = 0, // Türk Lirası
     USD = 1,    // ABD Doları
     DEM = 2,    // Alman Markı
     AUD = 3,    // Avustralya Doları
@@ -51,7 +52,7 @@ export enum CurrencyType {
     ROL = 50,   // Romen Leyi
     RUB = 51,   // Rus Rublesi
     TWD = 52,   // Tayvan Doları
-    TRY = 53,   // Türk Lirası
+    TRY1 = 53,   // Türk Lirası
     JOD = 54,   // Ürdün Dinarı
     GRD = 55,   // Yunan Drahmisi
     ARS = 56,   // Arjantin Pesosu

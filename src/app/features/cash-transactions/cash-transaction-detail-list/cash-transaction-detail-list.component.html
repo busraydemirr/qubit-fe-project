@@ -63,14 +63,7 @@
         {{ element.lineexp }}
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="reportrate">
-      <mat-header-cell *matHeaderCellDef   class="table-column-100">
-        RD Kuru
-      </mat-header-cell>
-      <mat-cell *matCellDef="let element" class="table-column-100">
-        {{ element.reportrate }}
-      </mat-cell>
-    </ng-container>
+    
     <ng-container matColumnDef="trrate">
       <mat-header-cell *matHeaderCellDef   class="table-column-150">
         İşlem dövizi kuru
@@ -92,7 +85,7 @@
         İşlem dövizi türü
       </mat-header-cell>
       <mat-cell *matCellDef="let element" class="table-column-150">
-        {{ element.trcurr }}
+        {{ renderCurrency(element.trcurr) }} 
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="capiblockNameCreatedby">

@@ -29,9 +29,11 @@ export class CsCardService {
         if (filter?.filter) {
             newFilter =
             {
-                ...filter.filter,
-                logic: 'and',
-                filters: filter.filter.filters ? [...filter.filter.filters, docFilter] : [docFilter]
+                filter: {
+                    ...filter.filter,
+                    logic: 'and',
+                    filters: filter.filter.filters ? [...filter.filter.filters, docFilter] : [docFilter]
+                }
             }
         } else {
             newFilter = {

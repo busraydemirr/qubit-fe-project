@@ -116,8 +116,8 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
       this._filter = {
         filter: {
           field,
-          value: moment().toISOString(),
-          operator: 'gte'
+          value: moment().subtract(1, 'd').toISOString(),
+          operator: 'lt'
         }
       }
     }
@@ -127,7 +127,7 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
         filter: {
           field,
           value: moment().subtract(7, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }
@@ -137,7 +137,7 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
         filter: {
           field,
           value: moment().subtract(30, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }
@@ -147,7 +147,7 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
         filter: {
           field,
           value: moment().subtract(90, 'd').toISOString(),
-          operator: 'gte'
+          operator: 'lt'
         }
       }
     }
@@ -208,7 +208,7 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
     if (this.orficheFilterForm.value.clCardDefinition) {
       filter = {
         filter: {
-          field: 'clCardDefinition',
+          field: 'clCard.definition',
           value: this.orficheFilterForm.value.clCardDefinition,
           operator: 'contains',
         }
@@ -218,7 +218,7 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
       if (this.orficheFilterForm.value.start && this.orficheFilterForm.value.end) {
         filter = {
           filter: {
-            field: 'clCardDefinition',
+            field: 'clCard.definition',
             value: this.orficheFilterForm.value.clCardDefinition,
             operator: 'contains',
             logic: "and",

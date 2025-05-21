@@ -157,7 +157,7 @@ export class PlacedOrficheComponent implements OnInit, AfterViewInit, OnDestroy 
     if (this.orficheFilterForm.value.clCardDefinition) {
       filter = {
         filter: {
-          field: 'clCardDefinition',
+          field: 'clCard.definition',
           value: this.orficheFilterForm.value.clCardDefinition,
           operator: 'contains',
         }
@@ -167,7 +167,7 @@ export class PlacedOrficheComponent implements OnInit, AfterViewInit, OnDestroy 
       if (this.orficheFilterForm.value.start && this.orficheFilterForm.value.end) {
         filter = {
           filter: {
-            field: 'clCardDefinition',
+            field: 'clCard.definition',
             value: this.orficheFilterForm.value.clCardDefinition,
             operator: 'contains',
             logic: "and",

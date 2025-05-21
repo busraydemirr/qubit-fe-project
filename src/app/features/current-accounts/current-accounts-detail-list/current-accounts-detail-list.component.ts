@@ -57,7 +57,6 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     'tranno',
     'accounted',
     'trnet',
-    'reportrate',
     'reportnet',
     'capiblockNameCreatedby',
     'capiblockCreadeddate',

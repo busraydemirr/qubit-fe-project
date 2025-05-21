@@ -11,8 +11,8 @@ import { InvoiceActions } from "./invoice.action";
 @State<InvoiceStateModel>({
     name: 'invoice',
     defaults: {
-        purchaseItems: [{ id: 1, ficheno: 'test', clCardDefinition: '' }, { id: 1, ficheno: 'test', clCardDefinition: '' }, { id: 1, ficheno: 'test', clCardDefinition: '' }],
-        salesItems: [{ id: 1, ficheno: 'test', clCardDefinition: '' }, { id: 1, ficheno: 'test', clCardDefinition: '' }, { id: 1, ficheno: 'test', clCardDefinition: '' }],
+        purchaseItems: [{ id: 1, ficheno: 'test', clCard: { definition: '' } }, { id: 1, ficheno: 'test', clCard: { definition: '' } }, { id: 1, ficheno: 'test', }],
+        salesItems: [{ id: 1, ficheno: 'test', clCard: { definition: '' } }, { id: 1, ficheno: 'test', clCard: { definition: '' } }, { id: 1, ficheno: 'test', }],
         purchasePage: 0,
         purhaseSize: 10,
         purchaseTotalElements: 0,
