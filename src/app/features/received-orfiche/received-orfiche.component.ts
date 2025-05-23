@@ -73,7 +73,6 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
   public dataSource!: MatTableDataSource<OrficheModel>;
   public displayedColumns = [
     'ficheno',
-    'clientref',
     'clCardDefinition',
     'trcurr',
     'totalAmountPrice',

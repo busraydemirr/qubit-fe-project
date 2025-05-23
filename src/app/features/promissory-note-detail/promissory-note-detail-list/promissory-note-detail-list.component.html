@@ -48,23 +48,6 @@
                 </ng-template>
             </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="statno">
-            <mat-header-cell *matHeaderCellDef  > Statü numarası
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                    height: '20px',
-                    width: '100%',
-                    'background-color': '#b7bec3',
-                    border: '1px solid #b7bec3'
-                  }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.statno }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
         <ng-container matColumnDef="status">
             <mat-header-cell *matHeaderCellDef  > Durum </mat-header-cell>
             <mat-cell *matCellDef="let element">

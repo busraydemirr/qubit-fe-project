@@ -72,7 +72,6 @@ export class PlacedOrficheComponent implements OnInit, AfterViewInit, OnDestroy 
   public dataSource!: MatTableDataSource<OrficheModel>;
   public displayedColumns = [
     'ficheno',
-    'clientref',
     'clCardDefinition',
     'trcurr',
     'totalAmountPrice',

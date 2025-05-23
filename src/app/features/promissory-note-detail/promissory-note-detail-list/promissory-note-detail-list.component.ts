@@ -39,7 +39,6 @@ export class PromissoryNoteDetailListComponent implements OnInit, AfterViewInit,
     'clCardDefinition',
     'date',
     'devir',
-    'statno',
     'status'
   ];
   public queryParams: QueryParams = {

@@ -40,7 +40,6 @@ export class CurrentAccountsDetailOrfichesComponent implements OnInit, AfterView
   public dataSource!: MatTableDataSource<OrficheModel>;
   public displayedColumns = [
     'ficheno',
-    'clientref',
     'clCardDefinition',
     'trcurr',
     'totalAmountPrice',
