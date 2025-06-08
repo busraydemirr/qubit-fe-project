@@ -103,15 +103,15 @@ export class HomepageComponent {
     if (selected) {
       selected.isActive = true;
       this.selectedMenuItem = selected!;
-    } else {
-      this.menuItems.forEach(item => {
-        const selectedChild = item.children?.find(item => this.route.url.includes(item.url));
-        if (selectedChild) {
-          selectedChild.isActive = true;
-          this.selectedMenuItem = selectedChild!;
-        }
-      })
     }
+    this.menuItems.forEach(item => {
+      const selectedChild = item.children?.find(item => this.route.url.includes(item.url));
+      if (selectedChild) {
+        selectedChild.isActive = true;
+        this.selectedMenuItem = selectedChild!;
+      }
+    });
+
 
     if (!this.selectedMenuItem) {
       this.menuItems[0].isActive = true;

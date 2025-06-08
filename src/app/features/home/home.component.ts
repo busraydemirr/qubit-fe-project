@@ -180,7 +180,6 @@ export class HomeComponent implements OnInit {
             responsive: false,
             aspectRatio: 1,
             onClick: (event, element, chart) => {
-              console.log(event, element, chart);
               if (element[0].index === 0) {
                 // Alınan Siparişler
                 this._router.navigate(['received-orfiches'], { queryParams: { timePeriod: this.timePeriodOrfiche } });
@@ -225,7 +224,6 @@ export class HomeComponent implements OnInit {
             responsive: false,
             aspectRatio: 1,
             onClick: (event, element, chart) => {
-              console.log(event, element, chart);
               if (element[0].index === 0) {
                 // Alış Faturaları
                 this._router.navigate(['purchase-invoices'], { queryParams: { timePeriod: this.timePeriodInvoince } });
@@ -270,7 +268,6 @@ export class HomeComponent implements OnInit {
             responsive: false,
             aspectRatio: 1,
             onClick: (event, element, chart) => {
-              console.log(event, element, chart);
               if (element[0].index === 0) {
                 // Müşteri Çekleri
                 this._router.navigate(['customer-promissory-notes'], { queryParams: { timePeriod: this.timePeriodPromissory } });

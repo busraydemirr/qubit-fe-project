@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MenuItem } from '../../../models/shared/menu-item.model';
-import { MatActionList, MatListItem } from '@angular/material/list';
-import { RouterLink } from '@angular/router';
+import { MatListItem } from '@angular/material/list';
+import { Router, RouterLink } from '@angular/router';
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
@@ -17,22 +17,44 @@ export class SidenavMenuItemComponent {
   @Output() public menuItemChanged: EventEmitter<MenuItem> =
     new EventEmitter<MenuItem>();
 
+  constructor(private router: Router) {
+    this.router.events.subscribe((segs) => {
+
+      if (segs?.type === 1) {
+        // This is a NavigationEnd event
+        this.menuItems.forEach(item => {
+          if (item.children) {
+            item.children?.forEach(child => {
+              if (segs.url.includes(child.url)) {
+                this.changeMenuItem(child, true);
+              }
+            });
+          } else {
+            if (segs.url.includes(item.url)) {
+              this.changeMenuItem(item, false);
+            }
+          }
+
+        });
+      }
+    });
+
+  }
+
   public changeMenuItem(item: MenuItem, isChild: boolean): void {
     this.menuItemChanged.emit(item);
     if (isChild) {
       this.menuItems.forEach((menuItem) => {
+        menuItem.isActive = false;
         menuItem.children?.forEach((child) => {
           child.isActive = false;
 
-          child.children?.forEach((childChild) => {
-            if (childChild === item) {
-              child.isActive = true;
-            }
-            childChild.isActive = false;
-          });
+          if (child === item) {
+            menuItem.isActive = true;
+            child.isActive = true;
+          }
         });
       });
-      item.isActive = true;
     } else {
       this.menuItems.forEach((menuItem) => {
         menuItem.isActive = false;
@@ -45,7 +67,7 @@ export class SidenavMenuItemComponent {
     this.menuItemChanged.emit(item);
   }
 
-  route(item: MenuItem): null | string {
+  public route(item: MenuItem): null | string {
     if (item.children && item.children.length > 0) {
       return null;
     }

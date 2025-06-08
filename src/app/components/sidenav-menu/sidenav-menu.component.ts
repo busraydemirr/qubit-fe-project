@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MenuItem } from '../../models/shared/menu-item.model';
 import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.component';
 import { NgClass } from '@angular/common';
-import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav-menu',

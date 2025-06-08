@@ -21,7 +21,7 @@ export class ClCardService {
             value: '0',
             operator: 'eq',
         };
-        console.log(filter);
+
         let newFilter = {};
         if (filter?.filter) {
             newFilter =
