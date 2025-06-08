@@ -152,6 +152,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   }
 
   public ngOnDestroy(): void {
+    this._store.dispatch(new CsCardActions.ResetPimakQueryParams());
     this.subsink.unsubscribe();
   }
 

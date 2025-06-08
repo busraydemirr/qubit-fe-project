@@ -153,6 +153,7 @@ export class CustomerPromissoryNotesComponent implements OnInit, AfterViewInit, 
   }
 
   public ngOnDestroy(): void {
+    this._store.dispatch(new CsCardActions.ResetCustomerQueryParams());
     this.subsink.unsubscribe();
   }
 

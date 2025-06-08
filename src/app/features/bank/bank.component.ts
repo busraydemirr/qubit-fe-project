@@ -91,6 +91,7 @@ export class BankComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this._store.dispatch(new BnCardActions.ResetQueryParams());
     this.subsink.unsubscribe();
   }
 

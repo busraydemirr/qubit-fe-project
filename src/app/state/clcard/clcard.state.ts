@@ -185,6 +185,17 @@ export class ClCardState {
         );
     }
 
+    @Action(ClCardActions.ResetQueryParams)
+    resetQueryParams({ patchState }: StateContext<ClCardStateModel>) {
+        patchState({
+            page: 0,
+            size: 10,
+            totalElements: 0,
+            pages: 0,       
+            filter: {},
+        });
+    }
+
     @Action(ClCardActions.SetClCard)
     setClCard({ patchState }: StateContext<ClCardStateModel>, action: ClCardActions.SetClCard) {
         patchState({ clCardDetail: action.payload });

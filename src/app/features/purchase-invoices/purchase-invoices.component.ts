@@ -167,6 +167,7 @@ export class PurchaseInvoicesComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   public ngOnDestroy(): void {
+    this._store.dispatch(new InvoiceActions.ResetPurchaseInvoiceQueryParams());
     this.subsink.unsubscribe();
   }
 

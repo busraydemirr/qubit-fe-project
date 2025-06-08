@@ -97,6 +97,16 @@ export class BnCreditCardState {
         )
     }
 
+    @Action(BnCreditCardActions.ResetQueryParams)
+    resetQueryParams({ patchState }: StateContext<BnCreditCardStateModel>) {
+        patchState({
+            page: 0,
+            size: 10,
+            totalElements: 0,
+            pages: 0,
+        });
+    }
+
     @Action(BnCreditCardActions.SetBnCreditCard)
     setBnCreditCard({ patchState }: StateContext<BnCreditCardStateModel>, action: BnCreditCardActions.SetBnCreditCard) {
         patchState({ bnCreditCardDetail: action.payload });

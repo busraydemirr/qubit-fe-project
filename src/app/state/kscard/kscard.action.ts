@@ -10,6 +10,10 @@ export namespace KsCardActions {
         constructor(public payload: { size: number; page: number; filter: FilterRequestModel }) { }
     }
 
+    export class ResetQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Query Params`;
+    }
+
     export class SetKsCard {
         static readonly type = `${ACTION_SCOPE} Set KsCard`;
 

@@ -17,6 +17,14 @@ export namespace OrficheActions {
         constructor(public payload: { size: number; page: number; filter: FilterRequestModel, term?: string }) { }
     }
 
+    export class ResetPlacedOrficheQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Placed Orfiche Query Params`;
+    }
+
+    export class ResetReceivedOrficheQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Received Orfiche Query Params`;
+    }
+
     export class SetOrfiche {
         static readonly type = `${ACTION_SCOPE} Set Orfiche`;
 

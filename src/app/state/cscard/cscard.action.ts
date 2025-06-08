@@ -33,4 +33,12 @@ export namespace CsCardActions {
 
         constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel; term?: string }) { }
     }
+
+    export class ResetPimakQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Pimak Query Params`;
+    }
+
+    export class ResetCustomerQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Customer Query Params`;
+    }
 }

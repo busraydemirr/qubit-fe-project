@@ -167,6 +167,7 @@ export class SalesInvoicesComponent {
   }
 
   public ngOnDestroy(): void {
+    this._store.dispatch(new InvoiceActions.ResetSalesInvoiceQueryParams());
     this.subsink.unsubscribe();
   }
 

@@ -45,4 +45,8 @@ export namespace ClCardActions {
 
         constructor(public payload: number) { }
     }
+
+    export class ResetQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Query Params`;
+    }
 }

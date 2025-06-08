@@ -182,6 +182,7 @@ export class ReceivedOrficheComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public ngOnDestroy(): void {
+    this._store.dispatch(new OrficheActions.ResetReceivedOrficheQueryParams());
     this.subsink.unsubscribe();
   }
 

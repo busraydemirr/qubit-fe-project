@@ -10,6 +10,10 @@ export namespace BnCardActions {
         constructor(public payload: { size: number; page: number; filter: FilterRequestModel; }) { }
     }
 
+    export class ResetQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Query Params`;
+    }
+
     export class SetBnCard {
         static readonly type = `${ACTION_SCOPE} Set BnCard`;
 

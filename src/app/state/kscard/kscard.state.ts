@@ -112,6 +112,17 @@ export class KsCardState {
         );
     }
 
+    @Action(KsCardActions.ResetQueryParams)
+    resetQueryParams({ patchState }: StateContext<KsCardStateModel>) {
+        patchState({
+            page: 0,
+            size: 10,
+            totalElements: 0,
+            pages: 0,
+            filter: {}
+        });
+    }
+
     @Action(KsCardActions.SetKsCard)
     setKsCard({ patchState }: StateContext<KsCardStateModel>, action: KsCardActions.SetKsCard) {
         patchState({ ksCardDetail: action.payload });

@@ -95,6 +95,7 @@ export class CurrentAccountsComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public ngOnDestroy(): void {
+    this._store.dispatch(new ClCardActions.ResetQueryParams());
     this.subsink.unsubscribe();
   }
 

@@ -16,6 +16,14 @@ export namespace InvoiceActions {
         constructor(public payload: { size: number; page: number; filter: FilterRequestModel }) { }
     }
 
+    export class ResetSalesInvoiceQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Sales Invoice Query Params`;
+    }
+
+    export class ResetPurchaseInvoiceQueryParams {
+        static readonly type = `${ACTION_SCOPE} Reset Purchase Invoice Query Params`;
+    }
+
     export class SetInvoice {
         static readonly type = `${ACTION_SCOPE} Set Invoice`;
 

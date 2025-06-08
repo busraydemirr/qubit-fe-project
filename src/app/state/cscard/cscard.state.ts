@@ -160,6 +160,17 @@ export class CsCardState {
         patchState({ csCardDetail: action.payload });
     }
 
+    @Action(CsCardActions.ResetPimakQueryParams)
+    resetPimakQueryParams({ patchState }: StateContext<CsCardStateModel>, action: CsCardActions.ResetPimakQueryParams) {
+        patchState({ pimakPage: 0, pimakSize: 10, pimakTotalElements: 0, pimakPages: 0, pimakFilter: {}, pimakTerm: '03', });
+    }
+
+    @Action(CsCardActions.ResetCustomerQueryParams)
+    resetCustomerQueryParams({ patchState }: StateContext<CsCardStateModel>, action: CsCardActions.ResetCustomerQueryParams) {
+        patchState({ cekPage: 0, cekSize: 10, cekTotalElements: 0, cekPages: 0, cekFilter: {}, cekTerm: '03', });
+    }
+
+
     @Action(CsCardActions.GetCsCard)
     getCsCard({ dispatch, patchState }: StateContext<CsCardStateModel>, action: CsCardActions.GetCsCard) {
         const filter = {

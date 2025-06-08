@@ -156,6 +156,30 @@ export class OrficheState {
         );
     }
 
+    @Action(OrficheActions.ResetPlacedOrficheQueryParams)
+    resetPlacedOrficheQueryParams({ patchState }: StateContext<OrficheStateModel>) {
+        patchState({
+            placedPage: 0,
+            placedSize: 10,
+            placedTotalElements: 0,
+            placedPages: 0,
+            placedListFilters: {},
+            placedTerm: '03',
+        });
+    }
+
+    @Action(OrficheActions.ResetReceivedOrficheQueryParams)
+    resetReceivedOrficheQueryParams({ patchState }: StateContext<OrficheStateModel>) {
+        patchState({
+            receivedPage: 0,
+            receivedSize: 10,
+            receivedTotalElements: 0,
+            receivedPages: 0,
+            receivedListFilters: {},
+            receivedTerm: '03',
+        });
+    }
+
     @Action(OrficheActions.SetOrfiche)
     setorfiche({ patchState }: StateContext<OrficheStateModel>, action: OrficheActions.SetOrfiche) {
         patchState({ orficheDetail: action.payload });

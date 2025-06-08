@@ -116,6 +116,17 @@ export class BnCardState {
         );
     }
 
+    @Action(BnCardActions.ResetQueryParams)
+    resetQueryParams({ patchState }: StateContext<BnCardStateModel>) {
+        patchState({
+            page: 0,
+            size: 10,
+            totalElements: 0,
+            pages: 0,
+            filter: null
+        });
+    }
+
     @Action(BnCardActions.SetBnCard)
     setBnCard({ patchState }: StateContext<BnCardStateModel>, action: BnCardActions.SetBnCard) {
         patchState({ bnCardDetail: action.payload });

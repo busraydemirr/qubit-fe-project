@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
   MatCheckboxChange,
@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-cash-transactions',
@@ -44,7 +45,7 @@ import { FilterRequestModel } from '../../models/shared/filter-request.model';
   templateUrl: './cash-transactions.component.html',
   styleUrl: './cash-transactions.component.scss',
 })
-export class CashTransactionsComponent implements OnInit, AfterViewInit {
+export class CashTransactionsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -68,6 +69,7 @@ export class CashTransactionsComponent implements OnInit, AfterViewInit {
   public cashFilterForm: FormGroup = new FormGroup({
     name: new FormControl(null),
   });
+  public subsink = new SubSink();
 
   constructor(private _router: Router, private _store: Store) {
     this.loading$ = this._store.select(KsCardState.getLoading);
@@ -78,7 +80,7 @@ export class CashTransactionsComponent implements OnInit, AfterViewInit {
       new KsCardActions.List({ size: this.queryParams.size, page: this.queryParams.page, filter: {} })
     );
 
-    this._store.select(KsCardState.getKsCards).subscribe((cards: KsCardModel[]) => {
+    this.subsink.sink = this._store.select(KsCardState.getKsCards).subscribe((cards: KsCardModel[]) => {
       this.elements = cards;
       this.dataSource = new MatTableDataSource<KsCardModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(KsCardState.getKsCardQueryParams);
@@ -88,6 +90,12 @@ export class CashTransactionsComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+
+  public ngOnDestroy(): void {
+    this._store.dispatch(new KsCardActions.ResetQueryParams());
+    this.subsink.unsubscribe();
   }
 
   public checkedChanged(event: MatCheckboxChange, element: KsCardModel): void {

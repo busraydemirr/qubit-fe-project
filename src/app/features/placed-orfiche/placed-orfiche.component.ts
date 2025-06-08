@@ -131,6 +131,7 @@ export class PlacedOrficheComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   public ngOnDestroy(): void {
+    this._store.dispatch(new OrficheActions.ResetPlacedOrficheQueryParams());
     this.subsink.unsubscribe();
   }
 

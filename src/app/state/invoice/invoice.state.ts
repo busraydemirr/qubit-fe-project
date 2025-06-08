@@ -133,6 +133,26 @@ export class InvoiceState {
         );
     }
 
+    @Action(InvoiceActions.ResetSalesInvoiceQueryParams)
+    resetSalesInvoiceQueryParams({ patchState }: StateContext<InvoiceStateModel>) {
+        patchState({
+            salesPage: 0,
+            salesSize: 10,
+            salesTotalElements: 0,
+            salesPages: 0,
+        });
+    }
+
+    @Action(InvoiceActions.ResetPurchaseInvoiceQueryParams)
+    resetPurchaseInvoiceQueryParams({ patchState }: StateContext<InvoiceStateModel>) {
+        patchState({
+            purchasePage: 0,
+            purhaseSize: 10,
+            purchaseTotalElements: 0,
+            purchasePages: 0,
+        });
+    }
+
     @Action(InvoiceActions.SetInvoice)
     setInvoice({ patchState }: StateContext<InvoiceStateModel>, action: InvoiceActions.SetInvoice) {
         patchState({ invoiceDetail: action.payload });
