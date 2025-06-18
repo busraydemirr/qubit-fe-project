@@ -20,6 +20,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
 import { TimePeriodEnum } from '../../models/shared/time-period.enum';
 import moment from 'moment';
+import { renderCurrStat } from '../../utils/enum.utils';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: ['DD/MM/YYYY'],
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
   selector: 'app-customer-promissory-notes',
@@ -37,7 +53,13 @@ import moment from 'moment';
     MatIconModule,
     MatInputModule,
     CommonModule,
-    DatePipe
+    DatePipe,
+    MatDatepickerModule
+  ],
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  { provide: DateAdapter, useClass: MomentDateAdapter },
+  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
   templateUrl: './customer-promissory-notes.component.html',
   styleUrl: './customer-promissory-notes.component.scss'
@@ -53,6 +75,7 @@ export class CustomerPromissoryNotesComponent implements OnInit, AfterViewInit, 
     'owing',
     'amount',
     'duedate',
+    'currstat',
     'setdate',
   ];
   public queryParams: QueryParams = {
@@ -67,8 +90,10 @@ export class CustomerPromissoryNotesComponent implements OnInit, AfterViewInit, 
   public primossoryFilterForm: FormGroup = new FormGroup({
     bankname: new FormControl(null),
     owing: new FormControl(null),
+    start: new FormControl(null),
+    end: new FormControl(null)
   });
-
+  public renderCurrStat = renderCurrStat;
   private _filter!: FilterRequestModel;
 
   constructor(private _router: Router, private _store: Store, private _route: ActivatedRoute) {
@@ -169,7 +194,7 @@ export class CustomerPromissoryNotesComponent implements OnInit, AfterViewInit, 
   }
 
   public clearFilters(): void {
-    if (!this.primossoryFilterForm?.value?.bankname && !this.primossoryFilterForm?.value?.owing) {
+    if (!this.primossoryFilterForm?.value?.bankname && !this.primossoryFilterForm?.value?.owing && !this.primossoryFilterForm?.value?.start && !this.primossoryFilterForm?.value?.end) {
       return;
     }
 
@@ -196,27 +221,106 @@ export class CustomerPromissoryNotesComponent implements OnInit, AfterViewInit, 
       };
 
       if (this.primossoryFilterForm.value.owing) {
-        filter = {
-          filter: {
-            field: 'bankname',
-            value: this.primossoryFilterForm.value.bankname,
-            operator: 'contains',
-            logic: "and",
-            filters: [{
-              field: 'owing',
-              value: this.primossoryFilterForm.value.owing,
+        if (this.primossoryFilterForm.value.start && this.primossoryFilterForm.value.end) {
+          filter = {
+            filter: {
+              field: 'bankname',
+              value: this.primossoryFilterForm.value.bankname,
               operator: 'contains',
-            }]
-          }
-        };
+              logic: "and",
+              filters: [{
+                field: 'owing',
+                value: this.primossoryFilterForm.value.owing,
+                operator: 'contains',
+              },
+              {
+                field: 'duedate',
+                value: moment(this.primossoryFilterForm.value.start).toISOString(),
+                operator: 'gt',
+              }, {
+                field: 'duedate',
+                value: moment(this.primossoryFilterForm.value.end).toISOString(),
+                operator: 'lt',
+              }]
+            }
+          };
+        } else {
+          filter = {
+            filter: {
+              field: 'bankname',
+              value: this.primossoryFilterForm.value.bankname,
+              operator: 'contains',
+              logic: "and",
+              filters: [{
+                field: 'owing',
+                value: this.primossoryFilterForm.value.owing,
+                operator: 'contains',
+              }]
+            }
+          };
+        }
+      } else {
+        if (this.primossoryFilterForm.value.start && this.primossoryFilterForm.value.end) {
+          filter = {
+            filter: {
+              field: 'bankname',
+              value: this.primossoryFilterForm.value.bankname,
+              operator: 'contains',
+              logic: "and",
+              filters: [{
+                field: 'duedate',
+                value: moment(this.primossoryFilterForm.value.start).toISOString(),
+                operator: 'gt',
+              }, {
+                field: 'duedate',
+                value: moment(this.primossoryFilterForm.value.end).toISOString(),
+                operator: 'lt',
+              }],
+            }
+          };
+        }
       }
     } else {
       if (this.primossoryFilterForm.value.owing) {
+        if (this.primossoryFilterForm.value.start && this.primossoryFilterForm.value.end) {
+          filter = {
+            filter: {
+              field: 'owing',
+              value: this.primossoryFilterForm.value.owing,
+              operator: 'contains',
+              logic: "and",
+              filters: [{
+                field: 'duedate',
+                value: moment(this.primossoryFilterForm.value.start).toISOString(),
+                operator: 'gt',
+              }, {
+                field: 'duedate',
+                value: moment(this.primossoryFilterForm.value.end).toISOString(),
+                operator: 'lt',
+              }],
+            }
+          };
+        } else {
+          filter = {
+            filter: {
+              field: 'owing',
+              value: this.primossoryFilterForm.value.owing,
+              operator: 'contains',
+            }
+          };
+        }
+      } else {
         filter = {
           filter: {
-            field: 'owing',
-            value: this.primossoryFilterForm.value.owing,
-            operator: 'contains',
+            field: 'duedate',
+            value: moment(this.primossoryFilterForm.value.start).toISOString(),
+            operator: 'gt',
+            logic: 'and',
+            filters: [{
+              field: 'duedate',
+              value: moment(this.primossoryFilterForm.value.end).toISOString(),
+              operator: 'lt',
+            }]
           }
         };
       }

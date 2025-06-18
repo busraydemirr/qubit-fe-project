@@ -10,14 +10,31 @@ import { QueryParams } from '../../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
 import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { KsCardState } from '../../../state/kscard/kscard.state';
-import { renderAccountedInfo, renderSign } from '../../../utils/enum.utils';
+import { renderCurrency, renderSign } from '../../../utils/enum.utils';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SubSink } from 'subsink';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ClCardTotalModel } from '../../../models/clcard/clcard-total.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import moment from 'moment';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: ['DD/MM/YYYY'],
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
   selector: 'app-current-accounts-detail-list',
@@ -33,7 +50,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDatepickerModule
+  ],
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  { provide: DateAdapter, useClass: MomentDateAdapter },
+  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
   templateUrl: './current-accounts-detail-list.component.html',
   styleUrl: './current-accounts-detail-list.component.scss'
@@ -43,27 +68,22 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
   @ViewChild(MatSort) sort!: MatSort;
 
   @Input() cardId!: number;
-  @Input() term!: string;
   @Input() id!: string;
 
   public elements: ClCardLineModel[] = [];
   public dataSource!: MatTableDataSource<ClCardLineModel>;
   public displayedColumns = [
     'date',
-    'lineexp',
-    'sign',
-    'amount',
-    'cyphcode',
-    'tranno',
-    'accounted',
+    'trcurr',
+    'debt',
+    'credit',
+    'cumulativeBalance',
     'trnet',
-    'reportnet',
     'capiblockNameCreatedby',
     'capiblockCreadeddate',
     'capiblockModifieddate',
     'month',
     'year',
-    'affectrisk'
   ];
   public queryParams: QueryParams = {
     size: 10,
@@ -74,19 +94,19 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
   public loading$!: Observable<boolean>;
   public totals$!: Observable<ClCardTotalModel>;
   public renderSign = renderSign;
-  public renderAccountedInfo = renderAccountedInfo;
+  public renderCurrency = renderCurrency;
   public subsink = new SubSink();
-  public termControl = new FormControl(['03']);
+  public filterForm: FormGroup = new FormGroup({
+    start: new FormControl(null),
+    end: new FormControl(null),
+  });
+  public dateRange = new FormControl(null);
 
   constructor(private _store: Store) {
-    if (!this.term || this.term === '03') {
-      this.loading$ = this._store.select(ClCardState.getLinesListLoading);
-      this.totals$ = this._store.select(ClCardState.getClCardTotals);
-    } else if (this.term === '02') {
-      this.loading$ = this._store.select(ClCardState.getLinesListLoading2);
-    } else if (this.term === '01') {
-      this.loading$ = this._store.select(ClCardState.getLinesListLoading1);
-    }
+
+    this.loading$ = this._store.select(ClCardState.getLinesListLoading);
+    this.totals$ = this._store.select(ClCardState.getClCardTotals);
+
   }
 
   public ngOnInit(): void {
@@ -95,31 +115,16 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
       size: this.queryParams.size,
       page: this.queryParams.page,
       filter: {},
-      term: this.term ?? '03'
     };
 
-    if (!this.term || this.term === '03') {
-      this._store.dispatch([new ClCardActions.GetClCardLines(payload)]);
-      this.subsink.sink = this._store.select(ClCardState.getClCardLines).subscribe((cards: ClCardLineModel[]) => {
-        this.elements = cards;
-        this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
-        this.queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams);
-      });
-    } else if (this.term === '02') {
-      this._store.dispatch([new ClCardActions.GetClCardLines2(payload)]);
-      this.subsink.sink = this._store.select(ClCardState.getClCardLines2).subscribe((cards: ClCardLineModel[]) => {
-        this.elements = cards;
-        this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
-        this.queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams2);
-      });
-    } else if (this.term === '01') {
-      this._store.dispatch([new ClCardActions.GetClCardLines1(payload)]);
-      this.subsink.sink = this._store.select(ClCardState.getClCardLines1).subscribe((cards: ClCardLineModel[]) => {
-        this.elements = cards;
-        this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
-        this.queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams1);
-      });
-    }
+
+    this._store.dispatch([new ClCardActions.GetClCardLines(payload)]);
+    this.subsink.sink = this._store.select(ClCardState.getClCardLines).subscribe((cards: ClCardLineModel[]) => {
+      this.elements = cards;
+      this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
+      this.queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams);
+    });
+
 
   }
 
@@ -135,18 +140,44 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
   }
 
   public changePaginationEvents(event: PageEvent): void {
-    if (!this.term || this.term === '03') {
-      this._store.dispatch(
-        new ClCardActions.GetClCardLines({ id: this.cardId, size: event.pageSize, page: event.pageIndex, filter: {}, term: this.term ?? '03' })
-      );
-    } else if (this.term === '02') {
-      this._store.dispatch(
-        new ClCardActions.GetClCardLines2({ id: this.cardId, size: event.pageSize, page: event.pageIndex, filter: {}, term: this.term ?? '03' })
-      );
-    } else if (this.term === '01') {
-      this._store.dispatch(
-        new ClCardActions.GetClCardLines1({ id: this.cardId, size: event.pageSize, page: event.pageIndex, filter: {}, term: this.term ?? '03' })
-      );
+    const filter = this._store.selectSnapshot(ClCardState.getLinesFilter);
+    this._store.dispatch(
+      new ClCardActions.GetClCardLines({ id: this.cardId, size: event.pageSize, page: event.pageIndex, filter })
+    );
+
+  }
+
+  public filter(): void {
+    if (!this.filterForm?.value || this.filterForm.invalid) {
+      return;
     }
+
+    let filter: any = null;
+    if (this.filterForm.value.start && this.filterForm.value.end) {
+      filter = {
+        start: this.filterForm.value.start ? moment(this.filterForm.value.start).toISOString() : null,
+        end: this.filterForm.value.end ? moment(this.filterForm.value.end).toISOString() : null,
+      };
+    }
+
+    if (!filter) {
+      return;
+    }
+
+    this._store.dispatch(
+      new ClCardActions.GetClCardLines({ id: this.cardId, size: this.queryParams.size, page: this.queryParams.page, filter })
+    );
+  }
+
+  public clearFilters(): void {
+    if (!this.filterForm?.value?.start && !this.filterForm?.value?.end) {
+      return;
+    }
+
+    this.filterForm.reset();
+    const queryParams = this._store.selectSnapshot(ClCardState.getClCardLineQueryParams);
+    this._store.dispatch(
+      new ClCardActions.GetClCardLines({ id: this.cardId, size: queryParams.size, page: 0, filter: {} })
+    );
   }
 }

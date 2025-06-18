@@ -20,6 +20,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { TimePeriodEnum } from '../../models/shared/time-period.enum';
 import moment from 'moment';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: ['DD/MM/YYYY'],
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
   selector: 'app-pimak-promissory-notes',
@@ -38,6 +53,12 @@ import moment from 'moment';
     MatInputModule,
     DatePipe,
     CommonModule,
+    MatDatepickerModule
+  ],
+  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  { provide: DateAdapter, useClass: MomentDateAdapter },
+  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
   templateUrl: './pimak-promissory-notes.component.html',
   styleUrl: './pimak-promissory-notes.component.scss'
@@ -52,6 +73,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
     'newserino',
     'amount',
     'duedate',
+    'cstrans',
     'bankname',
   ];
   public queryParams: QueryParams = {
@@ -65,7 +87,8 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   public termControl = new FormControl('03');
   public primossoryFilterForm: FormGroup = new FormGroup({
     bankname: new FormControl(null),
-    /*  owing: new FormControl(null), */
+    start: new FormControl(null),
+    end: new FormControl(null)
   });
 
   private _filter!: FilterRequestModel;
@@ -170,7 +193,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
   }
 
   public clearFilters(): void {
-    if (!this.primossoryFilterForm?.value?.bankname) {
+    if (!this.primossoryFilterForm?.value?.bankname && !this.primossoryFilterForm?.value?.start && !this.primossoryFilterForm?.value?.end) {
       return;
     }
 
@@ -197,7 +220,7 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
         }
       };
 
-      /* if (this.primossoryFilterForm.value.owing) {
+      if (this.primossoryFilterForm.value.start && this.primossoryFilterForm.value.end) {
         filter = {
           filter: {
             field: 'bankname',
@@ -205,25 +228,34 @@ export class PimakPromissoryNotesComponent implements OnInit, AfterViewInit, OnD
             operator: 'contains',
             logic: "and",
             filters: [{
-              field: 'owing',
-              value: this.primossoryFilterForm.value.owing,
-              operator: 'contains',
-            }]
-          }
-        };
-      } */
-    }
-    /* else {
-      if (this.primossoryFilterForm.value.owing) {
-        filter = {
-          filter: {
-            field: 'owing',
-            value: this.primossoryFilterForm.value.owing,
-            operator: 'contains',
+              field: 'duedate',
+              value: moment(this.primossoryFilterForm.value.start).toISOString(),
+              operator: 'gt',
+            }, {
+              field: 'duedate',
+              value: moment(this.primossoryFilterForm.value.end).toISOString(),
+              operator: 'lt',
+            }],
           }
         };
       }
-    } */
+    } else {
+      if (this.primossoryFilterForm.value.start && this.primossoryFilterForm.value.end) {
+        filter = {
+          filter: {
+            field: 'duedate',
+            value: moment(this.primossoryFilterForm.value.start).toISOString(),
+            operator: 'gt',
+            logic: 'and',
+            filters: [{
+              field: 'duedate',
+              value: moment(this.primossoryFilterForm.value.end).toISOString(),
+              operator: 'lt',
+            }]
+          }
+        };
+      }
+    }
 
     if (!filter) {
       return;

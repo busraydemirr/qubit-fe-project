@@ -25,19 +25,7 @@ export namespace ClCardActions {
     export class GetClCardLines {
         static readonly type = `${ACTION_SCOPE} Get ClCard Lines`;
 
-        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel, term?: string }) { }
-    }
-
-     export class GetClCardLines2 {
-        static readonly type = `${ACTION_SCOPE} Get ClCard Lines 2`;
-
-        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel, term?: string }) { }
-    }
-
-     export class GetClCardLines1 {
-        static readonly type = `${ACTION_SCOPE} Get ClCard Lines 1`;
-
-        constructor(public payload: { id: number; size: number; page: number; filter: FilterRequestModel, term?: string }) { }
+        constructor(public payload: { id: number; size: number; page: number; filter: any, term?: string }) { }
     }
 
     export class GetClCardTotals {

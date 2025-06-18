@@ -53,6 +53,25 @@ export function renderAccountedInfo(value: number): AccountedInfo | '' {
     }
 }
 
+
+export function renderCurrStat(value: number): any {
+    switch (value) {
+        case 1: return 'Portföyde';
+        case 2: return 'Ciro Edildi';
+        case 3: return 'Teminata Verildi';
+        case 4: return 'Tahsile Verildi';
+        case 5: return 'Protestolu Tahsile Verildi';
+        case 6: return 'İade Edildi';
+        case 7: return 'Protesto Edildi';
+        case 8: return 'Tahsil Edildi';
+        case 9: return 'Kendi Çekimiz';
+        case 10: return 'Borç Senedimiz';
+        case 11: return 'Karşılığı Yok';
+        case 12: return 'Tahsil Edilemiyor';
+        default: return '';
+    }
+}
+
 export function renderBankProcType(value: number): string | '' {
     switch (value) {
         case 1: return 'Banka İşlem Fişi';

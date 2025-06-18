@@ -21,16 +21,7 @@ export interface ClCardStateModel {
     filter: FilterRequestModel;
     term: string;
     totals: ClCardTotalModel;
-    cardLines1: ClCardLineModel[];
-    linePage1: number;
-    lineSize1: number;
-    lineTotalElements1: number;
-    linePages1: number;
-    cardLines2: ClCardLineModel[];
-    linePage2: number;
-    lineSize2: number;
-    lineTotalElements2: number;
-    linePages2: number;
-    linesListLoading2: boolean;
-    linesListLoading1: boolean;
+    lineFilter: {
+        start: Date | null; end: Date | null;
+    } | null;
 }

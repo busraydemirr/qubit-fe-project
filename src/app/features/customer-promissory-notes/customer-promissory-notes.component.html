@@ -1,12 +1,22 @@
 <div class="container ml-auto mr-auto">
     <form [formGroup]="primossoryFilterForm" class="flex w-full gap-4 mb-3">
-        <mat-form-field [appearance]="'fill'" class="w-1/2">
+        <mat-form-field [appearance]="'fill'" class="md:w-1/3 sm:w-full">
             <mat-label> Banka Adı </mat-label>
             <input matInput placeholder="Banka Adı" formControlName="bankname" />
         </mat-form-field>
-        <mat-form-field [appearance]="'fill'" class="w-1/2">
+        <mat-form-field [appearance]="'fill'" class="md:w-1/3 sm:w-full">
             <mat-label> Borçlu </mat-label>
             <input matInput placeholder="Borçlu" formControlName="owing" />
+        </mat-form-field>
+        <mat-form-field [appearance]="'fill'" class="md:w-1/3 sm:w-full">
+            <mat-label> Vade Tarihi </mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate formControlName="start" placeholder="Başlangıç">
+                <input matEndDate formControlName="end" placeholder="Bitiş">
+            </mat-date-range-input>
+            <mat-hint>GG/AA/YYYY – GG/AA/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
 
         <button mat-icon-button [disabled]="primossoryFilterForm.invalid"
@@ -33,7 +43,7 @@
     <mat-table [dataSource]="dataSource" matSort>
         <!-- newserino kolonu -->
         <ng-container matColumnDef="newserino">
-            <mat-header-cell *matHeaderCellDef  > Çek Numarası </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Çek Numarası </mat-header-cell>
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }"
                 (click)="rowClicked(element)">
                 <ng-container *ngIf="(loading$ | async); else content">
@@ -52,7 +62,7 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="owing">
-            <mat-header-cell *matHeaderCellDef  > Borçlu </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Borçlu </mat-header-cell>
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -69,7 +79,7 @@
         </ng-container>
         <!-- amount kolonu -->
         <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef  > Tutar </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Tutar </mat-header-cell>
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -87,7 +97,7 @@
 
         <!-- duedate kolonu -->
         <ng-container matColumnDef="duedate">
-            <mat-header-cell *matHeaderCellDef  > Vade Tarihi </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Vade Tarihi </mat-header-cell>
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -103,9 +113,27 @@
             </mat-cell>
         </ng-container>
 
+        <!-- currstat kolonu -->
+        <ng-container matColumnDef="currstat">
+            <mat-header-cell *matHeaderCellDef> Son Durum </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+                <ng-container *ngIf="(loading$ | async); else content">
+                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-template #content>
+                    {{ renderCurrStat(element.currstat) }}
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
         <!-- setdate kolonu -->
         <ng-container matColumnDef="setdate">
-            <mat-header-cell *matHeaderCellDef  > Çek Alındığı Tarih </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Çek Alındığı Tarih </mat-header-cell>
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 

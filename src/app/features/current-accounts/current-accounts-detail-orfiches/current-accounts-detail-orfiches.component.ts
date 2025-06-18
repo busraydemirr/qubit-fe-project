@@ -23,7 +23,6 @@ import { Router } from '@angular/router';
     MatSortModule,
     NgxSkeletonLoaderModule,
     NgIf,
-    AsyncPipe,
     DatePipe,
     MatInputModule,
     CommonModule

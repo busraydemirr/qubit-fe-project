@@ -164,7 +164,7 @@
                 }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.nettotal | number}}
+                    {{ element.trcurr === 0 || element.trcurr === 160 ? (element.nettotal | number) : (element.trnet | number)}}
                 </ng-template>
             </mat-cell>
         </ng-container>

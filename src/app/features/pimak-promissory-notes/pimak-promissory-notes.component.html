@@ -1,15 +1,21 @@
 <div class="container ml-auto mr-auto">
   <form [formGroup]="primossoryFilterForm" class="flex w-full gap-4 mb-3">
-    <mat-form-field [appearance]="'fill'" class="w-1/2">
+    <mat-form-field [appearance]="'fill'" class="md:w-1/2 sm:w-full">
       <mat-label> Banka Adı </mat-label>
       <input matInput placeholder="Banka Adı" formControlName="bankname" />
     </mat-form-field>
-    <!--  <mat-form-field [appearance]="'fill'" class="w-1/2">
-      <mat-label> Borçlu </mat-label>
-      <input matInput placeholder="Borçlu" formControlName="owing" />
+    <mat-form-field class="md:w-1/2 sm:w-full" appearance="fill">
+      <mat-label> Vade Tarihi </mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Başlangıç">
+        <input matEndDate formControlName="end" placeholder="Bitiş">
+      </mat-date-range-input>
+      <mat-hint>GG/AA/YYYY – GG/AA/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
- -->
-    <div class="w-1/2"></div>
+
+
     <button mat-icon-button [disabled]="primossoryFilterForm.invalid"
       class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md flex items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
       (click)="filter()">
@@ -84,6 +90,21 @@
         <ng-template #content>
           {{ element.duedate | date: "dd/MM/yyyy" }}
         </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cstrans">
+      <mat-header-cell *matHeaderCellDef> Kime Verildi </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
+        <ng-container *ngIf="(loading$ | async); else content">
+          <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
+                height: '20px',
+                width: '100%',
+                'background-color': '#b7bec3',
+                border: '1px solid #b7bec3'
+              }"></ngx-skeleton-loader>
+        </ng-container>
+        <ng-template #content>{{ element.cstrans[0].clCardDefinition }}</ng-template>
       </mat-cell>
     </ng-container>
 

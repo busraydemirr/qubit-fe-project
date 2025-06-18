@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { fetchWeatherApi } from 'openmeteo';
 import { WEATHER_STATUS } from '../../models/home/weather-status';
 import { DatePipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import Chart from 'chart.js/auto';
@@ -11,18 +10,13 @@ import { OrficheService } from '../../services/orfiche.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InvoiceService } from '../../services/invoice.service';
 import { CsCardService } from '../../services/cscard.service';
-import { elementAt } from 'rxjs';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
-import moment from 'moment';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   imports: [
-    NgFor,
     NgIf,
-    DatePipe,
-    SlicePipe,
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
@@ -119,7 +113,7 @@ export class HomeComponent implements OnInit {
     private _csCardService: CsCardService,
     private _router: Router
   ) {
-    this._renderWeatherTemplate();
+    /* this._renderWeatherTemplate(); */
   }
 
   ngOnInit(): void {
@@ -128,7 +122,7 @@ export class HomeComponent implements OnInit {
     this.viewPromissoryData(this.timePeriodPromissory);
   }
 
-  async _renderWeatherTemplate() {
+/*   async _renderWeatherTemplate() {
     const responses = await fetchWeatherApi(this.url, this.params);
 
     // Helper function to form time ranges
@@ -154,7 +148,7 @@ export class HomeComponent implements OnInit {
         weatherCode: daily.variables(2)!.valuesArray()!,
       },
     };
-  }
+  } */
 
   public viewOrficheData(data: TimePeriodEnum): void {
     this.timePeriodOrfiche = data;

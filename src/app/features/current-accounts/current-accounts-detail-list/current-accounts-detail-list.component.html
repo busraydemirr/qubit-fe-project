@@ -1,51 +1,64 @@
 <div class="p-8 pt-4">
-    <!--  <div class="w-full">
-        <mat-form-field class="w-[300px]">
-            <mat-label>Dönem</mat-label>
-            <mat-select [formControl]="termControl" multiple>
-                <mat-option [value]="'01'">1</mat-option>
-                <mat-option [value]="'02'">2</mat-option>
-                <mat-option [value]="'03'">3</mat-option>
-            </mat-select>
+    <form class="md:flex sm:inline-block w-full gap-4 mb-3" [formGroup]="filterForm">
+        <mat-form-field class="md:w-1/3 sm:w-full" appearance="fill">
+            <mat-label>Periyot</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate formControlName="start" placeholder="Başlangıç">
+                <input matEndDate formControlName="end" placeholder="Bitiş">
+            </mat-date-range-input>
+            <mat-hint>GG/AA/YYYY – GG/AA/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
-    </div> -->
-    <ng-container *ngIf="!term || term === '03'">
-        <ng-container *ngIf="(loading$ | async); else content">
-            <div class="flex w-full items-center justify-center my-4">
-                <mat-spinner class="w-[50px] h-[50px]"></mat-spinner>
-            </div>
-        </ng-container>
-        <ng-template #content>
-            <div *ngIf="totals$ | async as totals" class="my-4 table-background">
-                <div class="flex w-full content-between flex-wrap flex-row">
-                    <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Toplam
-                        Borç
-                    </span>
-                    <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
-                        Toplam Alacak </span>
-                    <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                        Toplam Bakiye </span>
-                </div>
-                <div class="flex w-full content-between flex-wrap flex-row">
-                    <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-r-0">
-                        {{totals.totalDebt | number }}</span>
-                    <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-r-0">
-                        {{totals.totalCredit | number }} </span>
-                    <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400">
-                        {{totals.totalAmount | number }}
-                    </span>
-                </div>
-            </div>
-        </ng-template>
-    </ng-container>
 
-    <h1 *ngIf="elements.length > 0"> Dönem: {{term ?? '03'}} </h1>
+        <button mat-icon-button [disabled]="!filterForm.value.start || !filterForm.value.end"
+            class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md md:flex sm:inline-block items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
+            (click)="filter()">
+            <mat-icon fontIcon="search"></mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="!filterForm.value"
+            class="menu-icon text-qub-tertiary bg-qub-secondary shadow-md md:flex sm:inline-block items-center justify-center mt-2 ml-auto h-[40px] w-[40px] rounded-full"
+            (click)="clearFilters()">
+            <mat-icon fontIcon="delete"></mat-icon>
+        </button>
+         <div class="md:w-2/3 sm:w-0"></div>
+    </form>
+
+    <ng-container *ngIf="(loading$ | async); else content">
+        <div class="flex w-full items-center justify-center my-4">
+            <mat-spinner class="w-[50px] h-[50px]"></mat-spinner>
+        </div>
+    </ng-container>
+    <ng-template #content>
+        <div *ngIf="totals$ | async as totals" class="my-4 table-background">
+            <div class="flex w-full content-between flex-wrap flex-row">
+                <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0"> Toplam
+                    Borç
+                </span>
+                <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-b-0 !border-r-0">
+                    Toplam Alacak </span>
+                <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-b-0">
+                    Toplam Bakiye </span>
+            </div>
+            <div class="flex w-full content-between flex-wrap flex-row">
+                <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-r-0">
+                    {{totals.totalDebt | number }}</span>
+                <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400 !border-r-0">
+                    {{totals.totalCredit | number }} </span>
+                <span class="flex w-1/3 py-1 px-2 border border-1 border-gray-400">
+                    {{totals.totalAmount | number }}
+                </span>
+            </div>
+        </div>
+    </ng-template>
+
+    <!-- <h1 *ngIf="elements.length > 0"> Dönem: {{term ?? '03'}} </h1> -->
 
     <!--   <div *ngIf="elements.length === 0 && !(loading$ | async)" class="flex w-full items-center justify-center p-8">
         Dönem için veri bulunmamaktadır.
     </div>
  -->
-    <mat-table [dataSource]="dataSource" [id]="id" *ngIf="elements.length > 0">
+    <mat-table [dataSource]="dataSource" [id]="id">
         <ng-container matColumnDef="date">
             <mat-header-cell *matHeaderCellDef class="table-column-150"> Tarih </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
@@ -62,8 +75,8 @@
                 </ng-template>
             </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="lineexp">
-            <mat-header-cell *matHeaderCellDef class="table-column-200"> Açıklama </mat-header-cell>
+        <ng-container matColumnDef="trcurr">
+            <mat-header-cell *matHeaderCellDef class="table-column-200"> Döviz Kuru </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -74,11 +87,11 @@
                 }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.lineexp }}
+                    {{ renderCurrency(element.trcurr) }}
                 </ng-template>
             </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="sign">
+        <!--  <ng-container matColumnDef="sign">
             <mat-header-cell *matHeaderCellDef class="table-column-150"> Borç/Alacak İşareti
             </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
@@ -94,9 +107,9 @@
                     {{ renderSign(element.sign!) }}
                 </ng-template>
             </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef class="table-column-150"> Tutar </mat-header-cell>
+        </ng-container> -->
+        <ng-container matColumnDef="debt">
+            <mat-header-cell *matHeaderCellDef class="table-column-150"> Borç </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
@@ -107,60 +120,41 @@
                   }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.amount | number }}
+                    {{ element.sign ? (element.amount | number) : '' }}
                 </ng-template>
             </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="cyphcode">
-            <mat-header-cell *matHeaderCellDef class="table-column-150"> Yetki Kodu </mat-header-cell>
+        <ng-container matColumnDef="credit">
+            <mat-header-cell *matHeaderCellDef class="table-column-150"> Alacak </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.cyphcode }}
+                    {{ element.sign ? '' : (element.amount | number) }}
                 </ng-template>
             </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="tranno">
-            <mat-header-cell *matHeaderCellDef class="table-column-150"> Hareket numarası
-            </mat-header-cell>
+        <ng-container matColumnDef="cumulativeBalance">
+            <mat-header-cell *matHeaderCellDef class="table-column-150"> Bakiye </mat-header-cell>
             <mat-cell *matCellDef="let element" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.tranno }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="accounted">
-            <mat-header-cell *matHeaderCellDef class="table-column-200"> Muhasebeleşme
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-200">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ renderAccountedInfo(element.accounted) }}
+                    {{ element.cumulativeBalance | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -179,23 +173,6 @@
                 </ng-container>
                 <ng-template #content>
                     {{ element.trnet | number }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="reportnet">
-            <mat-header-cell *matHeaderCellDef class="table-column-150"> RD Tutarı </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.reportnet | number }}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -286,29 +263,11 @@
                 </ng-template>
             </mat-cell>
         </ng-container>
-
-        <ng-container matColumnDef="affectrisk">
-            <mat-header-cell *matHeaderCellDef class="table-column-150"> Risk Etkisi </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
-                <ng-container *ngIf="(loading$ | async); else content">
-                    <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
-                </ng-container>
-                <ng-template #content>
-                    {{ element.affectrisk }}
-                </ng-template>
-            </mat-cell>
-        </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
 
-    <mat-paginator *ngIf="elements.length > 0" [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size"
-        [pageIndex]="queryParams.page" [length]="queryParams.totalElements" (page)="changePaginationEvents($event)"
-        showFirstLastButtons>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"
+        [length]="queryParams.totalElements" (page)="changePaginationEvents($event)" showFirstLastButtons>
     </mat-paginator>
 </div>

@@ -99,7 +99,7 @@
               }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.totalAmountPrice | number}}
+                    {{ element.totalAmountPrice ? (element.totalAmountPrice | number) : ''}}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -115,7 +115,7 @@
               }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.allShippedAmountPrice | number}}
+                    {{ element.allShippedAmountPrice ? (element.allShippedAmountPrice | number): ''}}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -131,7 +131,7 @@
               }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.amountOfRemainingPrice | number}}
+                    {{ element.amountOfRemainingPrice ? (element.amountOfRemainingPrice | number) : ''}}
                 </ng-template>
             </mat-cell>
         </ng-container>
@@ -164,7 +164,8 @@
                 }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.nettotal | number}}
+                    {{ element.trcurr === 0 || element.trcurr === 160 ? (element.nettotal | number) : (element.trnet |
+                    number)}}
                 </ng-template>
             </mat-cell>
         </ng-container>

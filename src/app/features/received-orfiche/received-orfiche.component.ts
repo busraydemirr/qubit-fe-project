@@ -55,7 +55,7 @@ export const MY_FORMATS = {
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
