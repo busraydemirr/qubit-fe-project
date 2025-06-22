@@ -5,7 +5,7 @@
         </div>
 
         <div class="w-full mt-5">
-           <!--  <div class="md:h-[230px] sm:h-[0px] w-full bg-gray-300 rounded p-4 md:grid min-[320px]:hidden grid-cols-7 gap-4" *ngIf="weatherData?.daily">
+            <!--  <div class="md:h-[230px] sm:h-[0px] w-full bg-gray-300 rounded p-4 md:grid min-[320px]:hidden grid-cols-7 gap-4" *ngIf="weatherData?.daily">
                 <div *ngFor="let data of weatherData.daily.time; let i = index;">
                     <div class="w-full py-2 px-5">
                         <div class="w-full text-center"><b> {{weatherData.daily.time[i] | date: 'dd/MM/yyyy'}} </b>
@@ -23,6 +23,27 @@
                     </div>
                 </div>
             </div> -->
+
+            <div class="md:h-[480px] sm:h-[0px] w-full bg-gray-300 rounded md:grid min-[320px]:hidden">
+                <div class="flex items-center justify-center text-xl font-bold text-gray-700 bg-gray-400 h-[76px] w-full">
+                    Satışlar
+                </div>
+                <div class="h-full w-full flex justify-center p-4 w-full">
+                    <canvas id="canvas4"
+                        [class]="{'hidden': invoiceMonthlyLoading || (!invoiceMonthlyLoading && !invoiceMonthlyInfo)}">
+                        <div *ngIf="!invoiceMonthlyLoading"> {{chart4}}</div>
+                    </canvas>
+                    <div *ngIf="!invoiceMonthlyLoading && !invoiceMonthlyInfo">
+                        <div class="flex w-full items-center justify-center text-gray-700 p-8">
+                            Seçtiğiniz aralık için veri bulunmamaktadır.</div>
+                    </div>
+                    <div *ngIf="invoiceMonthlyLoading">
+                        <div class="flex w-full items-center justify-center p-8">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4 md:h-[400px] sm:h-[75vh] mt-3">
                 <div class="bg-gray-300 h-full w-full rounded">
@@ -94,13 +115,15 @@
                     </div>
                 </div>
 
-                 <div class="bg-gray-300 h-full w-full rounded">
+                <div class="bg-gray-300 h-full w-full rounded">
                     <div class="h-18 w-full flex justify-between items-center bg-gray-400 py-2 px-4">
-                        <div class="flex justify-start justify-center text-xl font-bold text-gray-700"> Çek ve Senetler</div>
+                        <div class="flex justify-start justify-center text-xl font-bold text-gray-700"> Çek ve Senetler
+                        </div>
                         <div class="flex justify-end items-center">
                             <mat-form-field appearance="fill" class="w-2/3 mb-[-16px]">
                                 <mat-label>Periyot</mat-label>
-                                <mat-select [(ngModel)]="timePeriodPromissory" (ngModelChange)="viewPromissoryData($event)">
+                                <mat-select [(ngModel)]="timePeriodPromissory"
+                                    (ngModelChange)="viewPromissoryData($event)">
                                     <mat-option [value]="timePeriodEnum.TODAY">Dün</mat-option>
                                     <mat-option [value]="timePeriodEnum.WEEK">Son 7 gün</mat-option>
                                     <mat-option [value]="timePeriodEnum.MONTH">Son 30 gün</mat-option>

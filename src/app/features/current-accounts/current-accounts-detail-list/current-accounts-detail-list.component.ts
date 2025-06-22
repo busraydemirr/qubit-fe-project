@@ -23,6 +23,12 @@ import moment from 'moment';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { InvoiceService } from '../../../services/invoice.service';
+import { InvoiceActions } from '../../../state/invoice/invoice.action';
+import { Router } from '@angular/router';
+import { CsCardService } from '../../../services/cscard.service';
+import { BnCardService } from '../../../services/bncard.service';
+import { KsCardService } from '../../../services/kscard.service';
 
 export const MY_FORMATS = {
   parse: {
@@ -102,11 +108,16 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
   });
   public dateRange = new FormControl(null);
 
-  constructor(private _store: Store) {
-
+  constructor(
+    private _store: Store,
+    private invoiceService: InvoiceService,
+    private _router: Router,
+    private _csCardService: CsCardService,
+    private _bnCardService: BnCardService,
+    private _ksCardService: KsCardService
+  ) {
     this.loading$ = this._store.select(ClCardState.getLinesListLoading);
     this.totals$ = this._store.select(ClCardState.getClCardTotals);
-
   }
 
   public ngOnInit(): void {
@@ -167,6 +178,52 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     this._store.dispatch(
       new ClCardActions.GetClCardLines({ id: this.cardId, size: this.queryParams.size, page: this.queryParams.page, filter })
     );
+  }
+
+  public rowClicked(row: ClCardLineModel): void {
+    if (row.modulenr === 3 || row.modulenr === 5) {
+      return; // Skip rows with modulenr 3 or 5
+    }
+
+    switch (row.modulenr) {
+      case 4: // ınvoice
+        this.invoiceService.getStLinesByInvoiceId(row.id!).subscribe((res) => {
+          if (res && res.isSuccess && res.data) {
+            this._router.navigate(['purchase-invoices/detail', res.data.invoiceref]);
+          }
+        });
+        break;
+      case 6: // CsTrans
+        this._csCardService.getCsTrans(row.id!).subscribe((res) => {
+          if (res && res.isSuccess && res.data) {
+            this._router.navigate(['customer-promissory-notes/detail', res.data.csref]);
+          }
+        });
+        break;
+      case 61: // CsTrans
+        this._csCardService.getCsTrans(row.id!).subscribe((res) => {
+          if (res && res.isSuccess && res.data) {
+            this._router.navigate(['customer-promissory-notes/detail', res.data.csref]);
+          }
+        });
+        break;
+      case 7: // BnCard
+        this._bnCardService.getBnCardAccount(row.id!).subscribe((res) => {
+          if (res && res.isSuccess && res.data) {
+            this._router.navigate(['banks/detail', res.data.bankref]);
+          }
+        });
+        break;
+      case 10: // KsCard
+        this._ksCardService.getKsCard(row.id!).subscribe((res) => {
+          if (res && res.isSuccess && res.data) {
+            this._router.navigate(['cash-transactions/detail', res.data.cardref]);
+          }
+        });
+        break;
+      default:
+        console.warn('Unsupported modulenr:', row.modulenr);
+    }
   }
 
   public clearFilters(): void {

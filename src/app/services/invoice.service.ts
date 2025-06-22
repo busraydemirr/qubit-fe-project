@@ -74,4 +74,12 @@ export class InvoiceService {
     public getTotalInvoice(timePeriod: TimePeriodEnum): Observable<ResponseModel<{ totalAmountPurchaseInvoice: number, totalAmountSalesInvoice: number }>> {
         return this._http.post<ResponseModel<{ totalAmountPurchaseInvoice: number; totalAmountSalesInvoice: number }>>(this.url + 'api/Invoice/getTotalInvoice?size=100&from=0' + '&timePeriod=' + timePeriod, {});
     }
+
+    public getTotalInvoiceMonthly(): Observable<any> {
+        return this._http.get(this.url + 'api/Invoice/monthly-sales');
+    }
+
+    public getStLinesByInvoiceId(id: number): Observable<any> {
+        return this._http.get(this.url + 'api/Invoice/StLine/' + id);
+    }
 }

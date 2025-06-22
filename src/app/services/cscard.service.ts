@@ -79,4 +79,8 @@ export class CsCardService {
     public getCsCardLines(id: number, size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<CsCardLineModel>>> {
         return this._http.post<ResponseModel<BaseResponseData<CsCardLineModel>>>(this.url + 'api/CsCard/' + id + '/getCsTrans?size=' + size + '&from=' + page + '&term=' + term, filter);
     }
+
+    public getCsTrans(id:number): Observable<any> {
+        return this._http.get<any>(this.url + 'api/CsTrans/' + id);
+    }
 }

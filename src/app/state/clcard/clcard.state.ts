@@ -188,7 +188,7 @@ export class ClCardState {
             tap(data => {
                 patchState({
                     lineFilter: action.payload.filter,
-                    cardLines: data.data,
+                    cardLines: data.data.data,
                     linePage: data.data.index,
                     lineSize: data.data.size,
                     lineTotalElements: data.data.count,

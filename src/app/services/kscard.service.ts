@@ -41,4 +41,8 @@ export class KsCardService {
     public getKsCardLines(id: number, size: number, page: number, filter: FilterRequestModel, term?: string): Observable<ResponseModel<BaseResponseData<KsCardLineModel>>> {
         return this._http.post<ResponseModel<BaseResponseData<KsCardLineModel>>>(this.url + 'api/KsCard/getKsCardLines/' + id + '?size=' + size + '&from=' + page + '&term=' + term, filter);
     }
+
+    public getKsCard(id: number): Observable<any> {
+        return this._http.get<any>(this.url + 'api/KsCard/KsLine/' + id);
+    }
 }

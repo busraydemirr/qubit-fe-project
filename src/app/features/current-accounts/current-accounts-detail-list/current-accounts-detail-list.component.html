@@ -21,7 +21,7 @@
             (click)="clearFilters()">
             <mat-icon fontIcon="delete"></mat-icon>
         </button>
-         <div class="md:w-2/3 sm:w-0"></div>
+        <div class="md:w-2/3 sm:w-0"></div>
     </form>
 
     <ng-container *ngIf="(loading$ | async); else content">
@@ -61,7 +61,7 @@
     <mat-table [dataSource]="dataSource" [id]="id">
         <ng-container matColumnDef="date">
             <mat-header-cell *matHeaderCellDef class="table-column-150"> Tarih </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="table-column-150">
+            <mat-cell *matCellDef="let element" class="table-column-150" (click)="rowClicked(element)">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
                   height: '20px',
@@ -71,7 +71,9 @@
                 }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
-                    {{ element.date | date: 'dd/MM/yyyy'}}
+                    <div [ngClass]="{'clickable-cell': element.modulenr !== 3 && element.modulenr !== 5}">
+                        {{ element.date | date: 'dd/MM/yyyy'}}
+                    </div>
                 </ng-template>
             </mat-cell>
         </ng-container>

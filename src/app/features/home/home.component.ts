@@ -27,23 +27,23 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   @Input() user: any; // TODO: User model
-  public weatherData =
-    {
-      daily: {
-        time: [new Date()],
-        temperature2mMax: new Float32Array(),
-        temperature2mMin: new Float32Array(),
-        weatherCode: new Float32Array(),
-      }
-    };
-  public params = {
-    "latitude": 41.0138,
-    "longitude": 28.9497,
-    "daily": ["temperature_2m_max", "temperature_2m_min", "weather_code"],
-    "timezone": "auto"
-  };
-  public url = "https://api.open-meteo.com/v1/forecast";
-  public weatherStatus = WEATHER_STATUS;
+  /*  public weatherData =
+     {
+       daily: {
+         time: [new Date()],
+         temperature2mMax: new Float32Array(),
+         temperature2mMin: new Float32Array(),
+         weatherCode: new Float32Array(),
+       }
+     };
+   public params = {
+     "latitude": 41.0138,
+     "longitude": 28.9497,
+     "daily": ["temperature_2m_max", "temperature_2m_min", "weather_code"],
+     "timezone": "auto"
+   }; */
+  /* public url = "https://api.open-meteo.com/v1/forecast";
+  public weatherStatus = WEATHER_STATUS; */
   public timePeriodOrfiche = TimePeriodEnum.TODAY;
   public timePeriodInvoince = TimePeriodEnum.TODAY;
   public timePeriodPromissory = TimePeriodEnum.TODAY;
@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit {
   public orficheLoading = false;
   public invoinceLoading = false;
   public promissoryLoading = false;
+  public invoiceMonthlyLoading = false;
   public orficheData = {
     labels: [
       'Alınan Siparişler',
@@ -99,12 +100,29 @@ export class HomeComponent implements OnInit {
     }]
   };
 
+  private _labels = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Agustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+  public invoiceMonthlyData = {
+    labels: this._labels,
+    datasets: [
+      {
+        label: 'Satış Faturaları',
+        data: [],
+        borderColor: "#ff6384",
+        backgroundColor: "#ff6384",
+      },
+    ]
+  };
+
+
+
   public chart: any = null;
   public chart2: any = null;
   public chart3: any = null;
+  public chart4: any = null;
   public invoinceInfo: any = null;
   public orficheInfo: any = null;
   public promissoryInfo: any = null;
+  public invoiceMonthlyInfo: any = null;
   private _filter!: FilterRequestModel;
 
   constructor(
@@ -120,35 +138,68 @@ export class HomeComponent implements OnInit {
     this.viewOrficheData(this.timePeriodOrfiche);
     this.viewInvoinceData(this.timePeriodInvoince);
     this.viewPromissoryData(this.timePeriodPromissory);
+    this.viewInvoinceMonthlyData();
   }
 
-/*   async _renderWeatherTemplate() {
-    const responses = await fetchWeatherApi(this.url, this.params);
+  /*   async _renderWeatherTemplate() {
+      const responses = await fetchWeatherApi(this.url, this.params);
+  
+      // Helper function to form time ranges
+      const range = (start: number, stop: number, step: number) =>
+        Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
+  
+      // Process first location. Add a for-loop for multiple locations or weather models
+      const response = responses[0];
+  
+      // Attributes for timezone and location
+      const utcOffsetSeconds = response.utcOffsetSeconds();
+  
+      const daily = response.daily()!;
+  
+      // Note: The order of weather variables in the URL query and the indices below need to match!
+      this.weatherData = {
+        daily: {
+          time: range(Number(daily.time()), Number(daily.timeEnd()), daily.interval()).map(
+            (t) => new Date((t + utcOffsetSeconds) * 1000)
+          ),
+          temperature2mMax: daily.variables(0)!.valuesArray()!,
+          temperature2mMin: daily.variables(1)!.valuesArray()!,
+          weatherCode: daily.variables(2)!.valuesArray()!,
+        },
+      };
+    } */
 
-    // Helper function to form time ranges
-    const range = (start: number, stop: number, step: number) =>
-      Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
-
-    // Process first location. Add a for-loop for multiple locations or weather models
-    const response = responses[0];
-
-    // Attributes for timezone and location
-    const utcOffsetSeconds = response.utcOffsetSeconds();
-
-    const daily = response.daily()!;
-
-    // Note: The order of weather variables in the URL query and the indices below need to match!
-    this.weatherData = {
-      daily: {
-        time: range(Number(daily.time()), Number(daily.timeEnd()), daily.interval()).map(
-          (t) => new Date((t + utcOffsetSeconds) * 1000)
-        ),
-        temperature2mMax: daily.variables(0)!.valuesArray()!,
-        temperature2mMin: daily.variables(1)!.valuesArray()!,
-        weatherCode: daily.variables(2)!.valuesArray()!,
-      },
-    };
-  } */
+  public viewInvoinceMonthlyData(): void {
+    this.invoiceMonthlyLoading = true;
+    this._invoiceService.getTotalInvoiceMonthly().subscribe((res) => {
+      this.invoiceMonthlyLoading = false;
+      if (res.isSuccess) {
+        this.invoiceMonthlyInfo = res.isSuccess ? res.data : null;
+        this.invoiceMonthlyData = {
+          ...this.invoiceMonthlyData,
+          labels: res.data.map((item: any) => item.month),
+          datasets: [{
+            ...this.invoiceMonthlyData.datasets[0],
+            data: res.data.map((item: any) => item.total as never)
+          }]
+        };
+      }
+      if (!this.chart4) {
+        this.chart4 = new Chart('canvas4', {
+          type: 'line',
+          data: this.invoiceMonthlyData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1,
+          },
+        });
+      } else {
+        this.chart4.data = this.invoiceMonthlyData;
+        this.chart4.update();
+      }
+    });
+  }
 
   public viewOrficheData(data: TimePeriodEnum): void {
     this.timePeriodOrfiche = data;

@@ -26,4 +26,8 @@ export class BnCardService {
     public getAccountLines(id: number, size: number, page: number, filter: FilterRequestModel, term: string): Observable<ResponseModel<BaseResponseData<BnCardAccountLineModel>>> {
         return this._http.post<ResponseModel<BaseResponseData<BnCardAccountLineModel>>>(this.url + 'api/BnCard/getBankAccountLines/' + id + '?size=' + size + '&from=' + page + '&term=' + term, filter)
     }
+
+    public getBnCardAccount(id: number): Observable<any> {
+        return this._http.get<any>(this.url + 'api/BnCard/BnfLine/' + id);
+    }
 }
