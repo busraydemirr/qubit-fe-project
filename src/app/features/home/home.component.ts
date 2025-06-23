@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WEATHER_STATUS } from '../../models/home/weather-status';
-import { DatePipe, NgFor, NgIf, SlicePipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import Chart from 'chart.js/auto';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -20,8 +20,10 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CommonModule,
   ],
+  providers: [DatePipe, DecimalPipe, SlicePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -129,7 +131,8 @@ export class HomeComponent implements OnInit {
     private _orficheService: OrficheService,
     private _invoiceService: InvoiceService,
     private _csCardService: CsCardService,
-    private _router: Router
+    private _router: Router,
+    private _decimalPipe: DecimalPipe
   ) {
     /* this._renderWeatherTemplate(); */
   }
@@ -210,6 +213,7 @@ export class HomeComponent implements OnInit {
         this.orficheInfo = res.data;
         this.orficheData = {
           ...this.orficheData,
+          labels: ['Alınan Siparişler: ' + this._decimalPipe.transform(res.data.totalAmountReceivedOrder, '1.0-0'), 'Verilen Siparişler: ' + this._decimalPipe.transform(res.data.totalAmountPlacedOrder, '1.0-0')],
           datasets: [{
             ...this.orficheData.datasets[0],
             data: [res.data.totalAmountReceivedOrder as never, res.data.totalAmountPlacedOrder as never]
@@ -254,6 +258,7 @@ export class HomeComponent implements OnInit {
         this.invoinceInfo = res.data;
         this.invoinceData = {
           ...this.invoinceData,
+          labels: ['Alış Faturaları: ' + this._decimalPipe.transform(res.data.totalAmountPurchaseInvoice, '1.0-0'), 'Satış Faturaları: ' + this._decimalPipe.transform(res.data.totalAmountSalesInvoice, '1.0-0')],
           datasets: [{
             ...this.invoinceData.datasets[0],
             data: [res.data.totalAmountPurchaseInvoice as never, res.data.totalAmountSalesInvoice as never]
@@ -298,6 +303,7 @@ export class HomeComponent implements OnInit {
         this.promissoryInfo = res.data;
         this.promissoryData = {
           ...this.promissoryData,
+          labels: ['Müşteri Çekleri: ' + this._decimalPipe.transform(res.data.totalAmountForCustomer, '1.0-0'), 'Pimak Çekleri: ' + this._decimalPipe.transform(res.data.totalAmountForPimak, '1.0-0')],
           datasets: [{
             ...this.promissoryData.datasets[0],
             data: [res.data.totalAmountForCustomer as never, res.data.totalAmountForPimak as never]

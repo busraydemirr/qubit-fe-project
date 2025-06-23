@@ -1,8 +1,8 @@
 <div class="homepage-background">
     <div class="container ml-auto mr-auto">
-        <div class="shadow-lg w-full p-2 text-center">
+        <!-- <div class="shadow-lg w-full p-2 text-center">
             <h1 class="text-2xl text-gray-600 font-bold">Hoşgeldiniz</h1>
-        </div>
+        </div> -->
 
         <div class="w-full mt-5">
             <!--  <div class="md:h-[230px] sm:h-[0px] w-full bg-gray-300 rounded p-4 md:grid min-[320px]:hidden grid-cols-7 gap-4" *ngIf="weatherData?.daily">
@@ -24,8 +24,9 @@
                 </div>
             </div> -->
 
-            <div class="md:h-[480px] sm:h-[0px] w-full bg-gray-300 rounded md:grid min-[320px]:hidden">
-                <div class="flex items-center justify-center text-xl font-bold text-gray-700 bg-gray-400 h-[76px] w-full">
+            <div class="md:h-[420px] sm:h-[0px] w-full bg-gray-300 rounded md:grid min-[320px]:hidden">
+                <div
+                    class="flex items-center justify-center text-xl font-bold text-gray-700 bg-gray-400 h-[76px] w-full">
                     Satışlar
                 </div>
                 <div class="h-full w-full flex justify-center p-4 w-full">
@@ -45,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4 md:h-[400px] sm:h-[75vh] mt-3">
+            <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-4 md:h-[420px] sm:h-[75vh] mt-3">
                 <div class="bg-gray-300 h-full w-full rounded">
                     <div class="h-18 w-full flex justify-between items-center bg-gray-400 py-2 px-4">
                         <div class="flex justify-start justify-center text-xl font-bold text-gray-700"> Faturalar</div>
@@ -65,7 +66,7 @@
                     <div class="h-full w-full flex justify-center">
                         <canvas id="canvas"
                             [class]="{'hidden': invoinceLoading || (!invoinceLoading && invoinceInfo && invoinceInfo.totalAmountPurchaseInvoice === 0 && invoinceInfo.totalAmountSalesInvoice === 0)}">
-                            <div *ngIf="!invoinceLoading"> {{chart}}</div>
+                            <div *ngIf="!invoinceLoading"> {{chart}} </div>
                         </canvas>
                         <div
                             *ngIf="!invoinceLoading && invoinceInfo && invoinceInfo.totalAmountPurchaseInvoice === 0 && invoinceInfo.totalAmountSalesInvoice === 0">
