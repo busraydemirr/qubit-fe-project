@@ -82,4 +82,15 @@ export class InvoiceService {
     public getStLinesByInvoiceId(id: number): Observable<any> {
         return this._http.get(this.url + 'api/Invoice/StLine/' + id);
     }
+
+    public getInvoiceById(id: number, term: string): Observable<any> {
+         const filter = {
+            field: 'id',
+            value: id.toString(),
+            operator: 'eq',
+        };
+
+        return this._http.post<any>(this.url + 'api/Invoice?size=1&from=0&term=' + term, filter);
+    }
+
 }

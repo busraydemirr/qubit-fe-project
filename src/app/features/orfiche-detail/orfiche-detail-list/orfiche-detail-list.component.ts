@@ -110,7 +110,7 @@ export class OrficheDetailListComponent implements OnInit, AfterViewInit, OnDest
     };
     this._store.dispatch(new OrficheActions.GetOrficheLines(payload));
 
-    this._store.select(OrficheState.getorficheLines).subscribe((orfiche: OrficheLineModel[]) => {
+    this._subSink.sink = this._store.select(OrficheState.getorficheLines).subscribe((orfiche: OrficheLineModel[]) => {
       this.elements = orfiche;
       this.dataSource = new MatTableDataSource<OrficheLineModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(OrficheState.getorficheLineQueryParams);

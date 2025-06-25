@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { WEATHER_STATUS } from '../../models/home/weather-status';
 import { CommonModule, DatePipe, DecimalPipe, NgFor, NgIf, SlicePipe } from '@angular/common';
 import Chart from 'chart.js/auto';
@@ -12,6 +12,7 @@ import { InvoiceService } from '../../services/invoice.service';
 import { CsCardService } from '../../services/cscard.service';
 import { FilterRequestModel } from '../../models/shared/filter-request.model';
 import { Router } from '@angular/router';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,7 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   @Input() user: any; // TODO: User model
   /*  public weatherData =
      {
@@ -126,6 +127,7 @@ export class HomeComponent implements OnInit {
   public promissoryInfo: any = null;
   public invoiceMonthlyInfo: any = null;
   private _filter!: FilterRequestModel;
+  public subsink = new SubSink();
 
   constructor(
     private _orficheService: OrficheService,
@@ -142,6 +144,10 @@ export class HomeComponent implements OnInit {
     this.viewInvoinceData(this.timePeriodInvoince);
     this.viewPromissoryData(this.timePeriodPromissory);
     this.viewInvoinceMonthlyData();
+  }
+
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   /*   async _renderWeatherTemplate() {
@@ -174,7 +180,7 @@ export class HomeComponent implements OnInit {
 
   public viewInvoinceMonthlyData(): void {
     this.invoiceMonthlyLoading = true;
-    this._invoiceService.getTotalInvoiceMonthly().subscribe((res) => {
+    this.subsink.sink = this._invoiceService.getTotalInvoiceMonthly().subscribe((res) => {
       this.invoiceMonthlyLoading = false;
       if (res.isSuccess) {
         this.invoiceMonthlyInfo = res.isSuccess ? res.data : null;
@@ -207,7 +213,7 @@ export class HomeComponent implements OnInit {
   public viewOrficheData(data: TimePeriodEnum): void {
     this.timePeriodOrfiche = data;
     this.orficheLoading = true;
-    this._orficheService.getTotalOrfiche(this.timePeriodOrfiche).subscribe((res) => {
+    this.subsink.sink = this._orficheService.getTotalOrfiche(this.timePeriodOrfiche).subscribe((res) => {
       this.orficheLoading = false;
       if (res.data) {
         this.orficheInfo = res.data;
@@ -252,7 +258,7 @@ export class HomeComponent implements OnInit {
     this.timePeriodInvoince = data;
     this.invoinceLoading = true;
 
-    this._invoiceService.getTotalInvoice(this.timePeriodInvoince).subscribe((res) => {
+    this.subsink.sink = this._invoiceService.getTotalInvoice(this.timePeriodInvoince).subscribe((res) => {
       this.invoinceLoading = false;
       if (res.data) {
         this.invoinceInfo = res.data;
@@ -297,7 +303,7 @@ export class HomeComponent implements OnInit {
     this.timePeriodPromissory = data;
     this.promissoryLoading = true;
 
-    this._csCardService.getPromissoryNote(this.timePeriodPromissory).subscribe((res) => {
+    this.subsink.sink = this._csCardService.getPromissoryNote(this.timePeriodPromissory).subscribe((res) => {
       this.promissoryLoading = false;
       if (res.data) {
         this.promissoryInfo = res.data;

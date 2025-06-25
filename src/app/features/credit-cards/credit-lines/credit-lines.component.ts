@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { BnCreditCardLineModel } from '../../../models/bncreditcard/bncreditcard-line.model';
@@ -11,6 +11,7 @@ import { BnCreditCardActions } from '../../../state/bncreditcard/bncreditcard.ac
 import { renderCardType, renderCurrency } from '../../../utils/enum.utils';
 import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-credit-lines',
@@ -27,7 +28,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   templateUrl: './credit-lines.component.html',
   styleUrl: './credit-lines.component.scss'
 })
-export class CreditLinesComponent implements OnInit, AfterViewInit {
+export class CreditLinesComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -55,6 +56,7 @@ export class CreditLinesComponent implements OnInit, AfterViewInit {
   public loading$: Observable<boolean>;
   public renderCardType = renderCardType;
   public renderCurrency = renderCurrency;
+  public subsink = new SubSink();
 
   constructor(private _store: Store) {
     this.loading$ = this._store.select(BnCreditCardState.getLineListLoading);
@@ -69,7 +71,7 @@ export class CreditLinesComponent implements OnInit, AfterViewInit {
     };
     this._store.dispatch(new BnCreditCardActions.GetBnCreditCardLines(payload));
 
-    this._store.select(BnCreditCardState.getBnCreditCardLines).subscribe((cards: BnCreditCardLineModel[]) => {
+    this.subsink.sink = this._store.select(BnCreditCardState.getBnCreditCardLines).subscribe((cards: BnCreditCardLineModel[]) => {
       this.elements = cards;
       this.dataSource = new MatTableDataSource<BnCreditCardLineModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(BnCreditCardState.getBnCreditCardLinesQueryParams);
@@ -79,6 +81,10 @@ export class CreditLinesComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   public changePaginationEvents(event: PageEvent): void {

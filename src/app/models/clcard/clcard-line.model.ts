@@ -22,4 +22,6 @@ export interface ClCardLineModel {
     year?: number;
     affectrisk?: number;
     sign?: number;
+    sourcefref?: number;
+    termInfo?: string;
   }

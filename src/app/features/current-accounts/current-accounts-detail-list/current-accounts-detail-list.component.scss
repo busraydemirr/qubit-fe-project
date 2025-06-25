@@ -13,3 +13,11 @@
 .mat-column-sign {
     flex: 0 0 15%;
 }
+
+.general-clickable-cell {
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(209, 213, 219, 0.8) !important;
+    }
+}

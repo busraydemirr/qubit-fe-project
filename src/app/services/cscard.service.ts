@@ -80,7 +80,17 @@ export class CsCardService {
         return this._http.post<ResponseModel<BaseResponseData<CsCardLineModel>>>(this.url + 'api/CsCard/' + id + '/getCsTrans?size=' + size + '&from=' + page + '&term=' + term, filter);
     }
 
-    public getCsTrans(id:number): Observable<any> {
-        return this._http.get<any>(this.url + 'api/CsTrans/' + id);
+    public getCsTrans(id:number, term: string): Observable<any> {
+        return this._http.get<any>(this.url + 'api/CsTrans/' + id + '?term=' + term);
+    }
+
+     public getCsCardById(id: number, term: string): Observable<any> {
+         const filter = {
+            field: 'id',
+            value: id.toString(),
+            operator: 'eq',
+        };
+
+        return this._http.post<any>(this.url + 'api/CsCard?size=1&from=0&term=' + term, filter);
     }
 }

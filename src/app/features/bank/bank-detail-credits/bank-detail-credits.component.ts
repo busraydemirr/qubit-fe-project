@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { BnCreditCardItemModel } from '../../../models/bncreditcard/bncreditcard.model';
@@ -11,6 +11,7 @@ import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { BnCreditCardActions } from '../../../state/bncreditcard/bncreditcard.action';
 import { renderCardType, renderCreditType, renderCurrency } from '../../../utils/enum.utils';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-bank-detail-credits',
@@ -27,7 +28,7 @@ import { renderCardType, renderCreditType, renderCurrency } from '../../../utils
   templateUrl: './bank-detail-credits.component.html',
   styleUrl: './bank-detail-credits.component.scss'
 })
-export class BankDetailCreditsComponent implements OnInit {
+export class BankDetailCreditsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -59,6 +60,7 @@ export class BankDetailCreditsComponent implements OnInit {
   public renderCardType = renderCardType;
   public renderCreditType = renderCreditType;
   public renderCurrency = renderCurrency;
+  public subsink = new SubSink();
 
   constructor(private _store: Store) {
     this.loading$ = this._store.select(BnCreditCardState.getLoading);
@@ -79,7 +81,7 @@ export class BankDetailCreditsComponent implements OnInit {
     };
     this._store.dispatch(new BnCreditCardActions.List(payload));
 
-    this._store.select(BnCreditCardState.getBnCreditCards).subscribe((cards: BnCreditCardItemModel[]) => {
+    this.subsink.sink = this._store.select(BnCreditCardState.getBnCreditCards).subscribe((cards: BnCreditCardItemModel[]) => {
       this.elements = cards;
       this.dataSource = new MatTableDataSource<BnCreditCardItemModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(BnCreditCardState.getBnCreditCardQueryParams);
@@ -89,6 +91,10 @@ export class BankDetailCreditsComponent implements OnInit {
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   public changePaginationEvents(event: PageEvent): void {

@@ -49,8 +49,6 @@ export class CashTransactionDetailListComponent implements OnInit, AfterViewInit
     'date',
     'branch',
     'lineexp',
-    'trrate',
-    'trnet',
     'trcurr',
     'capiblockNameCreatedby',
     'capiblockCreadeddate'

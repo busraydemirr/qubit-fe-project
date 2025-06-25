@@ -70,7 +70,7 @@ export class PromissoryNoteDetailListComponent implements OnInit, AfterViewInit,
     };
     this._store.dispatch(new CsCardActions.GetCsCardLines(payload));
 
-    this._store.select(CsCardState.getCsCardLines).subscribe((cscard: CsCardLineModel[]) => {
+    this._subSink.sink = this._store.select(CsCardState.getCsCardLines).subscribe((cscard: CsCardLineModel[]) => {
       this.elements = cscard;
       this.dataSource = new MatTableDataSource<CsCardLineModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(CsCardState.getCsCardLineQueryParams);

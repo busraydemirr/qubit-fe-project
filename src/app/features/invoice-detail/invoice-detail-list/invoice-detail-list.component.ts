@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { InvoiceLineModel } from '../../../models/invoices/invoice-line.model';
@@ -12,6 +12,7 @@ import { InvoiceActions } from '../../../state/invoice/invoice.action';
 import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { Router } from '@angular/router';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-invoice-detail-list',
@@ -28,7 +29,7 @@ import { Router } from '@angular/router';
   templateUrl: './invoice-detail-list.component.html',
   styleUrl: './invoice-detail-list.component.scss'
 })
-export class InvoiceDetailListComponent implements OnInit, AfterViewInit {
+export class InvoiceDetailListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -68,6 +69,7 @@ export class InvoiceDetailListComponent implements OnInit, AfterViewInit {
   public renderLineType = renderLineType;
   public renderTrCode = renderTrCode;
   public renderIoCode = renderIoCode;
+  public subsink = new SubSink();
 
   constructor(private _store: Store, private _router: Router) {
     this.loading$ = this._store.select(InvoiceState.getLinesListLoading);
@@ -82,7 +84,7 @@ export class InvoiceDetailListComponent implements OnInit, AfterViewInit {
     };
     this._store.dispatch(new InvoiceActions.GetInvoiceLines(payload));
 
-    this._store.select(InvoiceState.getInvoiceLines).subscribe((invoices: InvoiceLineModel[]) => {
+    this.subsink.sink = this._store.select(InvoiceState.getInvoiceLines).subscribe((invoices: InvoiceLineModel[]) => {
       this.elements = invoices;
       this.dataSource = new MatTableDataSource<InvoiceLineModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(InvoiceState.getInvoiceLineQueryParams);
@@ -92,6 +94,10 @@ export class InvoiceDetailListComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   public rowClicked(element: InvoiceLineModel): void {

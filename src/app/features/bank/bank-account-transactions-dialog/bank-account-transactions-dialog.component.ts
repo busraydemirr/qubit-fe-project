@@ -51,7 +51,6 @@ export class BankAccountTransactionsDialogComponent implements OnInit, AfterView
   public displayedColumns = [
     'clCardDefinition',
     'bankproctype',
-    'accounted',
     'amount',
     'lineexp',
     'ksLineexp',

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { QueryParams } from '../../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
 import { BnCardState } from '../../../state/bncard/bncard.state';
@@ -14,6 +14,7 @@ import { CardType } from '../../../models/bncard/card-type.enum';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog } from '@angular/material/dialog';
 import { BankAccountTransactionsDialogComponent } from '../bank-account-transactions-dialog/bank-account-transactions-dialog.component';
 import { renderCardType, renderCurrency, renderStatus } from '../../../utils/enum.utils';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-bank-accounts',
@@ -32,7 +33,7 @@ import { renderCardType, renderCurrency, renderStatus } from '../../../utils/enu
   templateUrl: './bank-accounts.component.html',
   styleUrl: './bank-accounts.component.scss'
 })
-export class BankAccountsComponent implements OnInit {
+export class BankAccountsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -68,6 +69,7 @@ export class BankAccountsComponent implements OnInit {
   public renderCardType = renderCardType;
   public renderCardStatus = renderStatus;
   private _dialog = inject(MatDialog);
+  public subsink = new SubSink();
 
   constructor(private _store: Store) {
     this.loading$ = this._store.select(BnCardState.getAccountListLoading);
@@ -82,11 +84,15 @@ export class BankAccountsComponent implements OnInit {
     };
     this._store.dispatch(new BnCardActions.GetBnCardAccounts(payload));
 
-    this._store.select(BnCardState.getBnCardAccounts).subscribe((cards: BnCardAccountModel[]) => {
+    this.subsink.sink = this._store.select(BnCardState.getBnCardAccounts).subscribe((cards: BnCardAccountModel[]) => {
       this.elements = cards;
       this.dataSource = new MatTableDataSource<BnCardAccountModel>(this.elements);
       this.queryParams = this._store.selectSnapshot(BnCardState.getBnCardAccountsQueryParams);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   public ngAfterViewInit(): void {

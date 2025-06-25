@@ -42,7 +42,17 @@ export class KsCardService {
         return this._http.post<ResponseModel<BaseResponseData<KsCardLineModel>>>(this.url + 'api/KsCard/getKsCardLines/' + id + '?size=' + size + '&from=' + page + '&term=' + term, filter);
     }
 
-    public getKsCard(id: number): Observable<any> {
-        return this._http.get<any>(this.url + 'api/KsCard/KsLine/' + id);
+    public getKsLine(id: number, term: string): Observable<any> {
+        return this._http.get<any>(this.url + 'api/KsCard/KsLine/' + id + '?term=' + term);
+    }
+    
+    public getKsCardById(id: number, term: string): Observable<any> {
+        const filter = {
+            field: 'id',
+            value: id.toString(),
+            operator: 'eq',
+        };
+
+        return this._http.post<any>(this.url + 'api/KsCard?size=1&from=0&term=' + term, filter);
     }
 }

@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from '../../../services/login.service';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-login',
@@ -10,12 +11,17 @@ import { LoginService } from '../../../services/login.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   public email: string = '';
   public password: string = '';
   private _snackBar = inject(MatSnackBar);
+  public subsink = new SubSink();
 
   constructor(private _router: Router, private _loginService: LoginService) { }
+
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
+  }
 
   public onSubmit(): void {
     if (!this.email || !this.password) {
@@ -30,7 +36,7 @@ export class LoginComponent {
       password: this.password,
     };
 
-    this._loginService.login(request).subscribe(
+    this.subsink.sink = this._loginService.login(request).subscribe(
       (response) => {
         if (response.isSuccess) {
           console.log('Login successful:', response);

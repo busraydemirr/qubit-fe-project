@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { CalendarA11y, CalendarDateFormatter, CalendarEvent, CalendarEventTitleFormatter, CalendarModule, CalendarUtils, CalendarView, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,6 +17,7 @@ import { NgIf } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CsCardService } from '../../services/cscard.service';
 import { renderCurrencyCode } from '../../utils/enum.utils';
+import { SubSink } from 'subsink';
 
 const colors: any = {
   red: {
@@ -58,7 +59,7 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent implements AfterViewInit {
+export class CalendarComponent implements AfterViewInit, OnDestroy {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | any;
 
   view: CalendarView = CalendarView.Month;
@@ -82,11 +83,16 @@ export class CalendarComponent implements AfterViewInit {
 
   public timePeriodEnum = TimePeriodEnum;
   public calendarLoading: boolean = false;
+  public subsink = new SubSink();
 
   constructor(private modal: NgbModal, private _creditService: BnCreditCardService, private _csCardService: CsCardService, private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit(): void {
     this.viewData(this.timePeriod);
+  }
+
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -121,7 +127,7 @@ export class CalendarComponent implements AfterViewInit {
     this.timePeriod = data;
     this.calendarLoading = true;
 
-    forkJoin([this._creditService.getDueCredits(this.timePeriod), this._csCardService.getPromissoryNote(this.timePeriod),])
+    this.subsink.sink = forkJoin([this._creditService.getDueCredits(this.timePeriod), this._csCardService.getPromissoryNote(this.timePeriod),])
       .subscribe(([res1, res2]) => {
         if (res1.data) {
           this.events = res1.data.items.map((item) => {

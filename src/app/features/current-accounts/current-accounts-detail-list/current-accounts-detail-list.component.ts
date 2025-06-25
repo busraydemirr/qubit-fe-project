@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ClCardActions } from '../../../state/clcard/clcard.action';
 import { ClCardState } from '../../../state/clcard/clcard.state';
@@ -10,7 +10,7 @@ import { QueryParams } from '../../../models/shared/query-params.model';
 import { Observable } from 'rxjs';
 import { AsyncPipe, CommonModule, DatePipe, NgIf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { renderCurrency, renderSign } from '../../../utils/enum.utils';
+import { renderBankProcType, renderCurrency, renderSign } from '../../../utils/enum.utils';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SubSink } from 'subsink';
@@ -29,6 +29,7 @@ import { Router } from '@angular/router';
 import { CsCardService } from '../../../services/cscard.service';
 import { BnCardService } from '../../../services/bncard.service';
 import { KsCardService } from '../../../services/kscard.service';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 
 export const MY_FORMATS = {
   parse: {
@@ -59,12 +60,18 @@ export const MY_FORMATS = {
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   { provide: DateAdapter, useClass: MomentDateAdapter },
-  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+  { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+
   ],
   templateUrl: './current-accounts-detail-list.component.html',
   styleUrl: './current-accounts-detail-list.component.scss'
@@ -107,6 +114,9 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     end: new FormControl(null),
   });
   public dateRange = new FormControl(null);
+  public renderBankProcType = renderBankProcType;
+  private _dialog = inject(MatDialog);
+  public dialogRef: any;
 
   constructor(
     private _store: Store,
@@ -148,6 +158,7 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     this.subsink.unsubscribe();
     this.elements = [];
     this.dataSource = new MatTableDataSource<ClCardLineModel>(this.elements);
+    this.close();
   }
 
   public changePaginationEvents(event: PageEvent): void {
@@ -180,44 +191,78 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     );
   }
 
-  public rowClicked(row: ClCardLineModel): void {
+  public rowClicked(row: ClCardLineModel, template: any): void {
     if (row.modulenr === 3 || row.modulenr === 5) {
       return; // Skip rows with modulenr 3 or 5
     }
 
     switch (row.modulenr) {
       case 4: // ınvoice
-        this.invoiceService.getStLinesByInvoiceId(row.id!).subscribe((res) => {
+        this.subsink.sink = this.invoiceService.getInvoiceById(row.sourcefref!, row.termInfo!).subscribe((res) => {
           if (res && res.isSuccess && res.data) {
-            this._router.navigate(['purchase-invoices/detail', res.data.invoiceref]);
+            this._router.navigate(['purchase-invoices/detail', res.data.items[0]?.id]);
           }
         });
         break;
       case 6: // CsTrans
-        this._csCardService.getCsTrans(row.id!).subscribe((res) => {
+        this.subsink.sink = this._csCardService.getCsTrans(row.sourcefref!, row.termInfo!).subscribe((res) => {
           if (res && res.isSuccess && res.data) {
-            this._router.navigate(['customer-promissory-notes/detail', res.data.csref]);
+            // popup
+            this.dialogRef = this._dialog.open(template, {
+              data: { row: res.data, type: 'cstrans' },
+              height: 'auto',
+              width: 'auto',
+              minHeight: '400px',
+              minWidth: '600px',
+              maxHeight: '90vh',
+              maxWidth: '90vw',
+            });
           }
         });
         break;
       case 61: // CsTrans
-        this._csCardService.getCsTrans(row.id!).subscribe((res) => {
+        this.subsink.sink = this._csCardService.getCsTrans(row.sourcefref!, row.termInfo!).subscribe((res) => {
           if (res && res.isSuccess && res.data) {
-            this._router.navigate(['customer-promissory-notes/detail', res.data.csref]);
+            // popup
+            this.dialogRef = this._dialog.open(template, {
+              data: { row: res.data, type: 'cstrans' },
+              height: 'auto',
+              width: 'auto',
+              minHeight: '400px',
+              minWidth: '600px',
+              maxHeight: '90vh',
+              maxWidth: '90vw',
+            });
           }
         });
         break;
       case 7: // BnCard
-        this._bnCardService.getBnCardAccount(row.id!).subscribe((res) => {
+        this.subsink.sink = this._bnCardService.getBnCardAccount(row.sourcefref!, row.termInfo!).subscribe((res) => {
           if (res && res.isSuccess && res.data) {
-            this._router.navigate(['banks/detail', res.data.bankref]);
+            this.dialogRef = this._dialog.open(template, {
+              data: { row: res.data, type: 'bnfline' },
+              height: 'auto',
+              width: 'auto',
+              minHeight: '400px',
+              minWidth: '600px',
+              maxHeight: '90vh',
+              maxWidth: '90vw',
+            });
           }
         });
         break;
       case 10: // KsCard
-        this._ksCardService.getKsCard(row.id!).subscribe((res) => {
+         this.subsink.sink = this._ksCardService.getKsLine(row.sourcefref!, row.termInfo!).subscribe((res) => {
           if (res && res.isSuccess && res.data) {
-            this._router.navigate(['cash-transactions/detail', res.data.cardref]);
+            this.dialogRef = this._dialog.open(template, {
+              data: { row: res.data, type: 'kscard' },
+              height: 'auto',
+              width: 'auto',
+              minHeight: '400px',
+              minWidth: '600px',
+              maxHeight: '90vh',
+              maxWidth: '90vw',
+            });
           }
         });
         break;
@@ -236,5 +281,33 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     this._store.dispatch(
       new ClCardActions.GetClCardLines({ id: this.cardId, size: queryParams.size, page: 0, filter: {} })
     );
+  }
+
+  public gotoCsCard(id: number, term: string): void {
+     this.subsink.sink = this._csCardService.getCsCardById(id!, term!).subscribe((res) => {
+      if (res && res.isSuccess && res.data) {
+        this._router.navigate(['customer-promissory-notes/detail', res.data.items[0]?.id]);
+      }
+    });
+  }
+
+  public gotoBnCard(id: number, term: string): void {
+    this.subsink.sink = this._bnCardService.getBnCardById(id!, term!).subscribe((res) => {
+      if (res && res.isSuccess && res.data) {
+        this._router.navigate(['banks/detail', res.data.items[0]?.id]);
+      }
+    });
+  }
+
+  public gotoKsCard(id: number, term: string): void {
+    this.subsink.sink = this._ksCardService.getKsCardById(id!, term!).subscribe((res) => {
+      if (res && res.isSuccess && res.data) {
+        this._router.navigate(['cash-transactions/detail', res.data.items[0]?.id]);
+      }
+    });
+  }
+
+  public close(): void {
+    this.dialogRef?.close();
   }
 }
