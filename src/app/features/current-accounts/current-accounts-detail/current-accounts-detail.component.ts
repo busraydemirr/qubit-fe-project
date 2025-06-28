@@ -50,18 +50,28 @@ export class CurrentAccountsDetailComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private _store: Store) { }
 
   ngOnInit(): void {
-    this._subSink.sink = this.route.params.subscribe((params: Params) => {
-      this.accountId = params['id'];
-    });
-
+    // START
+    // ESONMEZ
+    // Bug : Cari Detay Sayfası, Farklı Carilere Geçişte Veriyi Güncellemiyor
+    //Fix : Component yeniden kullanıldığında eski verinin gösterilmesi hatası, veri getirme komutu route.params.subscribe içine taşıyarak URL her değiştiğinde tetiklenmesi sağlanarak düzeltildi.
+    // Store'dan gelen veriyi ve loading durumunu dinlemeye başla
     this.clCard$ = this._store.select(ClCardState.getClCardDetail);
     this.loading$ = this._store.select(ClCardState.getDetailLoading);
 
-    const card: ClCardItemModel | undefined = this._store.selectSnapshot(ClCardState.getClCardDetail);
+    // URL'deki parametreleri dinle
+    this._subSink.sink = this.route.params.subscribe((params: Params) => {
+      // 1. Yeni ID'yi al
+      this.accountId = +params['id']; // '+' ile number tipine çevir
 
-    if (!card || !card.id) {
-      this._store.dispatch(new ClCardActions.GetClCard(this.accountId!));
-    }
+      // 2. Store'daki mevcut kartın anlık görüntüsünü al
+      const currentCardInStore = this._store.selectSnapshot(ClCardState.getClCardDetail);
+
+      // 3. Eğer store'da kart yoksa VEYA store'daki kartın ID'si yeni gelen ID'den farklıysa,
+      //    yeni veriyi getirmek için action'ı dispatch et.
+      if (!currentCardInStore || currentCardInStore.id !== this.accountId) {
+        this._store.dispatch(new ClCardActions.GetClCard(this.accountId));
+      }
+    });
   }
 
   ngOnDestroy(): void {
