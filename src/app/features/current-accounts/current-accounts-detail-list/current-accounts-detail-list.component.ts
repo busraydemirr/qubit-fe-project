@@ -197,12 +197,13 @@ export class CurrentAccountsDetailListComponent implements OnInit, AfterViewInit
     }
 
     switch (row.modulenr) {
-      case 4: // ınvoice
-        this.subsink.sink = this.invoiceService.getInvoiceById(row.sourcefref!, row.termInfo!).subscribe((res) => {
+      case 4: // ınvoice //esonmez-pimak yanlıs aktarım sebebiyle fatura modulune routing deploy öncesi iptal edildi.
+        /*this.subsink.sink = this.invoiceService.getInvoiceById(row.sourcefref!, row.termInfo!).subscribe((res) => {
           if (res && res.isSuccess && res.data) {
             this._router.navigate(['purchase-invoices/detail', res.data.items[0]?.id]);
           }
         });
+        */
         break;
       case 6: // CsTrans
         this.subsink.sink = this._csCardService.getCsTrans(row.sourcefref!, row.termInfo!).subscribe((res) => {
