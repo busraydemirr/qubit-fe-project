@@ -15,36 +15,37 @@
       (click)="clearFilters()">
       <mat-icon fontIcon="delete"></mat-icon>
     </button>
-
-
   </form>
+
   <mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="code">
-      <mat-header-cell *matHeaderCellDef  > Kodu </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Kodu </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
           {{ element.code }}
         </ng-template>
       </mat-cell>
     </ng-container>
+
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef  > Adı </mat-header-cell>
-      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)">
+      <mat-header-cell *matHeaderCellDef> Adı </mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" (click)="rowClicked(element)"
+        class="cursor-pointer">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
           <div class="clickable-cell">
@@ -53,56 +54,63 @@
         </ng-template>
       </mat-cell>
     </ng-container>
+
     <ng-container matColumnDef="totalCashierPrice">
-      <mat-header-cell *matHeaderCellDef  > Kasa Bakiyesi </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Kasa Bakiyesi </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
           {{ element.totalCashierPrice | number }}
         </ng-template>
       </mat-cell>
     </ng-container>
+
     <ng-container matColumnDef="explain">
-      <mat-header-cell *matHeaderCellDef  > Açıklama </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Açıklama </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
           {{ element.explain }}
         </ng-template>
       </mat-cell>
     </ng-container>
+
     <ng-container matColumnDef="recstatus">
-      <mat-header-cell *matHeaderCellDef   class="table-column-150"> Kayıt Durumu </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef class="table-column-150"> Kayıt Durumu </mat-header-cell>
       <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
         <ng-container *ngIf="(loading$ | async); else content">
           <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-          height: '20px',
-          width: '100%',
-          'background-color': '#b7bec3',
-          border: '1px solid #b7bec3'
-        }"></ngx-skeleton-loader>
+            height: '20px',
+            width: '100%',
+            'background-color': '#b7bec3',
+            border: '1px solid #b7bec3'
+          }"></ngx-skeleton-loader>
         </ng-container>
         <ng-template #content>
           {{renderRectStatus(element.recstatus!)}}
         </ng-template>
       </mat-cell>
     </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns" class="hover:bg-gray-300 transition-colors duration-150">
+    </mat-row>
+
   </mat-table>
 
   <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"

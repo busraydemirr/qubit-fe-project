@@ -76,11 +76,11 @@
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                height: '20px',
-                width: '100%',
-                'background-color': '#b7bec3',
-                border: '1px solid #b7bec3'
-              }"></ngx-skeleton-loader>
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
                     {{ renderCurrency(element.trcurr) }}
@@ -92,11 +92,11 @@
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-100">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                height: '20px',
-                width: '100%',
-                'background-color': '#b7bec3',
-                border: '1px solid #b7bec3'
-              }"></ngx-skeleton-loader>
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
                     {{ element.totalAmountPrice ? (element.totalAmountPrice | number) : ''}}
@@ -108,11 +108,11 @@
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                height: '20px',
-                width: '100%',
-                'background-color': '#b7bec3',
-                border: '1px solid #b7bec3'
-              }"></ngx-skeleton-loader>
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
                     {{ element.allShippedAmountPrice ? (element.allShippedAmountPrice | number): ''}}
@@ -124,11 +124,11 @@
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                height: '20px',
-                width: '100%',
-                'background-color': '#b7bec3',
-                border: '1px solid #b7bec3'
-              }"></ngx-skeleton-loader>
+                  height: '20px',
+                  width: '100%',
+                  'background-color': '#b7bec3',
+                  border: '1px solid #b7bec3'
+                }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
                     {{ element.amountOfRemainingPrice ? (element.amountOfRemainingPrice | number) : ''}}
@@ -140,11 +140,11 @@
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
                     {{ element.date | date: "dd/MM/yyyy"}}
@@ -157,11 +157,11 @@
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-150">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
                     {{ element.trcurr === 0 || element.trcurr === 160 ? (element.nettotal | number) : (element.trnet |
@@ -175,11 +175,11 @@
             <mat-cell *matCellDef="let element" [ngClass]="{ 'selected-row': element.select }" class="table-column-200">
                 <ng-container *ngIf="(loading$ | async); else content">
                     <ngx-skeleton-loader count="1" class="w-full" [theme]="{ 
-                  height: '20px',
-                  width: '100%',
-                  'background-color': '#b7bec3',
-                  border: '1px solid #b7bec3'
-                }"></ngx-skeleton-loader>
+                    height: '20px',
+                    width: '100%',
+                    'background-color': '#b7bec3',
+                    border: '1px solid #b7bec3'
+                  }"></ngx-skeleton-loader>
                 </ng-container>
                 <ng-template #content>
                     {{ element.genexp1 }}
@@ -187,7 +187,10 @@
             </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns"
+            class="hover:bg-gray-300 transition-colors duration-150">
+        </mat-row>
     </mat-table>
 
     <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="queryParams.size" [pageIndex]="queryParams.page"

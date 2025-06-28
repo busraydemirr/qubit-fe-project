@@ -1,5 +1,6 @@
 <ng-container *ngIf="csCard$ | async as csCard">
-    <app-banner [label]="csCard.bankname!" [subLabel]="csCard?.bnaccountno!"></app-banner>
+    <app-banner [label]="csCard.doc === 1 ? 'Müşteri Çeki - ' + csCard.owing : 'Pimak Çeki - ' + csCard.owing" [subLabel]="csCard.bnaccountno!">
+    </app-banner>
 </ng-container>
 
 <div class="w-auto detail-background">
@@ -153,7 +154,7 @@
                                     Tutar
                                 </span>
                                 <span class="flex w-1/2 py-1 px-2 border border-1 border-gray-400 !border-b-0">
-                                    {{csCard.amount | number }} 
+                                    {{csCard.amount | number }}
                                 </span>
                             </div>
 
