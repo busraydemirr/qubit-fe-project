@@ -24,6 +24,7 @@
     "@angular/router": "^19.0.0",
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@ngxs/store": "^19.0.0",
+    "@popperjs/core": "^2.11.8",
     "angular-calendar": "^0.31.1",
     "chart.js": "^4.4.8",
     "date-fns": "^4.1.0",
